@@ -3,21 +3,22 @@ from zope.component import queryUtility
 from  zope import interface
 from zope import schema
 
-#XXX: move to template
-_u = lambda x: unicode(x, 'utf-8',errors='ignore')
-TABLE = lambda x: u'<table class="listing" style="width:100%">%s</table>' % _u(x)
-TR = lambda x: u"<tr>%s</tr>" % _u(x)
-TD = lambda x: u"<td>%s</td>" % _u(x)
-TH = lambda x, y: u"<td%s>%s</td>" % (_u(x), _u(y))
+#XXX: move to template or use pyquery?
+TABLE = lambda x: u'<table class=\'sortable-table\'>%s</table>' % x
+TR = lambda x: u"<tr>%s</tr>" % x
+TD = lambda x: u"<td>%s</td>" % x
+TH = lambda x, y: u"<th id=\'%s\' class=\'sortable\'><span>%s</span></th>" % (x,y)
+A = lambda x, y: "<a href=\'%s\'>%s</a>" % (x,y)
 
 class TableGenerator(object):
     """ generates a html table"""
     
-    def generate(self, contents, columns):
+    def generate(self, contents, columns, linked):
         rows = []
         if len(contents):
             #thead
             thead = []
+            thead.append(TH('','<span></span>  '))
             for column in columns:
                 attr, index, callback = self.process_column(column)
                 thead.append(TH(index, attr))
@@ -25,9 +26,13 @@ class TableGenerator(object):
             #tbody
             for content in contents:
                 row = []
+                row.append(TD('<input type=\'checkbox\' />'))
                 for column in columns:
                     attr, index, callback = self.process_column(column)
-                    row.append(TD(callback(getattr(content, attr, ''))))
+                    value = callback(getattr(content, attr, ''))
+                    if attr in linked:
+                        value = A(content.getURL(), value)
+                    row.append(TD(value))
                 rows.append(TR(' '.join(row)))
             return TABLE(' '.join(rows))
                         
