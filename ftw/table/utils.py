@@ -2,49 +2,90 @@ from interfaces import ITableGenerator
 from zope.component import queryUtility
 from  zope import interface
 from zope import schema
-
-#XXX: move to template or use pyquery?
-TABLE = lambda x: u'<table class=\'sortable-table\'>%s</table>' % x
-TR = lambda x: u"<tr>%s</tr>" % x
-TD = lambda x: u"<td>%s</td>" % x
-TH = lambda x, y: u"<th id=\'%s\' class=\'sortable\'><span>%s</span></th>" % (x,y)
-A = lambda x, y: "<a href=\'%s\'>%s</a>" % (x,y)
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile 
+from zope.app.component import hooks
 
 class TableGenerator(object):
-    """ generates a html table"""
+    """ generates a html table. See README.txt for usage"""
     
-    def generate(self, contents, columns, linked):
-        rows = []
-        if len(contents):
-            #thead
-            thead = []
-            thead.append(TH('','<span></span>  '))
+    template = ViewPageTemplateFile('templates/basic.pt') 
+    
+    css_mapping = {
+                   'table': 'listing',
+                   'sortable': 'sortable', 
+                   'sort-selected': 'sort-selected',
+                   'sort-asc': 'sort-asc',
+                   'sort-desc': 'sort-desc',
+                   'th_prefix': 'header-'
+                   }
+    
+    context = None
+    @property
+    def request(self):
+     	site = hooks.getSite()
+     	return site.REQUEST
+    
+    def generate(self, contents, columns, sortable=False, selected=(None,None), css_mapping={}):
+        self.sortable = sortable
+        self.selected = selected
+        self.columns = self.process_columns(columns)
+        self.contents = contents
+        self.css_mapping.update(css_mapping)
+        return self.template()
+
+    def get_value(self, content, column):
+        attr, index, callback = column
+        value = u''
+        if hasattr(content, index):
+            value = getattr(content, index)
+        elif content.has_key(index):
+            value = content[index]
+        return callback(content, value)
+
+    def sortable_class(self, attr):
+        class_ = []
+        if isinstance(self.sortable, (bool, int)):
+            #if sortable is set to True, everything is sortable
+            if self.sortable:
+                class_.append(self.css_mapping['sortable'])
+        elif attr in self.sortable:
+            class_.append(self.css_mapping['sortable'])
+        if len(class_):
+            if attr == self.selected[0]:
+                class_.append(self.css_mapping['sort-selected'])
+                name = 'sort-' + self.selected[1]
+                if self.css_mapping.has_key(name):
+                    class_.append(self.css_mapping[name])
+            return ' '.join(class_)
+        return None
+
+    def process_columns(self, columns):
+        processed_columns = []
+        if isinstance(columns, (list, tuple)):
             for column in columns:
-                attr, index, callback = self.process_column(column)
-                thead.append(TH(index, attr))
-            rows.append(TR(' '.join(thead)))
-            #tbody
-            for content in contents:
-                row = []
-                row.append(TD('<input type=\'checkbox\' />'))
-                for column in columns:
-                    attr, index, callback = self.process_column(column)
-                    value = callback(getattr(content, attr, ''))
-                    if attr in linked:
-                        value = A(content.getURL(), value)
-                    row.append(TD(value))
-                rows.append(TR(' '.join(row)))
-            return TABLE(' '.join(rows))
+                processed_columns.append(self.process_column(column))
+        elif type(columns) == type(interface.Interface):
+            column = []
+            fields = schema.getFields(columns).items()
+            for name, field  in fields:
+                processed_columns.append(self.process_column((field.title, name)))
+        return processed_columns
                         
     def process_column(self, column):
-        attr = index =""
-        callback = lambda x: x
-        if len(column) == 1:
+        attr = index = u""
+        callback = lambda x, y: y
+        if isinstance(column, basestring):
             attr = index = column
-        if len(column) == 2:
-            attr, index = column
-        if len(column) == 3:
-            attr, index, callback = column
+        elif isinstance(column, (list, tuple)):
+            if len(column) == 1:
+                attr = index = column
+            elif len(column) == 2:
+                if isinstance(column[1], basestring):
+                    attr = column[0]
+                    index = column[1]
+                elif callable(column[1]):
+                    attr = index = column[0]
+                    callback = column[1]
         return attr, index, callback
                 
          

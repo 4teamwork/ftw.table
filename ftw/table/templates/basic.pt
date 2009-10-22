@@ -1,0 +1,18 @@
+<table tal:attributes="class view/css_mapping/table">
+    <thead>
+        <tr>
+            <tal:th tal:repeat="th view/columns">
+                <th tal:content="python: th[0]" 
+                    tal:attributes="id python:view.css_mapping['th_prefix']+th[1];
+                                    class python:view.sortable_class(th[1])"/>
+            </tal:th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr tal:repeat="content view/contents">
+            <td tal:repeat="col view/columns">
+                <tal:td replace="python: view.get_value(content, col)" />
+            </td>
+        </tr>
+    </tbody>
+</table>
