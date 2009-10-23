@@ -10,7 +10,7 @@ class TableGenerator(object):
     
     template = ViewPageTemplateFile('templates/basic.pt') 
     
-    css_mapping = {
+    _css_mapping = {
                    'table': 'listing',
                    'sortable': 'sortable', 
                    'sort-selected': 'sort-selected',
@@ -30,7 +30,9 @@ class TableGenerator(object):
         self.selected = selected
         self.columns = self.process_columns(columns)
         self.contents = contents
-        self.css_mapping.update(css_mapping)
+        css = self._css_mapping.copy()
+        css.update(css_mapping)
+        self.css_mapping = css
         return self.template()
 
     def get_value(self, content, column):

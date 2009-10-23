@@ -92,7 +92,7 @@ generate columns from an Interface. needs some re-factoring/thinking.. not reall
         </tr>
     ...
         <tr>
-            <td> 2009-10-22 12:30:00 </td>
+            <td> ... 12:30:00 </td>
             <td> Rincewind </td>
         </tr>
     ...
@@ -145,7 +145,54 @@ You can overwrite/extend the the css_mapping. E.g. if you want to use swissgerma
 ...
 </table>
 
+And now use it with plone.. and try it out with some more compley valuess
 
+Create some test content
+
+>>> generator = component.getUtility(ITableGenerator, 'ftw.tablegenerator')
+>>> books = [('Oblomow',  'Iwan A. Gontscharow'), 
+...            ('Cuentos de amor de locura y de muerte', 'Horacio Quiroga'),
+...            ('Die große Haifischjagd', 'Hunter S. Thompson'),
+...            ('Visual Intelligence', 'Donald D. Hoffman'),
+...            ('Silence','John Cage'),
+...            ('Small Gods', 'Terry Pratchett'),
+...            ('How real is real?: Confusion; disinformation; communication', 'Paul Watzlawick') 
+...            ]
+>>> from plone.i18n.normalizer.interfaces import IIDNormalizer
+>>> normalize = component.getUtility(IIDNormalizer).normalize
+>>> for book, author in books:
+...     newid = self.folder.invokeFactory('Document', normalize(book), title=book, Description=author)
+...     self.folder[newid].setDescription(author)
+...     self.folder[newid].reindexObject()
+>>> results = self.portal.portal_catalog(path={ 'depth':1, 'query':'/'.join(self.folder.getPhysicalPath())})
+>>> columns = ('Title', 'Description', 'modified', 'Creator')
+
+now we need some helpers and "simulate" the acl
+
+>>> the_acl = {'test_user_1_' : 'The Librarian'}
+>>> def checkbox(item, value):
+...     return '<input type="checkbox" name="uids:list" value="%s" />' % item.UID
+>>> def linked(item, value):
+...     return '<a href="%s">%s</a>' % (item.getPath(), value) 
+>>> def readable_author(item, value):
+...     return the_acl.get(value)
+>>> columns = (('', checkbox), 
+...            ('Title', linked), 
+...            'Description', 
+...            ('modified', helper.readable_date),
+...            ('Creator', readable_author))
+>>> print generator.generate(results, columns)
+<table class="listing">
+...
+        <tr>
+            <td> <input type="checkbox" name="uids:list" value="..." /> </td>
+            <td> <a href="/plone/Members/test_user_1_/die-groaye-haifischjagd">Die große Haifischjagd</a> </td>
+            <td> Hunter S. Thompson </td>
+            <td> today, ... </td>
+            <td> The Librarian </td>
+        </tr>
+...
+</table>
 
 
  
