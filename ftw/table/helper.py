@@ -30,5 +30,6 @@ def linked(item, value):
         url_method = item.getURL
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
-    link = '<a href="%s">%s</a>' % (url_method(), value) 
+    img = '<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
+    link = '<a href="%s">%s%s</a>' % (url_method(), img, value) 
     return link

@@ -1,18 +1,29 @@
-<table tal:attributes="class view/css_mapping/table">
-    <thead>
-        <tr>
-            <tal:th tal:repeat="th view/columns">
-                <th tal:content="python: th[0]" 
-                    tal:attributes="id python:view.css_mapping['th_prefix']+th[1];
-                                    class python:view.sortable_class(th[1])"/>
-            </tal:th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr tal:repeat="content view/contents">
-            <td tal:repeat="col view/columns">
-                <tal:td replace="structure python: view.get_value(content, col)" />
-            </td>
-        </tr>
-    </tbody>
-</table>
+<tal:block tal:define="results view/contents;
+                   Batch python:modules['Products.CMFPlone'].Batch;
+                   b_size python:30;
+                   b_start python:0;
+                   b_start request/b_start | b_start;
+                   batch python:Batch(results, 
+                                                         b_size, 
+                                                         int(b_start),
+                                                         orphan=1);
+                   ">
+    <table tal:attributes="class view/css_mapping/table">
+        <thead>
+            <tr>
+                <tal:th tal:repeat="th view/columns">
+                    <th tal:content="python: th[0]" 
+                        tal:attributes="id python:view.css_mapping['th_prefix']+th[1];
+                                        class python:view.sortable_class(th[1])"/>
+                </tal:th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr tal:repeat="content batch">
+                <td tal:repeat="col view/columns">
+                    <tal:td replace="structure python: view.get_value(content, col)" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</tal:block>

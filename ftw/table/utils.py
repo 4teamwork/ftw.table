@@ -89,5 +89,3 @@ class TableGenerator(object):
                     attr = index = column[0]
                     callback = column[1]
         return attr, index, callback
-                
-         
