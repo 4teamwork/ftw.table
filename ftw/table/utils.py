@@ -15,7 +15,7 @@ class TableGenerator(object):
                    'sortable': 'sortable', 
                    'sort-selected': 'sort-selected',
                    'sort-asc': 'sort-asc',
-                   'sort-desc': 'sort-desc',
+                   'sort-reverse': 'sort-reverse',
                    'th_prefix': 'header-'
                    }
     
@@ -25,7 +25,7 @@ class TableGenerator(object):
      	site = hooks.getSite()
      	return site.REQUEST
     
-    def generate(self, contents, columns, sortable=False, selected=(None,None), css_mapping={}):
+    def generate(self, contents, columns, sortable=False, selected=(None,None), css_mapping={}, template=None):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
@@ -33,15 +33,18 @@ class TableGenerator(object):
         css = self._css_mapping.copy()
         css.update(css_mapping)
         self.css_mapping = css
+        #if template is not None:
+        #    #XXX dirty
+        #    return template(**self.__dict__)
         return self.template()
 
     def get_value(self, content, column):
         attr, index, callback = column
         value = u''
-        if hasattr(content, index):
-            value = getattr(content, index)
-        elif content.has_key(index):
-            value = content[index]
+        if hasattr(content, attr):
+            value = getattr(content, attr)
+        elif content.has_key(attr):
+            value = content[attr]
         return callback(content, value)
 
     def sortable_class(self, attr):
@@ -88,4 +91,6 @@ class TableGenerator(object):
                 elif callable(column[1]):
                     attr = index = column[0]
                     callback = column[1]
+            elif len(column) == 3:
+                attr, index, callback = column
         return attr, index, callback

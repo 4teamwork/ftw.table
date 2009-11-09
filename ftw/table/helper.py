@@ -1,8 +1,11 @@
 from DateTime import DateTime
 from datetime import datetime, timedelta 
 
-def uid_checkbox(item, value):
-    return '<input type="checkbox" name="uids:list" value="%s" />' % item.UID
+def draggable(item, value):
+    return '<span id="draggable-%s" class="draggable">::</span>' % item.id
+
+def path_checkbox(item, value):
+    return '<input type="checkbox" class="noborder" name="paths:list" id="%s" value="%s" alt="Select %s" title="Select %s">' % (item.id, item.getPath(),  item.Title, item.Title)
 
 def readable_size(item, num):
     for x in ['bytes','KB','MB','GB','TB']:
@@ -30,6 +33,7 @@ def linked(item, value):
         url_method = item.getURL
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
-    img = '<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
-    link = '<a href="%s">%s%s</a>' % (url_method(), img, value) 
-    return link
+    img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
+    link = u'<a href="%s">%s%s</a>' % (url_method(), img, value) 
+    wrapper = u'<span class="linkWrapper">%s</span>' % link
+    return wrapper
