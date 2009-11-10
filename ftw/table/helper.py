@@ -21,9 +21,9 @@ def readable_date(item, date):
     yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
     strftimestring = '%d.%m.%Y %H:%M'
     if date.strftime('%Y%m%d') == today:
-        strftimestring = "%s, %%H:%%M" % 'today' #XXX i18n not working atm
+        strftimestring = "%s, %%H:%%M" % 'heute' #XXX i18n not working atm
     elif date.strftime('%Y%m%d') == yesterday:
-        strftimestring = "%s, %%H:%%M" % 'yesterday' #XXX i18n not working atm
+        strftimestring = "%s, %%H:%%M" % 'gestern' #XXX i18n not working atm
     return date.strftime(strftimestring)
     
 def linked(item, value):
