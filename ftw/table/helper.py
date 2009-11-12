@@ -1,5 +1,6 @@
 from DateTime import DateTime
 from datetime import datetime, timedelta 
+from plone.memoize import ram
 
 def draggable(item, value):
     return '<span id="draggable-%s" class="draggable">::</span>' % item.id
@@ -13,8 +14,14 @@ def readable_size(item, num):
             return "%3.1f%s" % (num, x)
         num /= 1024.0
 
+@ram.cache(lambda m,i,author: author)
 def readable_author(item, author):
-    return author
+    #TODO: terribly inefficient. Make some HelperCommons or something 
+    name = author
+    user = item.acl_users.getUserById(author)
+    if user is not None:
+        name = user.getProperty('fullname', author)
+    return '<a href="%s/author/%s">%s</a>' % (item.portal_url(), author, name)
 
 def readable_date(item, date):
     today = datetime.today().strftime('%Y%m%d')
