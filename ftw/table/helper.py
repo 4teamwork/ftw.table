@@ -29,6 +29,8 @@ def readable_date(item, date):
     today = datetime.today().strftime('%Y%m%d')
     yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
     strftimestring = '%d.%m.%Y %H:%M'
+    if date == None:
+        return None
     if date.strftime('%Y%m%d') == today:
         strftimestring = "%s, %%H:%%M" % 'heute' #XXX i18n not working atm
     elif date.strftime('%Y%m%d') == yesterday:
