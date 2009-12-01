@@ -1,6 +1,6 @@
-from DateTime import DateTime
-from datetime import datetime, timedelta 
+from datetime import datetime, timedelta
 from plone.memoize import ram
+from zope.i18nmessageid import MessageFactory
 
 def draggable(item, value):
     return '<span id="draggable-%s" class="draggable">::</span>' % item.id
@@ -48,3 +48,11 @@ def linked(item, value):
     link = u'<a href="%s">%s%s</a>' % (url_method(), img, value) 
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
+    
+def translated_string(domain='plone'):
+    factory = MessageFactory(domain)
+    def translate(item, value):
+        if not isinstance(value, unicode):
+            value = value.decode('utf8')
+        return factory(value)
+    return translate
