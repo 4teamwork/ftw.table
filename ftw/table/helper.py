@@ -25,7 +25,7 @@ def readable_author(item, author):
             name = author
     return '<a href="%s/author/%s">%s</a>' % (item.portal_url(), author, name)
 
-def readable_date(item, date):
+def readable_date_time(item, date):
     today = datetime.today().strftime('%Y%m%d')
     yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
     strftimestring = '%d.%m.%Y %H:%M'
@@ -35,6 +35,19 @@ def readable_date(item, date):
         strftimestring = "%s, %%H:%%M" % 'heute' #XXX i18n not working atm
     elif date.strftime('%Y%m%d') == yesterday:
         strftimestring = "%s, %%H:%%M" % 'gestern' #XXX i18n not working atm
+    return date.strftime(strftimestring)
+
+
+def readable_date(item, date):
+    today = datetime.today().strftime('%Y%m%d')
+    yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
+    strftimestring = '%d.%m.%Y'
+    if date == None:
+        return None
+    if date.strftime('%Y%m%d') == today:
+        strftimestring = 'heute' #XXX i18n not working atm
+    elif date.strftime('%Y%m%d') == yesterday:
+        strftimestring = 'gestern' #XXX i18n not working atm
     return date.strftime(strftimestring)
     
 def linked(item, value):
