@@ -25,7 +25,7 @@ def readable_author(item, author):
             name = author
     return '<a href="%s/author/%s">%s</a>' % (item.portal_url(), author, name)
 
-def readable_date_time(item, date):
+def readable_date_time_text(item, date):
     today = datetime.today().strftime('%Y%m%d')
     yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
     strftimestring = '%d.%m.%Y %H:%M'
@@ -37,8 +37,13 @@ def readable_date_time(item, date):
         strftimestring = "%s, %%H:%%M" % 'gestern' #XXX i18n not working atm
     return date.strftime(strftimestring)
 
+def readable_date_time(item, date):
+    strftimestring = '%d.%m.%Y %H:%M'
+    if date == None:
+        return None
+    return date.strftime(strftimestring)
 
-def readable_date(item, date):
+def readable_date_text(item, date):
     today = datetime.today().strftime('%Y%m%d')
     yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
     strftimestring = '%d.%m.%Y'
@@ -49,7 +54,13 @@ def readable_date(item, date):
     elif date.strftime('%Y%m%d') == yesterday:
         strftimestring = 'gestern' #XXX i18n not working atm
     return date.strftime(strftimestring)
-    
+
+def readable_date(item, date):
+    strftimestring = '%d.%m.%Y'
+    if date == None:
+        return None
+    return date.strftime(strftimestring)
+
 def linked(item, value):
     url_method = lambda: '#'
     #item = hasattr(item, 'aq_explicit') and item.aq_explicit or item
