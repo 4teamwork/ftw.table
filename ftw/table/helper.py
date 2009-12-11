@@ -16,7 +16,9 @@ def readable_size(item, num):
 
 @ram.cache(lambda m,i,author: author)
 def readable_author(item, author):
-    #TODO: terribly inefficient. Make some HelperCommons or something 
+    #TODO: terribly inefficient. Make some HelperCommons or something
+    if author == None:
+        return '-'
     name = author
     user = item.acl_users.getUserById(author)
     if user is not None:
