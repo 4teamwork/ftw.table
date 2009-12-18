@@ -83,7 +83,7 @@ class TableGenerator(object):
             attr = index = column
         elif isinstance(column, (list, tuple)):
             if len(column) == 1:
-                attr = index = column
+                attr = index = column[0]
             elif len(column) == 2:
                 if isinstance(column[1], basestring):
                     attr = column[0]
