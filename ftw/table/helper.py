@@ -75,7 +75,7 @@ def linked(item, value):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
     img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
-    link = u'<a href="%s">%s%s</a>' % (url_method(), img, value) 
+    link = u'<a class="rollover-breadcrumb" href="%s" title="%s">%s%s</a>' % (url_method()," &gt; ".join(i['Title'] for i in item.breadcrumb_titles), img, value) 
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
     
