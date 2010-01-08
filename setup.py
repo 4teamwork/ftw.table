@@ -2,11 +2,14 @@ from setuptools import setup, find_packages
 import os
 
 version = '0.1'
+version = open('ftw/table/version.txt').read().strip()
+maintainer = 'Victor baumann'
 
 setup(name='ftw.table',
       version=version,
-      description="Generates HTML-Tables",
-      long_description=open("README.txt").read() + "\n" +
+      description="Generates HTML-Tables" + \
+          ' (Maintainer %s)' % maintainer,
+      long_description=open("README.txt").read() + "\n" + \
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
@@ -14,10 +17,10 @@ setup(name='ftw.table',
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='',
-      author='Victor Baumann',
-      author_email='v.baumann@4teamwork.ch',
-      url='',
-      license='GPL',
+      author='%s, 4teamwork GmbH' % maintainer,
+      author_email='mailto:info@4teamwork.ch',
+      url='http://psc.4teamwork.ch/4teamwork/ftw/ftw.table',
+      license='GPL2',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['ftw'],
       include_package_data=True,
@@ -28,5 +31,7 @@ setup(name='ftw.table',
       ],
       entry_points="""
       # -*- Entry points: -*-
+      [z3c.autoinclude.plugin]
+      target = opengever
       """,
       )
