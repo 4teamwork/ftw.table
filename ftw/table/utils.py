@@ -16,7 +16,7 @@ class TableGenerator(object):
                    'sort-selected': 'sort-selected',
                    'sort-asc': 'sort-asc',
                    'sort-reverse': 'sort-reverse',
-                   'th_prefix': 'header-'
+                   'th_prefix': 'header'
                    }
     
     context = None
@@ -39,13 +39,16 @@ class TableGenerator(object):
         return self.template()
 
     def get_value(self, content, column):
-        attr, index, callback = column
+        attr = column['attr']
+        sort_index = column['sort_index']
+        transform = column['transform']
+        
         value = u''
         if hasattr(content, attr):
             value = getattr(content, attr)
         elif content.has_key(attr):
             value = content[attr]
-        return callback(content, value)
+        return transform(content, value)
 
     def sortable_class(self, attr):
         class_ = []
@@ -64,6 +67,19 @@ class TableGenerator(object):
             return ' '.join(class_)
         return None
 
+    def get_thid(self, column):
+        id_ = None
+        attr = column['attr']
+        if len(attr):
+            id_ = attr
+        elif column.has_key('transform'):
+            name = column['transform'].__name__
+            if name != '<lambda>':
+                id_ = name
+        if id_ is not None:
+            return '%s-%s' % (self.css_mapping['th_prefix'], id_)
+        return id_
+
     def process_columns(self, columns):
         processed_columns = []
         if isinstance(columns, (list, tuple)):
@@ -77,20 +93,31 @@ class TableGenerator(object):
         return processed_columns
                         
     def process_column(self, column):
-        attr = index = u""
-        callback = lambda x, y: y
+        attr = sort_index = title = u""
+        transform = lambda x, y: y
         if isinstance(column, basestring):
-            attr = index = column
+            attr = sort_index = column
         elif isinstance(column, (list, tuple)):
             if len(column) == 1:
-                attr = index = column[0]
+                attr = sort_index = column[0]
             elif len(column) == 2:
                 if isinstance(column[1], basestring):
                     attr = column[0]
-                    index = column[1]
+                    sort_index = column[1]
                 elif callable(column[1]):
-                    attr = index = column[0]
-                    callback = column[1]
+                    attr = sort_index = column[0]
+                    transform = column[1]
             elif len(column) == 3:
-                attr, index, callback = column
-        return attr, index, callback
+                attr, sort_index, transform = column
+        elif isinstance(column, dict):
+            attr = column.get('column', attr)
+            title = column.get('column_title', title)
+            sort_index = column.get('sort_index', sort_index)
+            transform = column.get('transform', transform)
+            
+            
+        title = len(title) and title or attr
+        sort_index = len(sort_index) and sort_index or attr
+        
+        #return attr, sort_index, transform        
+        return {'attr':attr, 'title':title , 'sort_index':sort_index, 'transform': transform}

@@ -2,13 +2,13 @@
     <thead>
         <colgroup>
             <col tal:repeat="th view/columns" 
-                 tal:attributes="class python:len(th[1]) and 'col-'+th[1] or 'col'" />
+                 tal:attributes="class python:len(th['sort_index']) and 'col-'+th['sort_index'] or 'col'" />
         </colgroup>
         <tr>
             <tal:th tal:repeat="th view/columns">
-                <th tal:attributes="id python:view.css_mapping['th_prefix']+th[1];
-                                    class python:view.sortable_class(th[1])">
-                    <span i18n:translate="" tal:content="python: th[0]" /> 
+                <th tal:attributes="id python:view.get_thid(th);
+                                    class python:view.sortable_class(th['sort_index'])">
+                    <span i18n:translate="" tal:content="python: th['attr']" tal:condition="th/attr"/> 
                 </th>
             </tal:th>
         </tr>

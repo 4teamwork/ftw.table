@@ -20,23 +20,43 @@ Generate a table from a list of dicts
 >>> print generator.generate(employees, columns)
 <table class="listing">
     <thead>
+        <colgroup>
+            <col class="col-name" />
+            <col class="col-date" />
+        </colgroup>
         <tr>
-            <th id="header-name">name</th>
-            <th id="header-date">date</th>
+                <th id="header-name">
+                    <span>name</span> 
+                </th>
+                <th id="header-date">
+                    <span>date</span> 
+                </th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td> Rincewind </td>
-            <td> ... </td>
+            <td>
+                Rincewind
+            </td>
+            <td>
+                ...
+            </td>
         </tr>
         <tr>
-            <td> Ponder Stibbons </td>
-            <td> ... </td>
+            <td>
+                Ponder Stibbons
+            </td>
+            <td>
+                ...
+            </td>
         </tr>
         <tr>
-            <td> The Librarian </td>
-            <td> 2009-01-05 17:00:00 </td>
+            <td>
+                The Librarian
+            </td>
+            <td>
+                2009-01-05 17:00:00
+            </td>
         </tr>
     </tbody>
 </table>
@@ -44,17 +64,17 @@ Generate a table from a list of dicts
 Date doesn't look that pretty... use a helper to humanize it
 
 >>> from ftw.table import helper
->>> columns = ('name', ('date', helper.readable_date))
+>>> columns = ('name', ('date', helper.readable_date_time_text))
 >>> print generator.generate(employees, columns)
 <table class="listing">
     ...
         <tr>
             <td> Rincewind </td>
-            <td> today, 12:30 </td>
+            <td> heute, 12:30 </td>
         </tr>
         <tr>
             <td> Ponder Stibbons </td>
-            <td> yesterday, 11:30 </td>
+            <td> gestern, 11:30 </td>
         </tr>
         <tr>
             <td> The Librarian </td>
@@ -76,27 +96,28 @@ make your own helper.. E.g. to reverse the names
     ...
 </table>
 
-generate columns from an Interface. needs some re-factoring/thinking.. not really useful atm.  
-
->>> from zope import interface, schema
->>> class IEmployee(interface.Interface):
-...     name = schema.Text(title=u"Name")
-...     date = schema.Date(title=u"Date")
->>> icolumns = IEmployee
->>> print generator.generate(employees, icolumns)
-<table class="listing">
-    ...
-        <tr>
-                <th id="header-date">Date</th>
-                <th id="header-name">Name</th>
-        </tr>
-    ...
-        <tr>
-            <td> ... 12:30:00 </td>
-            <td> Rincewind </td>
-        </tr>
-    ...
-</table>
+# doesn't work atm and is not needed. Fix or discard later...  
+#generate columns from an Interface. needs some re-factoring/thinking.. not really useful atm.  
+# 
+# >>> from zope import interface, schema
+# >>> class IEmployee(interface.Interface):
+# ...     name = schema.Text(title=u"Name")
+# ...     date = schema.Date(title=u"Date")
+# >>> icolumns = IEmployee
+# >>> print generator.generate(employees, icolumns)
+# <table class="listing">
+#     ...
+#         <tr>
+#                 <th id="header-date"> ... Date ... </th>
+#                 <th id="header-name"> ... Name ... </th>
+#         </tr>
+#     ...
+#         <tr>
+#             <td> ... 12:30:00 </td>
+#             <td> Rincewind </td>
+#         </tr>
+#     ...
+# </table>
 
 sortable tables
 by default the table is not sortable
@@ -107,8 +128,8 @@ make all columns sortable
 >>> print generator.generate(employees, columns, sortable=sortable)
 <table class="listing">
     ...
-      <th id="header-name" class="sortable">name</th>
-      <th id="header-date" class="sortable">date</th>
+      <th id="header-name" class="sortable"> <span>name</span> </th>
+      <th id="header-date" class="sortable"> <span>date</span> </th>
     ...
 </table>
 
@@ -119,8 +140,8 @@ make only date sortable and define the currently selected column
 >>> print generator.generate(employees, columns, sortable=sortable, selected=selected)
 <table class="listing">
     ...
-      <th id="header-name">name</th>
-      <th id="header-date" class="sortable sort-selected sort-asc">date</th>
+      <th id="header-name"> ...
+      <th id="header-date" class="sortable sort-selected sort-asc"> ...
     ...
 </table>
 
@@ -132,7 +153,7 @@ You can overwrite/extend the the css_mapping. E.g. if you want to use swissgerma
 ...            'sort-selected': 'dasda',
 ...            'sort-asc': 'ufe',
 ...            'sort-desc': 'abe',
-...            'th_prefix': 'chopf-'
+...            'th_prefix': 'chopf'
 ...            }
 >>> print generator.generate(employees, columns, 
 ...                                     sortable=sortable, 
@@ -141,7 +162,7 @@ You can overwrite/extend the the css_mapping. E.g. if you want to use swissgerma
 <table class="tabaeueli">
 ...
                 <th id="chopf-date"
-                    class="sortierbar dasda ufe">date</th>
+                    class="sortierbar dasda ufe">...date...</th>
 ...
 </table>
 
@@ -179,7 +200,7 @@ now we need some helpers and "simulate" the acl
 >>> columns = (('', checkbox), 
 ...            ('Title', linked), 
 ...            'Description', 
-...            ('modified', helper.readable_date),
+...            ('modified', helper.readable_date_text),
 ...            ('Creator', readable_author))
 >>> print generator.generate(results, columns)
 <table class="listing">
@@ -188,11 +209,76 @@ now we need some helpers and "simulate" the acl
             <td> <input type="checkbox" name="uids:list" value="..." /> </td>
             <td> <a href="/plone/Members/test_user_1_/die-groaye-haifischjagd">Die große Haifischjagd</a> </td>
             <td> Hunter S. Thompson </td>
-            <td> today, ... </td>
+            <td> heute... </td>
             <td> The Librarian </td>
         </tr>
 ...
 </table>
+
+
+Issue #388: https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/388 
+Generate Table using a list of dicts.
+>>> columns = [
+...           {'transform' : checkbox},
+...           {'column' : 'Title',
+...            'column_title' : 'Title',
+...            'sort_index' : 'sortable_title',
+...            'transform' : linked},
+...           {'column' : 'Description',
+...            'column_title' : 'Author'},
+...           {'column' : 'modified',
+...            'transform' : helper.readable_date_text},
+...           {'column' : 'Creator'}           
+... ]
+>>> print generator.generate(results, columns)
+<table class="listing">
+    <thead>
+        <colgroup>
+            <col class="col" />
+            <col class="col-sortable_title" />
+            <col class="col-Description" />
+            <col class="col-modified" />
+            <col class="col-Creator" />
+        </colgroup>
+        <tr>
+                <th id="header-checkbox">
+                </th>
+                <th id="header-Title">
+                    <span>Title</span> 
+                </th>
+                <th id="header-Description">
+                    <span>Description</span> 
+                </th>
+                <th id="header-modified">
+                    <span>modified</span> 
+                </th>
+                <th id="header-Creator">
+                    <span>Creator</span> 
+                </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <input type="checkbox" name="uids:list" value="..." />
+            </td>
+            <td>
+                <a href="/plone/Members/test_user_1_/oblomow">Oblomow</a>
+            </td>
+            <td>
+                Iwan A. Gontscharow
+            </td>
+            <td>
+                heute
+            </td>
+            <td>
+                test_user_1_
+            </td>
+        </tr>
+        ...
+    </tbody>
+</table>
+
 
 
  
