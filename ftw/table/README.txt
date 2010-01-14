@@ -247,7 +247,7 @@ Generate Table using a list of dicts.
                     <span>Title</span> 
                 </th>
                 <th id="header-Description">
-                    <span>Description</span> 
+                    <span>Author</span> 
                 </th>
                 <th id="header-modified">
                     <span>modified</span> 
@@ -277,6 +277,36 @@ Generate Table using a list of dicts.
         </tr>
         ...
     </tbody>
+</table>
+
+test list and dicts mixed up
+
+>>> columns = [
+...           ('Title', 'sortable_title', linked),
+...           {'column' : 'Title',
+...            'column_title' : 'Title',
+...            'sort_index' : 'sortable_title',
+...            'transform' : linked},]
+>>> print generator.generate(results, columns)
+<table class="listing">
+    ...
+        <col class="col-sortable_title" />
+        <col class="col-sortable_title" />
+    ...
+        <th id="header-Title">
+            <span>Title</span> 
+        </th>
+        <th id="header-Title">
+            <span>Title</span> 
+        </th>
+    ...   
+        <td>
+            <a href="/plone/Members/test_user_1_/silence">Silence</a>
+        </td>
+        <td>
+            <a href="/plone/Members/test_user_1_/silence">Silence</a>
+        </td>
+    ...
 </table>
 
 
