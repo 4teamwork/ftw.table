@@ -69,7 +69,7 @@ class TableGenerator(object):
 
     def get_thid(self, column):
         id_ = None
-        attr = column['attr']
+        attr = column['sort_index']
         if len(attr):
             id_ = attr
         elif column.has_key('transform'):

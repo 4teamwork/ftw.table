@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from plone.memoize import ram
 from zope.i18nmessageid import MessageFactory
 
+
 def draggable(item, value):
     return '<span id="draggable-%s" class="draggable">::</span>' % item.id
 

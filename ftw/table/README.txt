@@ -243,7 +243,7 @@ Generate Table using a list of dicts.
         <tr>
                 <th id="header-checkbox">
                 </th>
-                <th id="header-Title">
+                <th id="header-sortable_title">
                     <span>Title</span> 
                 </th>
                 <th id="header-Description">
@@ -293,10 +293,10 @@ test list and dicts mixed up
         <col class="col-sortable_title" />
         <col class="col-sortable_title" />
     ...
-        <th id="header-Title">
+        <th id="header-sortable_title">
             <span>Title</span> 
         </th>
-        <th id="header-Title">
+        <th id="header-sortable_title">
             <span>Title</span> 
         </th>
     ...   
