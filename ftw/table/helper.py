@@ -63,6 +63,8 @@ def readable_date_text(item, date):
     return date.strftime(strftimestring)
 
 def readable_date(item, date):
+    if not date:
+        return u''
     strftimestring = '%d.%m.%Y'
     if date == None:
         return None
