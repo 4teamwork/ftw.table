@@ -80,6 +80,18 @@ def linked(item, value):
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 
+def solr_linked(item, value):
+    url_method = lambda: '#'
+    #item = hasattr(item, 'aq_explicit') and item.aq_explicit or item
+    if hasattr(item, 'getURL'):
+        url_method = item.getURL
+    elif hasattr(item, 'absolute_url'):
+        url_method = item.absolute_url
+    img = u'<img src="%s"/>' % (item.getIcon)
+    link = u'<a href="%s" >%s%s</a>' % (url_method(), img, value) 
+    wrapper = u'<span class="linkWrapper">%s</span>' % link
+    return wrapper
+
 
 def solr_linked(item, value):
     url_method = lambda: '#'
