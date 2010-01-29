@@ -80,7 +80,7 @@ def linked(item, value):
     img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
     link = u'<a href="%s">%s%s</a>' % (url_method(), img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
-
+    return wrapper
 
 def solr_linked(item, value):
     url_method = lambda: '#'
