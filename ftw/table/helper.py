@@ -78,7 +78,7 @@ def linked(item, value):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
     img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
-    link = u'<a href="%s">%s%s</a>' % (url_method(), img, value)
+    link = u'<a href="%s">%s%s</a>' % (url_method(), img, value.decode('utf8'))
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 
