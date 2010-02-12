@@ -25,18 +25,24 @@ class TableGenerator(object):
      	site = hooks.getSite()
      	return site.REQUEST
     
-    def generate(self, contents, columns, sortable=False, selected=(None,None), css_mapping={}, template=None):
+    def generate(self, contents, columns, sortable=False, selected=(None,None), css_mapping={}, template=None, auto_count=None):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
         self.contents = contents
+        self.auto_count = auto_count
+
+        # XXX 
+        # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
+        if template is not None:
+            self.template = ViewPageTemplateFile(template.filename)
         css = self._css_mapping.copy()
         css.update(css_mapping)
         self.css_mapping = css
         #if template is not None:
         #    #XXX dirty
         #    return template(**self.__dict__)
-        return self.template()
+        return self.template(self)
 
     def get_value(self, content, column):
         attr = column['attr']
@@ -114,10 +120,11 @@ class TableGenerator(object):
             title = column.get('column_title', title)
             sort_index = column.get('sort_index', sort_index)
             transform = column.get('transform', transform)
-            
-            
+
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
         
         #return attr, sort_index, transform        
         return {'attr':attr, 'title':title , 'sort_index':sort_index, 'transform': transform}
+    
+        
