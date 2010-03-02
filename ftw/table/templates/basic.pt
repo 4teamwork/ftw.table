@@ -1,4 +1,4 @@
-<table tal:attributes="class view/css_mapping/table" i18n:domain="opengever.tabbedview">
+<table tal:attributes="class view/css_mapping/table" i18n:domain="ftw.tabbedview">
     <thead>
         <colgroup>
             <col tal:repeat="th view/columns" 
