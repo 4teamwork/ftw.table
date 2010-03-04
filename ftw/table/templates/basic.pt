@@ -1,9 +1,9 @@
 <table tal:attributes="class view/css_mapping/table" i18n:domain="ftw.tabbedview">
+    <colgroup>
+        <col tal:repeat="th view/columns" 
+             tal:attributes="class python:len(th['sort_index']) and 'col-'+th['sort_index'] or 'col'" />
+    </colgroup>
     <thead>
-        <colgroup>
-            <col tal:repeat="th view/columns" 
-                 tal:attributes="class python:len(th['sort_index']) and 'col-'+th['sort_index'] or 'col'" />
-        </colgroup>
         <tr>
             <tal:th tal:repeat="th view/columns">
                 <th tal:attributes="id python:view.get_thid(th);
