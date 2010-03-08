@@ -4,8 +4,8 @@ Changelog
 
 1.0a4
 -----
-* Issue #55 tabbed_view für ftw_Timesheet erstellen
-  https://extranet.4teamwork.ch/intranet/10-interne-projekte/teamraum/teamraum-3/tracker-teamraum3/55?searchterm=55+tabbed
+* Issue #55 tabbed_view for ftw_Timesheet erstellen
+  https://extranet.4teamwork.ch/intranet/10-interne-projekte/teamraum/teamraum-3/tracker-teamraum3/55
   changed TableGenerator to use without the standard listing template and use a specific template
 
 1.0a3
