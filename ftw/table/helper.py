@@ -1,8 +1,6 @@
 from datetime import datetime, timedelta
 from plone.memoize import ram
 from zope.i18nmessageid import MessageFactory
-from opengever.globalsolr.utils import getFlairUrl
-from collective.solr.interfaces import IFlare
 
 
 def draggable(item, value):
@@ -83,21 +81,6 @@ def linked(item, value):
     link = u'<a href="%s">%s%s</a>' % (url_method(), img, value.decode('utf8'))
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
-
-def solr_linked(item, value):
-    url = '#'
-    #item = hasattr(item, 'aq_explicit') and item.aq_explicit or item
-    if IFlare.providedBy(item):
-        url = getFlairUrl(item)
-    elif hasattr(item, 'getURL'):
-        url = item.getURL()
-    elif hasattr(item, 'absolute_url'):
-        url = item.absolute_url()
-    img = u'<img src="%s"/>' % (item.getIcon)
-    link = u'<a href="%s" >%s%s</a>' % (url, img, value)
-    wrapper = u'<span class="linkWrapper">%s</span>' % link
-    return wrapper
-
 
 
 def translated_string(domain='plone'):
