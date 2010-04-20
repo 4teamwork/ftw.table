@@ -82,7 +82,18 @@ def linked(item, value):
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 
-
+def quick_preview(item, value):
+    url_method = lambda: '#'
+    #item = hasattr(item, 'aq_explicit') and item.aq_explicit or item
+    if hasattr(item, 'getURL'):
+        url_method = item.getURL
+    elif hasattr(item, 'absolute_url'):
+        url_method = item.absolute_url
+    img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
+    link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (url_method(), img, value.decode('utf8'))
+    wrapper = u'<span class="linkWrapper">%s</span>' % link
+    return wrapper
+    
 def translated_string(domain='plone'):
     factory = MessageFactory(domain)
     def translate(item, value):
