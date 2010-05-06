@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+1.0a6
+-----
+
+
 1.0a5
 -----
 * #22 Verbesserungen Poi tabbed_view: added quick_preview helper
