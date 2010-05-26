@@ -78,7 +78,11 @@ def linked(item, value):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
     img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
-    link = u'<a href="%s">%s%s</a>' % (url_method(), img, value.decode('utf8'))
+    
+    # Replace < and > with html entities, because the title becomes include with structure
+    value = value.decode('utf8').replace('<', '&lt;').replace('<', '&gt;').replace('&', '&amp;')
+    
+    link = u'<a href="%s">%s%s</a>' % (url_method(), img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 
@@ -90,7 +94,11 @@ def quick_preview(item, value):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
     img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
-    link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (url_method(), img, value.decode('utf8'))
+
+    # Replace < and > with html entities, because the title becomes include with structure
+    value = value.decode('utf8').replace('<', '&lt;').replace('<', '&gt;').replace('&', '&amp;')
+    
+    link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (url_method(), img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
     

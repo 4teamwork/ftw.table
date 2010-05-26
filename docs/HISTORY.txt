@@ -4,7 +4,10 @@ Changelog
 
 1.0a6
 -----
-
+* Issue #28 POI: Wenn im Titel ein HTML Tag vorkommt (z.B. <pre>) dann funktioniert die Auflistung im Tabbed View nicht mehr 
+  https://extranet.4teamwork.ch/intranet/10-interne-projekte/ftwprodukte/tracker-ftw-produkte/28/
+  added htmlentities replacing in the linked and quick_preview helper
+  [26.05.2010, phgross]
 
 1.0a5
 -----
