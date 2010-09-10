@@ -1,6 +1,9 @@
+from Products.CMFCore.utils import getToolByName
 from datetime import datetime, timedelta
 from plone.memoize import ram
+from zope.app.component.hooks import getSite
 from zope.i18nmessageid import MessageFactory
+import os.path
 
 
 def draggable(item, value):
@@ -70,21 +73,40 @@ def readable_date(item, date):
         return None
     return date.strftime(strftimestring)
 
-def linked(item, value):
+def linked(item, value, show_icon=True):
     url_method = lambda: '#'
     #item = hasattr(item, 'aq_explicit') and item.aq_explicit or item
     if hasattr(item, 'getURL'):
         url_method = item.getURL
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
-    img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
-    
-    # Replace < and > with html entities, because the title becomes include with structure
-    value = value.decode('utf8').replace('<', '&lt;').replace('<', '&gt;').replace('&', '&amp;')
-    
-    link = u'<a href="%s">%s%s</a>' % (url_method(), img, value)
+
+    if show_icon:
+        img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
+    else:
+        img = u''
+
+    # Replace < and > with html entities, because the title becomes
+    # include with structure
+    value = value.decode('utf8').replace(
+        '<', '&lt;').replace('<', '&gt;').replace('&', '&amp;')
+
+    href = url_method()
+
+    # do we need to add /view ?
+    if hasattr(item, 'portal_type'):
+        props = getToolByName(getSite(), 'portal_properties')
+        types_using_view = props.get('site_properties').getProperty(
+            'typesUseViewActionInListings')
+        if item.portal_type in types_using_view:
+            href = os.path.join(href, 'view')
+
+    link = u'<a href="%s">%s%s</a>' % (href, img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
+
+def linked_without_icon(item, value):
+    return linked(item, value, show_icon=False)
 
 def quick_preview(item, value):
     url_method = lambda: '#'
@@ -97,11 +119,11 @@ def quick_preview(item, value):
 
     # Replace < and > with html entities, because the title becomes include with structure
     value = value.decode('utf8').replace('<', '&lt;').replace('<', '&gt;').replace('&', '&amp;')
-    
+
     link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (url_method(), img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
-    
+
 def translated_string(domain='plone'):
     factory = MessageFactory(domain)
     def translate(item, value):
