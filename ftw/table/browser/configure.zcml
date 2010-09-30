@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="ftw.table">
+
+    <browser:resource
+        name="jquery.ftwtable.js"
+        file="jquery.ftwtable.js" />
+        
+    <browser:resource
+        name="ftwtable.extjs.js"
+        file="ftwtable.extjs.js" />
+        
+</configure>

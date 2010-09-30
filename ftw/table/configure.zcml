@@ -6,9 +6,18 @@
     i18n_domain="ftw.table">
 
   <include package="ftw.table" />
+  <include package=".browser" />  
 
   <five:registerPackage package="." />
 
    <utility name="ftw.tablegenerator" factory=".utils.TableGenerator" provides=".interfaces.ITableGenerator"/>
+
+   <genericsetup:registerProfile
+         name="default"
+         title="ftw.table"
+         directory="profiles/default"
+         description=""
+         provides="Products.GenericSetup.interfaces.EXTENSION"
+         />
    
 </configure>
