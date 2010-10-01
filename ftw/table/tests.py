@@ -14,7 +14,7 @@ def setup_product():
     zcml.load_config('configure.zcml', ftw.table)
  
 setup_product()
-ptc.setupPloneSite(extension_profiles=['plone.app.dexterity:default',])
+ptc.setupPloneSite(extension_profiles=[])
  
 doc_tests = (
 )
