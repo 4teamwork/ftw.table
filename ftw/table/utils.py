@@ -3,6 +3,12 @@ from zope import schema
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile 
 from zope.app.component import hooks
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
+
 class TableGenerator(object):
     """ generates a html table. See README.txt for usage"""
     
@@ -31,9 +37,8 @@ class TableGenerator(object):
         self.columns = self.process_columns(columns)
         self.contents = contents
         self.auto_count = auto_count
-        
         # TODO: implement json support
-        if 1 or output == 'html':
+        if output == 'html':
             # XXX 
             # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
             if template is not None:
@@ -46,6 +51,19 @@ class TableGenerator(object):
             #    return template(**self.__dict__)
             return self.template(self)
         elif output == 'json':
+            table = dict(totalCount = len(self.contents),
+                        rows = []
+                    )
+            for content in self.contents:
+                row = {}
+                for column in self.columns:
+                    key =  (column['attr'] or 
+                            column['title'] or 
+                            column['transform'].__name__)
+                    value = self.get_value(content, column)
+                    row[key] = value
+                table['rows'].append(row)
+                return json.dumps(table)
             pass
         else:
             return 'unsupported output format'

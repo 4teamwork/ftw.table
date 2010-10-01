@@ -36,7 +36,7 @@
         },
 
         reload : function( ) {
-            $.fn.ftwtable.createTable(buildQuery());
+            $.fn.ftwtable.createTable($this, buildQuery());
         },
 
         param : function(key, value) { 
@@ -87,10 +87,11 @@
     //
     
     function onBeforeLoad(){
-        
+        return $this;
     };
     
     function onLoad(text, status, response){
+        return $this;
     };
     
     //
