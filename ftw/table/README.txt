@@ -173,7 +173,7 @@ Create some test content
 >>> generator = component.getUtility(ITableGenerator, 'ftw.tablegenerator')
 >>> books = [('Oblomow',  'Iwan A. Gontscharow'), 
 ...            ('Cuentos de amor de locura y de muerte', 'Horacio Quiroga'),
-...            ('Die große Haifischjagd', 'Hunter S. Thompson'),
+...            ('Die grosse Haifischjagd', 'Hunter S. Thompson'),
 ...            ('Visual Intelligence', 'Donald D. Hoffman'),
 ...            ('Silence','John Cage'),
 ...            ('Small Gods', 'Terry Pratchett'),
@@ -207,7 +207,7 @@ now we need some helpers and "simulate" the acl
 ...
         <tr>
             <td> <input type="checkbox" name="uids:list" value="..." /> </td>
-            <td> <a href="/plone/Members/test_user_1_/die-groaye-haifischjagd">Die große Haifischjagd</a> </td>
+            <td> <a href="/plone/Members/test_user_1_/die-grosse-haifischjagd">Die grosse Haifischjagd</a> </td>
             <td> Hunter S. Thompson </td>
             <td> heute... </td>
             <td> The Librarian </td>
