@@ -1,5 +1,3 @@
-from interfaces import ITableGenerator
-from zope.component import queryUtility
 from  zope import interface
 from zope import schema
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile 
@@ -25,24 +23,33 @@ class TableGenerator(object):
      	site = hooks.getSite()
      	return site.REQUEST
     
-    def generate(self, contents, columns, sortable=False, selected=(None,None), css_mapping={}, template=None, auto_count=None):
+    def generate(self, contents, columns, sortable=False, 
+                 selected=(None,None), css_mapping={}, 
+                 template=None, auto_count=None, output='html'):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
         self.contents = contents
         self.auto_count = auto_count
-
-        # XXX 
-        # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
-        if template is not None:
-            self.template = ViewPageTemplateFile(template.filename)
-        css = self._css_mapping.copy()
-        css.update(css_mapping)
-        self.css_mapping = css
-        #if template is not None:
-        #    #XXX dirty
-        #    return template(**self.__dict__)
-        return self.template(self)
+        
+        # TODO: implement json support
+        if 1 or output == 'html':
+            # XXX 
+            # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
+            if template is not None:
+                self.template = ViewPageTemplateFile(template.filename)
+            css = self._css_mapping.copy()
+            css.update(css_mapping)
+            self.css_mapping = css
+            #if template is not None:
+            #    #XXX dirty
+            #    return template(**self.__dict__)
+            return self.template(self)
+        elif output == 'json':
+            pass
+        else:
+            return 'unsupported output format'
+            
 
     def get_value(self, content, column):
         attr = column['attr']

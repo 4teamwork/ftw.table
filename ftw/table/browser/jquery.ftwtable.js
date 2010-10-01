@@ -13,51 +13,48 @@
     //              $(obj).ftwtable('reload')
     
     var methods = {
-       init : function( options ) { 
-                   // build main options before element iteration
-                   var opts = $.extend({}, $.fn.ftwtable.defaults, options);
-                   // iterate and reformat each matched element
-                   return this.each(function() {
-                       $this = $(this);
-                       // build element specific options
-                       $o = $.meta ? $.extend({}, opts, $this.data()) : opts;
-                       // update element styles
-                       methods.param('show', 'templates');
-                       methods.param('path', '/');
-                       $o.onBeforeLoad();
-                       methods.reload();
-                       
-                       //add events
 
-                       $('th.sortable', $this).live('click', function(e){
-                           var hid = $(e.target).parent().attr('id');
-                           methods.param('sort_on', hid);
-                           debug_box.append('<div>sort on set: '+hid+'</div>');
+        init : function( options ) { 
+            // build main options before element iteration
+            var opts = $.extend({}, $.fn.ftwtable.defaults, options);
+            // iterate and reformat each matched element
+            return this.each(function() {
+                $this = $(this);
+                // build element specific options
+                $o = $.meta ? $.extend({}, opts, $this.data()) : opts;
+                // update element styles
+                methods.param('show', 'templates');
+                methods.param('path', '/');
+                $o.onBeforeLoad();
+                methods.reload();
+               //add events
+               $('th.sortable', $this).live('click', function(e){
+                   var hid = $(e.target).parent().attr('id');
+                   methods.param('sort_on', hid);
+               });
+            });
+        },
 
-                       });
-                   });
-                },
-                
-       reload : function( ) {
-                   $.fn.ftwtable.createTable(buildQuery());
-                },
-                
-       param : function(key, value) { 
-                    if (key && value){
-                        $.jStorage.set(key, value);
-                        $this.data(key, value);
-                    }else if(key && value==undefined){
-                        var stored = $.jStorage.get(key);
-                        if (stored != null){;
-                            console.log('key ' + key + ' read from jstorage')
-                            return stored
-                        }else{
-                            return $this.data(key);   
-                        }
-                    }else{
-                        return $this.data();
-                    }
-                },
+        reload : function( ) {
+            $.fn.ftwtable.createTable(buildQuery());
+        },
+
+        param : function(key, value) { 
+            if (key && value){
+                $.jStorage.set(key, value);
+                $this.data(key, value);
+                return $this;
+            } else if (key && value==undefined){
+                var stored = $.jStorage.get(key);
+                if (stored != null){
+                    return stored;
+                } else {
+                    return $this.data(key);   
+                }
+            } else {
+                return $this.data();
+            }
+        }
      };
 
     //
@@ -67,20 +64,21 @@
     $.fn.ftwtable = function(method) {
         // Method calling logic
         if ( methods[method] ) {
-          return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+            return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
         } else if ( typeof method === 'object' || ! method ) {
-          return methods.init.apply( this, arguments );
+            return methods.init.apply( this, arguments );
         } else {
-          $.error( 'Method ' +  method + ' does not exist on jQuery.ftwtable' );
+            $.error( 'Method ' +  method + ' does not exist on jQuery.ftwtable' );
+            return null;
         }
     };
-    
+
     //
     // private methods
     //
-    
+
     function buildQuery(){
-        return  url = $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
+        return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
     }
     
     
@@ -89,11 +87,10 @@
     //
     
     function onBeforeLoad(){
-        console.info('beforeLoad');
+        
     };
     
     function onLoad(text, status, response){
-        console.info('onLoad');
     };
     
     //
@@ -104,7 +101,7 @@
         $this.load(query, function(){           
             $o.onLoad();
         });
-    }
+    };
     
     //
     // plugin defaults
@@ -118,7 +115,7 @@
         sortable: true,
         storage: false,
         onBeforeLoad: null,
-        onLoad: onLoad,
+        onLoad: onLoad
     };
 //
 // end of closure
