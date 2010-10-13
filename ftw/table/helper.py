@@ -127,6 +127,8 @@ def quick_preview(item, value):
 def translated_string(domain='plone'):
     factory = MessageFactory(domain)
     def translate(item, value):
+        if not value:
+            return value
         if not isinstance(value, unicode):
             value = value.decode('utf8')
         return factory(value)
