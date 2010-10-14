@@ -19,18 +19,22 @@ Generate a table from a list of dicts
 >>> columns = ('name', 'date')
 >>> print generator.generate(employees, columns)
 <table class="listing">
+    <colgroup>
+        <col class="col-name" />
+        <col class="col-date" />
+    </colgroup>
     <thead>
-        <colgroup>
-            <col class="col-name" />
-            <col class="col-date" />
-        </colgroup>
         <tr>
+<BLANKLINE>
                 <th id="header-name">
                     <span>name</span> 
                 </th>
+<BLANKLINE>        
+<BLANKLINE>        
                 <th id="header-date">
                     <span>date</span> 
                 </th>
+<BLANKLINE>       
         </tr>
     </thead>
     <tbody>
@@ -60,6 +64,7 @@ Generate a table from a list of dicts
         </tr>
     </tbody>
 </table>
+<BLANKLINE>
 
 Date doesn't look that pretty... use a helper to humanize it
 
@@ -232,7 +237,6 @@ Generate Table using a list of dicts.
 ... ]
 >>> print generator.generate(results, columns)
 <table class="listing">
-    <thead>
         <colgroup>
             <col class="col" />
             <col class="col-sortable_title" />
@@ -240,21 +244,33 @@ Generate Table using a list of dicts.
             <col class="col-modified" />
             <col class="col-Creator" />
         </colgroup>
+        <thead>
         <tr>
+<BLANKLINE>
                 <th id="header-checkbox">
+<BLANKLINE>
                 </th>
+<BLANKLINE>
+<BLANKLINE>
                 <th id="header-sortable_title">
                     <span>Title</span> 
                 </th>
+<BLANKLINE>
+<BLANKLINE>
                 <th id="header-Description">
                     <span>Author</span> 
                 </th>
+<BLANKLINE>
+<BLANKLINE>
                 <th id="header-modified">
                     <span>modified</span> 
                 </th>
+<BLANKLINE>
+<BLANKLINE>
                 <th id="header-Creator">
                     <span>Creator</span> 
                 </th>
+<BLANKLINE>
         </tr>
     </thead>
     <tbody>
