@@ -4,53 +4,55 @@
 (function($) {    
     
     var $this = null;
+    store = null;
+    var grid = null;
     
     $.fn.ftwtable.createTable = function(table, url){ 
         $this = table;
         
-        console.log('bfore');
         
-        var store = new Ext.data.Store({
+        store = new Ext.data.Store({
             remoteSort: true,
-            baseParams: {lightWeight:true,ext: 'js'},
+            baseParams: {lightWeight:false,ext: 'js'},
             //sortInfo: {field:'lastpost', direction:'DESC'},
-            autoLoad: {params:{start:0, limit:500}},
+            autoLoad: false,
 
             proxy: new Ext.data.HttpProxy({
                 url: url,
                 method: 'post'
             }),
 
-            reader: new Ext.data.JsonReader({
-                root: 'rows',
-                totalProperty: 'totalCount',
-                fields: [
-                    {name: 'path_radiobutton', type: 'string' },
-                    {name: 'created', type: 'string'},
-                    {name: 'Title', type: 'string'}
-                ]
-            })
+            reader: new Ext.data.JsonReader(),
+            
+            listeners: {
+                metachange : function(store, meta){
+                if (grid){
+                    grid.destroy();
+                }
+                grid = new Ext.grid.GridPanel({
+                    store: store,
+                    columns: store.reader.meta.columns,
+                    stripeRows: true,
+                    autoExpandColumn: 'Title',
+                    width: '100%',    
+                    height: 200,
+                });
+                grid.render('template_chooser');
+            }
+            }
         });
         
+        store.load();
         
-        var grid = new Ext.grid.GridPanel({
-            store: store,
-            columns: [
-                {id:'path_radiobutton',header: '', width: 30,sortable: false, dataIndex: 'path_radiobutton'},
-                {id:'Title',header: 'Title', sortable: true, dataIndex: 'Title'},
-                {id:'created',header: 'Created', width: 160, sortable: true, dataIndex: 'created'}
-            ],
-            stripeRows: true,
-            autoExpandColumn: 'Title',
-            width: '100%',    
-            height: 200
-        });
-        
-        grid.render('template_chooser');
 
         // $this.load(query, function(){           
         //     $o.onLoad();
         // });
+    };
+    
+    $.fn.ftwtable.reloadTable = function(table, query){ 
+        grid.destroy();
+        $.fn.ftwtable.createTable(table, query);
     };
 //
 // end of closure

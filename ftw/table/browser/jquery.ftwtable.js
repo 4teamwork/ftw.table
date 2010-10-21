@@ -26,17 +26,18 @@
                 methods.param('show', 'templates');
                 methods.param('path', '/');
                 $o.onBeforeLoad();
-                methods.reload();
+                //methods.reload();
+                $.fn.ftwtable.createTable($this, buildQuery());
                //add events
-               $('th.sortable', $this).live('click', function(e){
-                   var hid = $(e.target).parent().attr('id');
-                   methods.param('sort_on', hid);
-               });
+               // $('th.sortable', $this).live('click', function(e){
+               //     var hid = $(e.target).parent().attr('id');
+               //     methods.param('sort_on', hid);
+               // });
             });
         },
 
         reload : function( ) {
-            $.fn.ftwtable.createTable($this, buildQuery());
+            $.fn.ftwtable.reloadTable($this, buildQuery());
         },
 
         param : function(key, value) { 
@@ -102,6 +103,9 @@
         $this.load(query, function(){           
             $o.onLoad();
         });
+    };
+    
+    $.fn.ftwtable.reloadTable = function(query){ 
     };
     
     //

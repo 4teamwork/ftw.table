@@ -31,7 +31,7 @@ class TableGenerator(object):
     
     def generate(self, contents, columns, sortable=False, 
                  selected=(None,None), css_mapping={}, 
-                 template=None, auto_count=None, output='html'):
+                 template=None, auto_count=None, output='html', meta_data=None):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
@@ -63,8 +63,9 @@ class TableGenerator(object):
                     value = self.get_value(content, column)
                     row[key] = value
                 table['rows'].append(row)
-                return json.dumps(table)
-            pass
+            if meta_data:
+                table['metaData'] = meta_data
+            return json.dumps(table)
         else:
             return 'unsupported output format'
             
