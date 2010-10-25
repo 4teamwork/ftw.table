@@ -10,11 +10,11 @@ def draggable(item, value):
     return '<span id="draggable-%s" class="draggable">::</span>' % item.id
 
 def path_checkbox(item, value):
-    return '<input type="checkbox" class="noborder" name="paths:list" id="%s" value="%s" alt="Select %s" title="Select %s">' % (item.id, item.getPath(),  item.Title, item.Title)
+    return '<input type="checkbox" class="noborder selectable" name="paths:list" id="%s" value="%s" alt="Select %s" title="Select %s" />' % (item.id, item.getPath(),  item.Title, item.Title)
 
 def path_radiobutton(item, value):
     _marker = [object(),]
-    return '<input type="radio" class="noborder" name="paths:list" id="%s" value="%s" alt="Select %s" title="Select %s"%s>' % (item.id, item.getPath(),  item.Title, item.Title, item.REQUEST.get('paths', _marker)[0]==item.getPath() and ' checked')
+    return '<input type="radio" class="noborder selectable" name="paths:list" id="%s" value="%s" alt="Select %s" title="Select %s"%s />' % (item.id, item.getPath(),  item.Title, item.Title, item.REQUEST.get('paths', _marker)[0]==item.getPath() and ' checked')
 
 def readable_size(item, num):
     for x in ['bytes','KB','MB','GB','TB']:
