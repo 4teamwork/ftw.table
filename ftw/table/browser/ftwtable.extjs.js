@@ -35,7 +35,7 @@
                     stripeRows: true,
                     autoExpandColumn: 'Title',
                     width: '100%',    
-                    height: 200,
+                    height: 200
                 });
                 grid.render('template_chooser');
             }
