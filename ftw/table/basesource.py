@@ -71,6 +71,8 @@ class BaseTableSource(object):
         if self.config.batching_enabled and not self.lazy:
             query = self.extend_query_with_batching(query)
 
+        return query
+
     def validate_base_query(self, query):
         """Validates and fixes the base query. Returns the query object.
         It may raise e.g. a `ValueError` when something's wrong.

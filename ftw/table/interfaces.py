@@ -131,7 +131,7 @@ class ICatalogTableSourceConfig(ITableSourceConfig):
         'infinite, that means all direct or indirect children are found. If '
         'set to 1 it will only find direct children. If set to 0 it will only '
         'find the current context if it matches the other criterias.',
-        depth=-1)
+        default=-1)
 
     types = schema.List(
         title=u'Portal types filter',
@@ -166,4 +166,4 @@ class ICatalogTableSourceConfig(ITableSourceConfig):
     search_index = schema.TextLine(
         title=u'Search index',
         description=u'Search the `filter_text` in this index.',
-        default='SearchableText')
+        default=u'SearchableText')
