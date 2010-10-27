@@ -1,4 +1,5 @@
 from Products.CMFPlone.utils import getToolByName
+from copy import deepcopy
 from ftw.table.basesource import BaseTableSourceConfig, BaseTableSource
 from ftw.table.interfaces import ITableSource, ICatalogTableSourceConfig
 from zope.app.component.hooks import getSite
@@ -23,9 +24,9 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
 
     implements(ICatalogTableSourceConfig)
 
-    filter_path = None
     depth = -1
     types = []
+    object_provides = None
     search_options = {}
     custom_sort_indexes = {
             'Products.PluginIndexes.DateIndex.DateIndex': default_custom_sort}
@@ -37,12 +38,12 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
         """
 
         # get default query
-        query = self.search_options
+        query = deepcopy(self.search_options)
         if not query:
             query = {}
 
         # extend with path filter, if configured
-        if 'path' not in query and self.filter_path:
+        if 'path' not in query and getattr(self, 'filter_path', None):
             query['path'] = {'query': self.filter_path,
                              'depth': self.depth}
 
@@ -54,7 +55,7 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
         if 'object_provides' not in query and self.object_provides:
             query['object_provides'] = self.object_provides
 
-        return self.search_options
+        return query
 
 
 class CatalogTableSource(BaseTableSource):
@@ -100,12 +101,12 @@ class CatalogTableSource(BaseTableSource):
                 self.config.sort_on, None)
             if index is not None:
                 index_type = index.__module__
-                if index_type in self.custom_sort_indexes:
+                if index_type in self.config.custom_sort_indexes:
                     del query['sort_on']
                     if 'sort_order' in query:
                         del query['sort_order']
                     self._custom_sort_method = \
-                        self.custom_sort_indexes.get(index_type)
+                        self.config.custom_sort_indexes.get(index_type)
 
         return query
 
