@@ -31,12 +31,12 @@ class TableGenerator(object):
 
     def generate(self, contents, columns, sortable=False,
                  selected=(None,None), css_mapping={},
-                 template=None, auto_count=None, output='html', meta_data=None):
+                 template=None, options=None, output='html', meta_data=None):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
         self.contents = contents
-        self.auto_count = auto_count
+        self.options = options
         # TODO: implement json support
         if output == 'html':
             # XXX
