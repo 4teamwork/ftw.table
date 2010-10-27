@@ -9,19 +9,21 @@ class BaseTableSourceConfig(object):
 
     implements(ITableSourceConfig)
 
-    def initialize_config(self):
+    order_by = 'sortable_title'
+    order_reverse = False
+    filter_text = ''
+    batching_enabled = False
+    batching_pagesize = None
+    batching_current_page = 1
+    lazy = True
+
+    def update_config(self):
         """Is called before get_base_query() is called. This method is used
         for dynamically configuring / updating the attributes of the config
         object.
         """
 
-        self.order_by = 'sortable_title'
-        self.order_reverse = False
-        self.filter_text = ''
-        self.batching_enabled = False
-        self.batching_pagesize = None
-        self.batching_current_page = 1
-        self.lazy = True
+        pass
 
     def get_base_query(self):
         """Returns the base query for a specific table source type
@@ -51,7 +53,7 @@ class BaseTableSource(object):
         """
 
         # initalize config
-        self.config.initialize_config()
+        self.config.update_config()
 
         # get the base query from the config
         query = self.config.get_base_query()
