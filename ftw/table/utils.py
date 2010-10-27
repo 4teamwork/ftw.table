@@ -2,6 +2,11 @@ from  zope import interface
 from zope import schema
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile 
 from zope.app.component import hooks
+from zope.i18nmessageid.message import Message
+from zope.i18n import translate
+from column import METADATA, FIELD, COLUMN
+from copy import deepcopy
+import Missing
 
 try:
     import json
@@ -54,18 +59,54 @@ class TableGenerator(object):
             table = dict(totalCount = len(self.contents),
                         rows = []
                     )
+                    
+            if meta_data is None:
+                #create metadata for oldstyle column definition
+                meta_data = deepcopy(METADATA)
+                for column in self.columns:
+                    
+                    key =  (column['attr'] or
+                            column['title'] or
+                            column['transform'].__name__)
+
+                    field = deepcopy(FIELD)
+                    field['name'] = key
+                    col = deepcopy(COLUMN)
+                    col['dataIndex'] = key
+                    if isinstance(column['title'], Message):
+                        col['header'] = hooks.getSite().translate(column['title'], 
+                                                  column['title'].domain)
+                    else:
+                        col['header'] = column['title']
+                    col['id'] = key
+                    if not column['title']:
+                        col['menuDisabled'] = True
+                        col['width'] = 30
+                        col['hideable'] = False
+                        col['resizable'] = False
+                        col['fixed'] = True
+                    meta_data['fields'].append(field)
+                    meta_data['columns'].append(col)
+
             for content in self.contents:
                 row = {}
                 for column in self.columns:
-                    key =  (column['attr'] or 
-                            column['title'] or 
+                    key =  (column['attr'] or
+                            column['title'] or
                             column['transform'].__name__)
+                           
                     value = self.get_value(content, column)
+                    if value == Missing.Value:
+                        value = ''
                     row[key] = value
                 table['rows'].append(row)
             if meta_data:
                 table['metaData'] = meta_data
-            return json.dumps(table)
+            try:
+                jsonstr = json.dumps(table)
+            except:
+                import pdb; pdb.set_trace( )
+            return jsonstr
         else:
             return 'unsupported output format'
             

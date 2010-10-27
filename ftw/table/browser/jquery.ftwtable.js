@@ -55,6 +55,18 @@
             } else {
                 return $this.data();
             }
+        },
+        
+        select: function(start, end){
+            $.fn.ftwtable.select(start, end);
+        },
+        
+        deselect: function(start, end){
+            $.fn.ftwtable.deselect(start, end);
+        },
+        
+        destroy: function(start, end){
+            $.fn.ftwtable.destroy(start, end);
         }
      };
 
@@ -79,7 +91,8 @@
     //
 
     function buildQuery(){
-        return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
+        return $o.url+'?view_name='+tabbedview.prop('view_name');
+        //return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
     }
     
     
@@ -106,6 +119,19 @@
     };
     
     $.fn.ftwtable.reloadTable = function(query){ 
+    };
+    
+    $.fn.ftwtable.select = function(start, end){ 
+        // TODO: implement table selection
+        //console.log(start+' '+end);
+    };
+    
+    $.fn.ftwtable.deselect = function(start, end){ 
+        // TODO: implement table selection
+        //console.log(start+' '+end);
+    };
+    
+    $.fn.ftwtable.destroy = function(start, end){ 
     };
     
     //

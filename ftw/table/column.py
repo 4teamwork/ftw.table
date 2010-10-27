@@ -25,6 +25,16 @@ class IEXTJSColumn(interface.Interface):
                 default=None,
                 required=False)
 
+METADATA = {
+    'root': 'rows',
+    'totalProperty': 'totalCount',
+    'fields': [],
+    'columns': [],
+}
+
+FIELD = {'name': '', 'type': 'string'}
+COLUMN = {'id':'','header': '', 'dataIndex': ''}
+
 class Column(object):
     
     interface.implements(IEXTJSColumn)
