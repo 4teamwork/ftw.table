@@ -60,11 +60,11 @@ class ITableSourceConfig(Interface):
     tabbedview).
     """
 
-    order_by = schema.TextLine(
-        title=u'Order by keyword',
+    sort_on = schema.TextLine(
+        title=u'Sort by attribute / key',
         description=u'Name of attribute or key on a item to sort with.')
 
-    order_reverse = schema.Bool(
+    sort_reverse = schema.Bool(
         title=u'Reverse ordering',
         description=u'If `True` the order of the elements is reversed '
         'after sorting.',
@@ -161,7 +161,7 @@ class ICatalogTableSourceConfig(ITableSourceConfig):
         value_type=schema.Field(
             title=u'custom sort method',
             description=u'pointer to a custom sort method (e.g. '
-            'lambda results, order_by, reverse: ...)'))
+            'lambda results, sort_on, reverse: ...)'))
 
     filter_index = schema.TextLine(
         title=u'Filter index',

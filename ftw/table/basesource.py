@@ -9,8 +9,8 @@ class BaseTableSourceConfig(object):
 
     implements(ITableSourceConfig)
 
-    order_by = 'sortable_title'
-    order_reverse = False
+    sort_on = 'sortable_title'
+    sort_reverse = False
     filter_text = ''
     batching_enabled = False
     batching_pagesize = None
