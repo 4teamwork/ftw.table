@@ -1,6 +1,6 @@
 from  zope import interface
 from zope import schema
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile 
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.component import hooks
 
 try:
@@ -11,26 +11,26 @@ except ImportError:
 
 class TableGenerator(object):
     """ generates a html table. See README.txt for usage"""
-    
-    template = ViewPageTemplateFile('templates/basic.pt') 
-    
+
+    template = ViewPageTemplateFile('templates/basic.pt')
+
     _css_mapping = {
                    'table': 'listing',
-                   'sortable': 'sortable', 
+                   'sortable': 'sortable',
                    'sort-selected': 'sort-selected',
                    'sort-asc': 'sort-asc',
                    'sort-reverse': 'sort-reverse',
                    'th_prefix': 'header'
                    }
-    
+
     context = None
     @property
     def request(self):
      	site = hooks.getSite()
      	return site.REQUEST
-    
-    def generate(self, contents, columns, sortable=False, 
-                 selected=(None,None), css_mapping={}, 
+
+    def generate(self, contents, columns, sortable=False,
+                 selected=(None,None), css_mapping={},
                  template=None, auto_count=None, output='html', meta_data=None):
         self.sortable = sortable
         self.selected = selected
@@ -39,7 +39,7 @@ class TableGenerator(object):
         self.auto_count = auto_count
         # TODO: implement json support
         if output == 'html':
-            # XXX 
+            # XXX
             # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
             if template is not None:
                 self.template = ViewPageTemplateFile(template.filename)
@@ -57,8 +57,8 @@ class TableGenerator(object):
             for content in self.contents:
                 row = {}
                 for column in self.columns:
-                    key =  (column['attr'] or 
-                            column['title'] or 
+                    key =  (column['attr'] or
+                            column['title'] or
                             column['transform'].__name__)
                     value = self.get_value(content, column)
                     row[key] = value
@@ -68,13 +68,13 @@ class TableGenerator(object):
             return json.dumps(table)
         else:
             return 'unsupported output format'
-            
+
 
     def get_value(self, content, column):
         attr = column['attr']
         sort_index = column['sort_index']
         transform = column['transform']
-        
+
         value = u''
         if hasattr(content, attr):
             value = getattr(content, attr)
@@ -123,7 +123,7 @@ class TableGenerator(object):
             for name, field  in fields:
                 processed_columns.append(self.process_column((field.title, name)))
         return processed_columns
-                        
+
     def process_column(self, column):
         attr = sort_index = title = u""
         transform = lambda x, y: y
@@ -149,8 +149,8 @@ class TableGenerator(object):
 
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
-        
-        #return attr, sort_index, transform        
+
+        #return attr, sort_index, transform
         return {'attr':attr, 'title':title , 'sort_index':sort_index, 'transform': transform}
-    
-        
+
+
