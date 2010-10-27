@@ -29,7 +29,7 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
     search_options = {}
     custom_sort_indexes = {
             'Products.PluginIndexes.DateIndex.DateIndex': default_custom_sort}
-    filter_index = 'SearchableText'
+    search_index = 'SearchableText'
 
     def get_base_query(self):
         """Returns the base query for a specific table source type
@@ -38,6 +38,8 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
 
         # get default query
         query = self.search_options
+        if not query:
+            query = {}
 
         # extend with path filter, if configured
         if 'path' not in query and self.filter_path:
@@ -115,7 +117,7 @@ class CatalogTableSource(BaseTableSource):
         if len(text):
             if not text.endswith('*'):
                 text += '*'
-            query[self.config.filter_index] = text
+            query[self.config.search_index] = text
 
         return query
 
