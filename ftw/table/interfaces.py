@@ -163,7 +163,7 @@ class ICatalogTableSourceConfig(ITableSourceConfig):
             description=u'pointer to a custom sort method (e.g. '
             'lambda results, sort_on, reverse: ...)'))
 
-    filter_index = schema.TextLine(
-        title=u'Filter index',
+    search_index = schema.TextLine(
+        title=u'Search index',
         description=u'Search the `filter_text` in this index.',
         default='SearchableText')
