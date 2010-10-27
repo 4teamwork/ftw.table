@@ -23,15 +23,13 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
 
     implements(ICatalogTableSourceConfig)
 
-    def initialize_config(self):
-        BaseTableSourceConfig.initialize_config(self)
-        self.filter_path = None
-        self.depth = -1
-        self.types = []
-        self.search_options = {}
-        self.custom_sort_indexes = {
+    filter_path = None
+    depth = -1
+    types = []
+    search_options = {}
+    custom_sort_indexes = {
             'Products.PluginIndexes.DateIndex.DateIndex': default_custom_sort}
-        self.filter_index = 'SearchableText'
+    filter_index = 'SearchableText'
 
     def get_base_query(self):
         """Returns the base query for a specific table source type

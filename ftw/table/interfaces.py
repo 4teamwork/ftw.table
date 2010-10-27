@@ -99,7 +99,7 @@ class ITableSourceConfig(Interface):
         'should not be lazy.',
         default=True)
 
-    def initialize_config():
+    def update_config():
         """Is called before get_base_query() is called. This method is used
         for dynamically configuring / updating the attributes of the config
         object.
