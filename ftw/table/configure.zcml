@@ -23,4 +23,7 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <!-- table source adapters -->
+    <adapter factory=".catalog_source.CatalogTableSource" />
+
 </configure>
