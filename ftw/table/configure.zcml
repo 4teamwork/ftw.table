@@ -1,23 +1,26 @@
-<configure 
-    xmlns="http://namespaces.zope.org/zope"     
-    xmlns:browser="http://namespaces.zope.org/browser" 
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup" 
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="ftw.table">
 
-  <include package="ftw.table" />
-  <include package=".browser" />  
+    <include package="ftw.table" />
+    <include package=".browser" />
 
-  <five:registerPackage package="." />
+    <five:registerPackage package="." />
 
-   <utility name="ftw.tablegenerator" factory=".utils.TableGenerator" provides=".interfaces.ITableGenerator"/>
+    <utility name="ftw.tablegenerator"
+             factory=".utils.TableGenerator"
+             provides=".interfaces.ITableGenerator"
+             />
 
-   <genericsetup:registerProfile
-         name="default"
-         title="ftw.table"
-         directory="profiles/default"
-         description=""
-         provides="Products.GenericSetup.interfaces.EXTENSION"
-         />
-   
+    <genericsetup:registerProfile
+        name="default"
+        title="ftw.table"
+        directory="profiles/default"
+        description=""
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
 </configure>
