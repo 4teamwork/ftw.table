@@ -12,7 +12,6 @@
     $.fn.ftwtable.createTable = function(table, url){ 
         $this = table;
         
-        
         store = new Ext.data.Store({
             remoteSort: true,
             baseParams: {lightWeight:false,ext: 'js'},
@@ -74,7 +73,6 @@
             }
             }
         });
-        
         store.load();
         
 
@@ -89,7 +87,13 @@
     };
     
     $.fn.ftwtable.destroy = function(){
-        grid.destroy();
+        if(grid){
+            grid.destroy();
+        }
+        $this = null;
+        store = null;
+        grid = null;
+        selected_rows = null;
     };
     
     $.fn.ftwtable.select = function(start, end){
