@@ -22,6 +22,14 @@
         description=""
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
+        
+    <genericsetup:registerProfile
+        name="extjs"
+        title="ftw.table:extjs"
+        directory="profiles/extjs"
+        description=""
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
 
     <!-- table source adapters -->
     <adapter factory=".catalog_source.CatalogTableSource" />

@@ -11,13 +11,12 @@
     
     $.fn.ftwtable.createTable = function(table, url){ 
         $this = table;
-        
         store = new Ext.data.Store({
             remoteSort: true,
             baseParams: {lightWeight:false,ext: 'js'},
             //sortInfo: {field:'lastpost', direction:'DESC'},
             autoLoad: false,
-
+            
             proxy: new Ext.data.HttpProxy({
                 url: url,
                 method: 'post'
@@ -30,10 +29,15 @@
                 if (grid){
                     grid.destroy();
                 }
+                store.sortInfo = {
+                    field: store.reader.meta.config.sort,
+                    direction: store.reader.meta.config.dir
+                };
+                
                 var cm = new Ext.grid.ColumnModel({
                     columns: store.reader.meta.columns,
                     defaults: {
-                            sortable: true,
+                            sortable: false,
                             menuDisabled: false,
                             width: 110
                         }
@@ -42,12 +46,11 @@
                     store: store,
                     cm: cm,
                     stripeRows: true,
-                    autoExpandColumn: 'Title',   
-                    autoExpandMin: 200,
-                    autoExpandMax: 300,
+                    //autoExpandColumn: store.reader.meta.config.auto_expand_column,   
+                    //autoExpandMin: 200,
+                    //autoExpandMax: 300,
                     //autoHeight: true,
                     autoHeight:true,
-                    renderTo: $this.attr('id'),
                     sm: new Ext.grid.RowSelectionModel({
                             listeners: {
                                 selectionchange: function(smObj) {
@@ -62,8 +65,12 @@
                                     });
                                 }
                             }
-                        })
+                        }),
                 });
+                grid.autoExpandColumn = store.reader.meta.config.auto_expand_column;  
+                grid.autoExpandMin = 200;
+                grid.autoExpandMax = 300;
+                grid.render($this.attr('id'));
                 //ugly hacks we need to use horizontal scrolling combined with autoHeight
                 //enable horizontal scrolling
                 $('.x-grid3-viewport').css('overflow', 'auto');
