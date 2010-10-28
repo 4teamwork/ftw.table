@@ -98,6 +98,8 @@ class TableGenerator(object):
                     value = self.get_value(content, column)
                     if value == Missing.Value:
                         value = ''
+                    if isinstance(value, Message):
+                        value = hooks.getSite().translate(value)
                     row[key] = value
                 table['rows'].append(row)
             if meta_data:
