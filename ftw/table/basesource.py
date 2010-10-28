@@ -60,7 +60,7 @@ class BaseTableSource(object):
         query = self.validate_base_query(query)
 
         # ordering
-        query = self.extend_query_with_ording(query)
+        query = self.extend_query_with_ordering(query)
 
         # filter
         if self.config.filter_text:
@@ -80,7 +80,7 @@ class BaseTableSource(object):
 
         return query
 
-    def extend_query_with_ording(self, query):
+    def extend_query_with_ordering(self, query):
         """Extends the given `query` with ordering information and returns
         the new query.
         """

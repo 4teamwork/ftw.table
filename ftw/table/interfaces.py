@@ -30,7 +30,7 @@ class ITableSource(Interface):
         """Validates and fixes the base query. Returns the query object.
         """
 
-    def extend_query_with_ording(query):
+    def extend_query_with_ordering(query):
         """Extends the given `query` with ordering information and returns
         the new query.
         """
