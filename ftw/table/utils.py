@@ -90,15 +90,18 @@ class TableGenerator(object):
                         col['sortable'] = True
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
-                    meta_data['config'] ={}
-                    meta_data['config']['sort'] = selected[0]
-                    sort_order = selected[1]
-                    if sort_order is None:
-                        sort_order = 'asc'
-                    meta_data['config']['dir'] = sort_order.upper()
-                    if self.options and 'auto_expand_column' in self.options:
-                        aecolumn = self.options['auto_expand_column']
-                        meta_data['config']['auto_expand_column'] = aecolumn
+                    
+                meta_data['config'] ={}
+                meta_data['config']['sort'] = selected[0]
+                sort_order = selected[1]
+                if sort_order is None:
+                    sort_order = 'asc'
+                elif sort_order == 'reverse':
+                    sort_order = 'desc'
+                meta_data['config']['dir'] = sort_order.upper()
+                if self.options and 'auto_expand_column' in self.options:
+                    aecolumn = self.options['auto_expand_column']
+                    meta_data['config']['auto_expand_column'] = aecolumn
 
             for content in self.contents:
                 row = {}
