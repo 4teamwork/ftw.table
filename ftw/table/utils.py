@@ -113,7 +113,6 @@ class TableGenerator(object):
 
     def get_value(self, content, column):
         attr = column['attr']
-        sort_index = column['sort_index']
         transform = column['transform']
 
         value = u''
