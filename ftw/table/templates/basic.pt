@@ -1,6 +1,6 @@
-<table tal:attributes="class view/css_mapping/table" i18n:domain="ftw.tabbedview">
+<table tal:attributes="class view/css_mapping/table">
     <colgroup>
-        <col tal:repeat="th view/columns" 
+        <col tal:repeat="th view/columns"
              tal:attributes="class python:len(th['sort_index']) and 'col-'+th['sort_index'] or 'col'" />
     </colgroup>
     <thead>
@@ -8,7 +8,7 @@
             <tal:th tal:repeat="th view/columns">
                 <th tal:attributes="id python:view.get_thid(th);
                                     class python:view.sortable_class(th['sort_index'])">
-                    <span i18n:translate="" tal:content="python: th['title']" tal:condition="th/title"/> 
+                    <span tal:content="python: th['title']" tal:condition="th/title"/>
                 </th>
             </tal:th>
         </tr>

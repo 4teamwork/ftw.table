@@ -5,6 +5,11 @@ Changelog
 1.1c3
 -----
 
+* Disabled translation of column titles in template, since it would not work in json mode too.
+  You need to switch from tuple column definition to dict column definition or to Column-object
+  definition where you can translate the column title in your own domain using Message objects.
+  [28.10.2010, jbaumann]
+
 
 1.1c2
 -----
@@ -13,7 +18,7 @@ Changelog
 1.1
 ---
 
-* Issue #28 POI: Wenn im Titel ein HTML Tag vorkommt (z.B. <pre>) dann funktioniert die Auflistung im Tabbed View nicht mehr 
+* Issue #28 POI: Wenn im Titel ein HTML Tag vorkommt (z.B. <pre>) dann funktioniert die Auflistung im Tabbed View nicht mehr
   https://extranet.4teamwork.ch/intranet/10-interne-projekte/ftwprodukte/tracker-ftw-produkte/28/
   added htmlentities replacing in the linked and quick_preview helper
   [26.05.2010, phgross]
