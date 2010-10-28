@@ -59,12 +59,12 @@ class TableGenerator(object):
             table = dict(totalCount = len(self.contents),
                         rows = []
                     )
-                    
+
             if meta_data is None:
                 #create metadata for oldstyle column definition
                 meta_data = deepcopy(METADATA)
                 for column in self.columns:
-                    
+
                     key =  (column['attr'] or
                             column['title'] or
                             column['transform'].__name__)
@@ -74,7 +74,7 @@ class TableGenerator(object):
                     col = deepcopy(COLUMN)
                     col['dataIndex'] = key
                     if isinstance(column['title'], Message):
-                        col['header'] = hooks.getSite().translate(column['title'], 
+                        col['header'] = hooks.getSite().translate(column['title'],
                                                   column['title'].domain)
                     else:
                         col['header'] = column['title']
@@ -94,7 +94,7 @@ class TableGenerator(object):
                     key =  (column['attr'] or
                             column['title'] or
                             column['transform'].__name__)
-                           
+
                     value = self.get_value(content, column)
                     if value == Missing.Value:
                         value = ''
