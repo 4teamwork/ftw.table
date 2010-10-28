@@ -84,7 +84,7 @@ class CatalogTableSource(BaseTableSource):
 
         return query
 
-    def extend_query_with_ording(self, query):
+    def extend_query_with_ordering(self, query):
         """Extends the given `query` with ordering information and returns
         the new query.
         """
