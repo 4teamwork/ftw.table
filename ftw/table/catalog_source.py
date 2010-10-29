@@ -12,9 +12,21 @@ def default_custom_sort(results, sort_on, reverse):
     the attribute `sort_on` from the record.
     """
 
+    def datetime_compare(x, y):
+        a = getattr(x, sort_on, None)
+        b = getattr(y, sort_on, None)
+        if a is None and b is None:
+            return 0
+        elif a is None:
+            return -1
+        elif b is None:
+            return 1
+        # we are not able to compare datetime and date objects. So
+        # let's just use strings.
+        return cmp(str(a), str(b))
+
     return sorted(results,
-                  cmp=lambda aa, bb: cmp(getattr(aa, sort_on),
-                                         getattr(bb, sort_on)),
+                  cmp=datetime_compare,
                   reverse=reverse)
 
 
@@ -99,13 +111,14 @@ class CatalogTableSource(BaseTableSource):
         if 'sort_on' in query:
             index = self.catalog._catalog.indexes.get(
                 self.config.sort_on, None)
+
             if index is not None:
                 index_type = index.__module__
                 if index_type in self.config.custom_sort_indexes:
                     del query['sort_on']
                     if 'sort_order' in query:
                         del query['sort_order']
-                    self._custom_sort_method = \
+                    self.config._custom_sort_method = \
                         self.config.custom_sort_indexes.get(index_type)
 
         return query
@@ -137,9 +150,5 @@ class CatalogTableSource(BaseTableSource):
 
         results = self.catalog(**query)
 
-        if getattr(self, '_custom_sort_method', None) is not None:
-            results = self._custom_sort_method(results,
-                                               self.config.sort_on,
-                                               self.config.sort_reverse)
 
         return results
