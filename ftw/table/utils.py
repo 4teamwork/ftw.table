@@ -1,6 +1,6 @@
 from  zope import interface
 from zope import schema
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile 
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.component import hooks
 from zope.i18nmessageid.message import Message
 from zope.i18n import translate
@@ -16,35 +16,35 @@ except ImportError:
 
 class TableGenerator(object):
     """ generates a html table. See README.txt for usage"""
-    
-    template = ViewPageTemplateFile('templates/basic.pt') 
-    
+
+    template = ViewPageTemplateFile('templates/basic.pt')
+
     _css_mapping = {
                    'table': 'listing',
-                   'sortable': 'sortable', 
+                   'sortable': 'sortable',
                    'sort-selected': 'sort-selected',
                    'sort-asc': 'sort-asc',
                    'sort-reverse': 'sort-reverse',
                    'th_prefix': 'header'
                    }
-    
+
     context = None
     @property
     def request(self):
      	site = hooks.getSite()
      	return site.REQUEST
-    
-    def generate(self, contents, columns, sortable=False, 
-                 selected=(None,None), css_mapping={}, 
-                 template=None, auto_count=None, output='html', meta_data=None):
+
+    def generate(self, contents, columns, sortable=False,
+                 selected=(None,None), css_mapping={},
+                 template=None, options=None, output='html', meta_data=None):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
         self.contents = contents
-        self.auto_count = auto_count
+        self.options = options
         # TODO: implement json support
         if output == 'html':
-            # XXX 
+            # XXX
             # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
             if template is not None:
                 self.template = ViewPageTemplateFile(template.filename)
@@ -59,13 +59,14 @@ class TableGenerator(object):
             table = dict(totalCount = len(self.contents),
                         rows = []
                     )
-                    
+
             if meta_data is None:
                 #create metadata for oldstyle column definition
                 meta_data = deepcopy(METADATA)
                 for column in self.columns:
-                    
-                    key =  (column['attr'] or
+
+                    key =  (column.get('sort_index', None) or
+                            column['attr'] or
                             column['title'] or
                             column['transform'].__name__)
 
@@ -74,7 +75,7 @@ class TableGenerator(object):
                     col = deepcopy(COLUMN)
                     col['dataIndex'] = key
                     if isinstance(column['title'], Message):
-                        col['header'] = hooks.getSite().translate(column['title'], 
+                        col['header'] = hooks.getSite().translate(column['title'],
                                                   column['title'].domain)
                     else:
                         col['header'] = column['title']
@@ -85,19 +86,36 @@ class TableGenerator(object):
                         col['hideable'] = False
                         col['resizable'] = False
                         col['fixed'] = True
+                    else:
+                        col['sortable'] = True
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
+                    
+                meta_data['config'] ={}
+                meta_data['config']['sort'] = selected[0]
+                sort_order = selected[1]
+                if sort_order is None:
+                    sort_order = 'asc'
+                elif sort_order == 'reverse':
+                    sort_order = 'desc'
+                meta_data['config']['dir'] = sort_order.upper()
+                if self.options and 'auto_expand_column' in self.options:
+                    aecolumn = self.options['auto_expand_column']
+                    meta_data['config']['auto_expand_column'] = aecolumn
 
             for content in self.contents:
                 row = {}
                 for column in self.columns:
-                    key =  (column['attr'] or
+                    key =  (column.get('sort_index', None) or
+                            column['attr'] or
                             column['title'] or
                             column['transform'].__name__)
-                           
+
                     value = self.get_value(content, column)
                     if value == Missing.Value:
                         value = ''
+                    if isinstance(value, Message):
+                        value = hooks.getSite().translate(value)
                     row[key] = value
                 table['rows'].append(row)
             if meta_data:
@@ -109,13 +127,12 @@ class TableGenerator(object):
             return jsonstr
         else:
             return 'unsupported output format'
-            
+
 
     def get_value(self, content, column):
         attr = column['attr']
-        sort_index = column['sort_index']
         transform = column['transform']
-        
+
         value = u''
         if hasattr(content, attr):
             value = getattr(content, attr)
@@ -164,7 +181,7 @@ class TableGenerator(object):
             for name, field  in fields:
                 processed_columns.append(self.process_column((field.title, name)))
         return processed_columns
-                        
+
     def process_column(self, column):
         attr = sort_index = title = u""
         transform = lambda x, y: y
@@ -190,8 +207,8 @@ class TableGenerator(object):
 
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
-        
-        #return attr, sort_index, transform        
+
+        #return attr, sort_index, transform
         return {'attr':attr, 'title':title , 'sort_index':sort_index, 'transform': transform}
-    
-        
+
+
