@@ -51,6 +51,11 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
 
         # get default query
         query = deepcopy(self.search_options)
+
+        for key, value in query.items():
+            if callable(value):
+                query[key] = value(self.context)
+
         if not query:
             query = {}
 
