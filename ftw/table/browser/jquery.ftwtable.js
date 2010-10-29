@@ -86,8 +86,7 @@
     //
 
     function buildQuery(){
-        return 'tabbed_view/listing?'+tabbedview.parse_params();
-        //return $o.url+'?view_name='+tabbedview.prop('view_name');
+        return $('link[rel=kss-base-url]').attr('href')+$o.url+'?'+tabbedview.parse_params();
         //return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
     }
     
