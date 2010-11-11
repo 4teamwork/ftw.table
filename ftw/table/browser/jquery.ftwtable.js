@@ -12,7 +12,7 @@
     // Example usage:
     //              $(obj).ftwtable('param', 'search', 'foo') 
     //              $(obj).ftwtable('reload')
-    
+    //
     var methods = {
 
         init : function( options ) { 
@@ -87,6 +87,7 @@
 
     function buildQuery(){
         return $('link[rel=kss-base-url]').attr('href')+$o.url+'?'+tabbedview.parse_params();
+        //return $o.url+'?view_name='+tabbedview.prop('view_name');
         //return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
     }
     
