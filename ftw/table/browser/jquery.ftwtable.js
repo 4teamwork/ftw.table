@@ -5,6 +5,7 @@
     
     var $this = null;
     var $o = null;
+    var _params = {};
     
     //
     // ftwtable api
@@ -42,16 +43,10 @@
 
         param : function(key, value) { 
             if (key && value){
-                $.jStorage.set(key, value);
                 $this.data(key, value);
                 return $this;
             } else if (key && value==undefined){
-                var stored = $.jStorage.get(key);
-                if (stored != null){
-                    return stored;
-                } else {
-                    return $this.data(key);   
-                }
+                return $this.data(key);   
             } else {
                 return $this.data();
             }
@@ -91,7 +86,8 @@
     //
 
     function buildQuery(){
-        return $o.url+'?view_name='+tabbedview.prop('view_name');
+        return 'tabbed_view/listing?'+tabbedview.parse_params();
+        //return $o.url+'?view_name='+tabbedview.prop('view_name');
         //return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
     }
     

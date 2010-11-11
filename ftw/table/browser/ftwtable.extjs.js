@@ -3,15 +3,15 @@
 //
 (function($) {    
     
-    var $this = null;
-    var store = null;
-    var grid = null;
+    $this = null;
+    store = null;
+    grid = null;
     
     var selected_rows = null;
     
     $.fn.ftwtable.createTable = function(table, url){ 
         $this = table;
-        store = new Ext.data.Store({
+        store = new Ext.data.GroupingStore({
             remoteSort: true,
             baseParams: {lightWeight:false,ext: 'js'},
             //sortInfo: {field:'lastpost', direction:'DESC'},
@@ -24,7 +24,14 @@
 
             reader: new Ext.data.JsonReader(),
             
+            groupField:'',
+            remoteGroup:true,
+            
             listeners: {
+                
+                groupchange : function(store, groupField){
+                },
+                
                 metachange : function(store, meta){
                 if (grid){
                     grid.destroy();
@@ -50,7 +57,14 @@
                     //autoExpandMin: 200,
                     //autoExpandMax: 300,
                     //autoHeight: true,
+                    sortDescText: 'Absteigend',
+                    sortAscText: 'Aufsteigend',
                     autoHeight:true,
+                    view: new Ext.grid.GroupingView({
+                               forceFit:false,
+                               //enableGrouping:false,
+                               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+                           }),
                     sm: new Ext.grid.RowSelectionModel({
                             listeners: {
                                 selectionchange: function(smObj) {
@@ -65,7 +79,7 @@
                                     });
                                 }
                             }
-                        }),
+                        })
                 });
                 grid.autoExpandColumn = store.reader.meta.config.auto_expand_column;  
                 grid.autoExpandMin = 200;
@@ -77,6 +91,9 @@
                 //set width of the header div to the same value as the table
                 var inner_width = $('.x-grid3-header table').width();
                 $('.x-grid3-header').width(inner_width);
+                $.each(store.reader.meta['static'], function(key, value) { 
+                    $('#'+key+'_container.ftwtable').html(value);
+                });
             }
             }
         });

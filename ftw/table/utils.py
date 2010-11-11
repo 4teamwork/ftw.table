@@ -118,12 +118,11 @@ class TableGenerator(object):
                         value = hooks.getSite().translate(value)
                     row[key] = value
                 table['rows'].append(row)
+            if 'static' in self.options:
+                meta_data['static'] = deepcopy(self.options['static'])
             if meta_data:
                 table['metaData'] = meta_data
-            try:
-                jsonstr = json.dumps(table)
-            except:
-                import pdb; pdb.set_trace( )
+            jsonstr = json.dumps(table)
             return jsonstr
         else:
             return 'unsupported output format'
