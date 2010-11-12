@@ -29,6 +29,9 @@ setup(name='ftw.table',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
+      extras_require={
+        'extjs': ['collective.js.extjs'],
+        },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
