@@ -37,6 +37,7 @@
 
                 locales = store.reader.meta.translations;
 
+
                 store.sortInfo = {
                     field: store.reader.meta.config.sort,
                     direction: store.reader.meta.config.dir
@@ -73,20 +74,35 @@
                     sm: new Ext.grid.RowSelectionModel({
                             listeners: {
                                 selectionchange: function(smObj) {
+                                    var records = smObj.selections.map;
+                                    var ds = this.grid.store;
+                                    $this.find('input.selectable:checked').attr('checked', false);
+                                    $.each(records, function(key, value){
+                                        var index = ds.indexOfId(key);
+                                        $('input.selectable').eq(index).attr('checked', true);
+                                    })
+                                    /*console.log(smObj);
                                     if(selected_rows){
                                         selected_rows.each(function(){
-                                          $(this).find('input').attr('checked', false);
+                                          $(this).find('input.selectable[type=checkbox]').attr('checked', false);
                                         });
                                     }
                                     selected_rows = $('.'+grid.view.selectedRowClass);
                                     selected_rows.each(function(){
-                                       $(this).find('input').attr('checked', true); 
-                                    });
-                                }
+                                       $(this).find('input.selectable[type=checkbox]').attr('checked', true); 
+                                    });*/
+                                },
+                                beforerowselect: function( smObj, rowIndex, keepExisting, record ){
+                                    /*if(smObj.isSelected(rowIndex)){
+                                        return false;
+                                    }*/
+                                } 
                             }
                         })
                 });
-                grid.autoExpandColumn = store.reader.meta.config.auto_expand_column;  
+                if(store.reader.meta.config.auto_expand_column!=undefined){
+                    grid.autoExpandColumn = store.reader.meta.config.auto_expand_column;     
+                }
                 grid.autoExpandMin = 200;
                 grid.autoExpandMax = 300;
                 grid.render($this.attr('id'));
@@ -96,13 +112,21 @@
                 //set width of the header div to the same value as the table
                 var inner_width = $('.x-grid3-header table').width();
                 $('.x-grid3-header').width(inner_width);
-                $.each(store.reader.meta['static'], function(key, value) { 
-                    $('#'+key+'_container.ftwtable').html(value);
-                });
+                if(store.reader.meta.static != undefined){
+                    $.each(store.reader.meta.static, function(key, value) { 
+                        $('#'+key+'_container.ftwtable').html(value);
+                    });   
+                }
             }
             }
         });
         store.load();
+        
+        //special handling of select boxes
+        $('input.selectable[type=checkbox]', $this).live('click', function(e){
+            return false;
+        })
+        
         
 
         // $this.load(query, function(){           

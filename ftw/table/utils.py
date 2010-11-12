@@ -46,7 +46,7 @@ class TableGenerator(object):
 
     def generate(self, contents, columns, sortable=False,
                  selected=(None,None), css_mapping={}, translations=[],
-                 template=None, options=None, output='html', meta_data=None):
+                 template=None, options={}, output='html', meta_data=None):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
@@ -138,8 +138,7 @@ class TableGenerator(object):
             #add translations for the table
             meta_data['translations'] = {}
             for msgid in msgids:
-                meta_data['translations'][msgid] = self.site.translate(
-                                                        msgid, 
+                meta_data['translations'][msgid] = self.site.translate(msgid,
                                                         domain='ftw.table')
             if meta_data:
                 table['metaData'] = meta_data

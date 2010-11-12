@@ -4,8 +4,10 @@
 (function($) {    
     
     var $this = null;
+    mi = null;
     var $o = null;
     var _params = {};
+    var DATA_KEY = 'ftwtable';
     
     //
     // ftwtable api
@@ -21,6 +23,8 @@
             // iterate and reformat each matched element
             return this.each(function() {
                 $this = $(this);
+                mi = $this;
+                $this.data(DATA_KEY, {});
                 // build element specific options
                 $o = $.meta ? $.extend({}, opts, $this.data()) : opts;
                 // update element styles
@@ -43,10 +47,14 @@
 
         param : function(key, value) { 
             if (key && value){
-                $this.data(key, value);
+                //$this.data(key, value);
+                var data = $this.data(DATA_KEY);
+                var new_data = {};
+                new_data[key] = value;
+                $.extend(data, new_data);
                 return $this;
             } else if (key && value==undefined){
-                return $this.data(key);   
+                return $this.data(DATA_KEY)[key];   
             } else {
                 return $this.data();
             }
@@ -86,7 +94,13 @@
     //
 
     function buildQuery(){
-        return $('link[rel=kss-base-url]').attr('href')+$o.url+'?'+tabbedview.parse_params();
+        var params = '';
+        if(window.tabbedview != undefined){
+            params = tabbedview.parse_params();
+        }else{
+            params = parseParams();
+        }
+        return $('link[rel=kss-base-url]').attr('href') + $o.url + '?' + params;
         //return $o.url+'?view_name='+tabbedview.prop('view_name');
         //return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
     }
@@ -95,6 +109,10 @@
     //
     // Callbacks
     //
+    
+    function parseParams(){
+        return $.param($this.data(DATA_KEY));
+    };
     
     function onBeforeLoad(){
         return $this;
