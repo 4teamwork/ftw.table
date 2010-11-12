@@ -6,6 +6,7 @@
     $this = null;
     store = null;
     grid = null;
+    locales = {};
     
     var selected_rows = null;
     
@@ -29,18 +30,18 @@
             
             listeners: {
                 
-                groupchange : function(store, groupField){
-                },
-                
                 metachange : function(store, meta){
                 if (grid){
                     grid.destroy();
                 }
+
+                locales = store.reader.meta.translations;
+
                 store.sortInfo = {
                     field: store.reader.meta.config.sort,
                     direction: store.reader.meta.config.dir
                 };
-                
+
                 var cm = new Ext.grid.ColumnModel({
                     columns: store.reader.meta.columns,
                     defaults: {
@@ -57,13 +58,17 @@
                     //autoExpandMin: 200,
                     //autoExpandMax: 300,
                     //autoHeight: true,
-                    sortDescText: 'Absteigend',
-                    sortAscText: 'Aufsteigend',
                     autoHeight:true,
                     view: new Ext.grid.GroupingView({
                                forceFit:false,
+                               //groupMode:'display',
                                //enableGrouping:false,
-                               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+                               sortDescText: translate('sortDescText', 'Sort Descending'),
+                               sortAscText: translate('sortAscText', 'Sort Ascending'),
+                               columnsText: translate('columnsText', 'Columns'),
+                               showGroupsText: translate('showGroupsText', 'Show in Groups'),
+                               groupByText: translate('groupByText', 'Group By This Field'),
+                               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "'+translate('itemsPlural', 'Items')+'" : "'+translate('itemsSingular', 'Item')+'"]})'
                            }),
                     sm: new Ext.grid.RowSelectionModel({
                             listeners: {
@@ -104,6 +109,14 @@
         //     $o.onLoad();
         // });
     };
+    
+    translate = function(key, defaultValue){
+        if(locales[key]){
+            return locales[key];
+        }else{
+            return defaultValue || key; 
+        }
+    }
     
     $.fn.ftwtable.reloadTable = function(table, query){ 
         grid.destroy();

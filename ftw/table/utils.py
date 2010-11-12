@@ -28,14 +28,24 @@ class TableGenerator(object):
                    'th_prefix': 'header'
                    }
 
+
+    #msgids of strings that will be used in the GridView. domain=ftw.table
+    _translations = ['sortDescText', 'sortAscText', 'columnsText', 
+                   'showGroupsText', 'groupByText', 'itemsPlural', 
+                   'itemsSingular']
+
     context = None
     @property
     def request(self):
-     	site = hooks.getSite()
-     	return site.REQUEST
+        site = hooks.getSite()
+        return site.REQUEST
+
+    @property
+    def site(self):
+        return hooks.getSite()
 
     def generate(self, contents, columns, sortable=False,
-                 selected=(None,None), css_mapping={},
+                 selected=(None,None), css_mapping={}, translations=[],
                  template=None, options=None, output='html', meta_data=None):
         self.sortable = sortable
         self.selected = selected
@@ -56,9 +66,11 @@ class TableGenerator(object):
             #    return template(**self.__dict__)
             return self.template(self)
         elif output == 'json':
+
+            msgids = set(self._translations + translations)
+
             table = dict(totalCount = len(self.contents),
-                        rows = []
-                    )
+                        rows = [])
 
             if meta_data is None:
                 #create metadata for oldstyle column definition
@@ -75,7 +87,7 @@ class TableGenerator(object):
                     col = deepcopy(COLUMN)
                     col['dataIndex'] = key
                     if isinstance(column['title'], Message):
-                        col['header'] = hooks.getSite().translate(column['title'],
+                        col['header'] = self.site.translate(column['title'],
                                                   column['title'].domain)
                     else:
                         col['header'] = column['title']
@@ -118,8 +130,17 @@ class TableGenerator(object):
                         value = hooks.getSite().translate(value)
                     row[key] = value
                 table['rows'].append(row)
+                
+            #add static html snippets. Eg batching, buttons, etc
             if 'static' in self.options:
                 meta_data['static'] = deepcopy(self.options['static'])
+                
+            #add translations for the table
+            meta_data['translations'] = {}
+            for msgid in msgids:
+                meta_data['translations'][msgid] = self.site.translate(
+                                                        msgid, 
+                                                        domain='ftw.table')
             if meta_data:
                 table['metaData'] = meta_data
             jsonstr = json.dumps(table)

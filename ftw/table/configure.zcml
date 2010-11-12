@@ -3,12 +3,15 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="ftw.table">
 
     <include package="ftw.table" />
     <include package=".browser" />
 
     <five:registerPackage package="." />
+
+    <i18n:registerTranslations directory="locales" />
 
     <utility name="ftw.tablegenerator"
              factory=".utils.TableGenerator"
