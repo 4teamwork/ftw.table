@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1'
 version = open('ftw/table/version.txt').read().strip()
 maintainer = 'Victor baumann'
 
@@ -19,6 +18,7 @@ setup(name='ftw.table',
       keywords='',
       author='%s, 4teamwork GmbH' % maintainer,
       author_email='mailto:info@4teamwork.ch',
+      maintainer=maintainer,
       url='http://psc.4teamwork.ch/4teamwork/ftw/ftw.table',
       license='GPL2',
       packages=find_packages(exclude=['ez_setup']),
@@ -29,6 +29,9 @@ setup(name='ftw.table',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
+      extras_require={
+        'extjs': ['collective.js.extjs'],
+        },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
