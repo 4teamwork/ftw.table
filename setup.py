@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1'
 version = open('ftw/table/version.txt').read().strip()
 maintainer = 'Victor baumann'
 
