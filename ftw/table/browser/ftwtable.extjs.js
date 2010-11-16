@@ -56,7 +56,6 @@
                 var forceFit = false;
                 for(var i=0; i < cm.columns.length; i++){
                     var col = cm.columns[i];
-                    console.log(col);
                     if(col.hidden != undefined && col.hidden == true){
                         hidden_columns++;
                     }else{
