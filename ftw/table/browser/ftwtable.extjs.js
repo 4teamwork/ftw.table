@@ -51,6 +51,21 @@
                             width: 110
                         }
                     });
+                var visible_columns = 0;
+                var hidden_columns = 0;
+                var forceFit = false;
+                for(var i=0; i < cm.columns.length; i++){
+                    var col = cm.columns[i];
+                    console.log(col);
+                    if(col.hidden != undefined && col.hidden == true){
+                        hidden_columns++;
+                    }else{
+                        visible_columns++; 
+                    }
+                }
+                if(visible_columns<=5){
+                    forceFit = true;
+                }    
                 grid = new Ext.grid.GridPanel({
                     store: store,
                     cm: cm,
@@ -61,7 +76,7 @@
                     //autoHeight: true,
                     autoHeight:true,
                     view: new Ext.grid.GroupingView({
-                               forceFit:false,
+                               forceFit:forceFit,
                                //groupMode:'display',
                                //enableGrouping:false,
                                sortDescText: translate('sortDescText', 'Sort Descending'),
@@ -106,12 +121,14 @@
                 grid.autoExpandMin = 200;
                 grid.autoExpandMax = 300;
                 grid.render($this.attr('id'));
-                //ugly hacks we need to use horizontal scrolling combined with autoHeight
-                //enable horizontal scrolling
-                $('.x-grid3-viewport').css('overflow', 'auto');
-                //set width of the header div to the same value as the table
-                var inner_width = $('.x-grid3-header table').width();
-                $('.x-grid3-header').width(inner_width);
+                if(!forceFit){
+                    //ugly hacks we need to use horizontal scrolling combined with autoHeight
+                    //enable horizontal scrolling
+                    $('.x-grid3-viewport').css('overflow', 'auto');
+                    //set width of the header div to the same value as the table
+                    var inner_width = $('.x-grid3-header table').width();
+                    $('.x-grid3-header').width(inner_width);   
+                }
                 if(store.reader.meta.static != undefined){
                     $.each(store.reader.meta.static, function(key, value) { 
                         $('#'+key+'_container.ftwtable').html(value);
