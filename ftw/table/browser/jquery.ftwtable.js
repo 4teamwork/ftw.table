@@ -32,7 +32,7 @@
                 methods.param('path', '/');
                 $o.onBeforeLoad();
                 //methods.reload();
-                $.fn.ftwtable.createTable($this, buildQuery());
+                $.fn.ftwtable.createTable($this, buildQuery(), $o);
                //add events
                // $('th.sortable', $this).live('click', function(e){
                //     var hid = $(e.target).parent().attr('id');
@@ -126,7 +126,7 @@
     // public methods
     //
 
-    $.fn.ftwtable.createTable = function(query){ 
+    $.fn.ftwtable.createTable = function(table, query, options){ 
         $this.load(query, function(){           
             $o.onLoad();
         });
@@ -159,7 +159,7 @@
         selectable: true,
         sortable: true,
         storage: false,
-        onBeforeLoad: null,
+        onBeforeLoad: onBeforeLoad,
         onLoad: onLoad
     };
 //
