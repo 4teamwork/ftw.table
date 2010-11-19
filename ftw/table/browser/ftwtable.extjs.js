@@ -185,9 +185,9 @@
         }
     };
     
-    $.fn.ftwtable.reloadTable = function(table, query){ 
-        grid.destroy();
-        $.fn.ftwtable.createTable(table, query);
+    $.fn.ftwtable.reloadTable = function(table, query, options){ 
+        $.fn.ftwtable.destroy();
+        $.fn.ftwtable.createTable(table, query, options);
     };
     
     $.fn.ftwtable.destroy = function(){

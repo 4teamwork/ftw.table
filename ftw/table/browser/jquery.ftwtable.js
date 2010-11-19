@@ -42,7 +42,7 @@
         },
 
         reload : function( ) {
-            $.fn.ftwtable.reloadTable($this, buildQuery());
+            $.fn.ftwtable.reloadTable($this, buildQuery(), $o);
         },
 
         param : function(key, value) { 
