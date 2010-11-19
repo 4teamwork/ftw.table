@@ -3,11 +3,11 @@
 //
 (function($) {    
     
-    $this = null; // reference to the jQuery table object
-    store = null;
-    grid = null;
-    options = null;
-    locales = {}; // Stores the translated strings fetched from the server. Use translate(msgid, defaultValue)
+    var $this = null; // reference to the jQuery table object
+    var store = null;
+    var grid = null;
+    var options = null;
+    var locales = {}; // Stores the translated strings fetched from the server. Use translate(msgid, defaultValue)
     
     $.fn.ftwtable.createTable = function(table, url, options){ 
         options = options;
@@ -18,6 +18,7 @@
             autoLoad: false,  
             groupField: '', // kinda ugly way to trick the table into disable grouping by default
             remoteGroup: true,
+            autoDestroy:true,
             
             //params that will be sent with every request 
             baseParams: {   
@@ -81,7 +82,6 @@
                 if(visible_columns<=5){
                     forceFit = true;
                 }    
-                
                 grid = new Ext.grid.GridPanel({
                     //set up the GridPanel
                     store: store,
@@ -193,6 +193,9 @@
     $.fn.ftwtable.destroy = function(){
         if(grid){
             grid.destroy();
+        }
+        if(store){
+            store.destroy();
         }
         $this = null;
         store = null;
