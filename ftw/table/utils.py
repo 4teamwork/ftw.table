@@ -93,7 +93,12 @@ class TableGenerator(object):
                         col['header'] = column['title']
                     col['id'] = key
                     if not column['title']:
-                        col['menuDisabled'] = True
+                        if key == 'draggable':
+                            col['menuDisabled'] = False
+                            col['header'] = '&nbsp;'
+                            col['sortable'] = True
+                        else:
+                            col['menuDisabled'] = True
                         col['width'] = 30
                         col['hideable'] = False
                         col['resizable'] = False
@@ -129,6 +134,9 @@ class TableGenerator(object):
                     if isinstance(value, Message):
                         value = hooks.getSite().translate(value)
                     row[key] = value
+                    if hasattr(content, 'getObjPositionInParent'):
+                        row['getObjPositionInParent'] = content.getObjPositionInParent
+                    row['id'] = content.id
                 table['rows'].append(row)
                 
             #add static html snippets. Eg batching, buttons, etc

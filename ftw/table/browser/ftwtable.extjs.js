@@ -1,11 +1,97 @@
+//approach for own selection model
+
+// Ext.grid.FTWTableCheckboxSelectionModel = Ext.extend(Ext.grid.RowSelectionModel, {
+// 
+//     
+//     
+//     header : '<div class="x-grid3-hd-checker">&#160;</div>',
+//     
+//     width : 20,
+//     
+//     sortable : false,
+// 
+//     
+//     menuDisabled : true,
+//     fixed : true,
+//     hideable: false,
+//     dataIndex : '',
+//     id : 'checker',
+//     isColumn: true, 
+// 
+//     constructor : function(){
+//         Ext.grid.FTWTableCheckboxSelectionModel.superclass.constructor.apply(this, arguments);
+//         if(this.checkOnly){
+//             this.handleMouseDown = Ext.emptyFn;
+//         }
+//     },
+// 
+//     
+//     initEvents : function(){
+//         Ext.grid.FTWTableCheckboxSelectionModel.superclass.initEvents.call(this);
+//         this.grid.on('render', function(){
+//             Ext.fly(this.grid.getView().innerHd).on('mousedown', this.onHdMouseDown, this);
+//         }, this);
+//     },
+// 
+//     
+//     processEvent : function(name, e, grid, rowIndex, colIndex){
+//         console.log(name);
+//         if (name == 'mousedown') {
+//             this.onMouseDown(e, e.getTarget());
+//             return false;
+//         } else {
+//             return Ext.grid.Column.prototype.processEvent.apply(this, arguments);
+//         }
+//     },
+// 
+//     
+//     onMouseDown : function(e, t){
+//         console.log(123);
+//         if(e.button === 0 && t.className == 'x-grid3-row-checker'){ 
+//             e.stopEvent();
+//             var row = e.getTarget('.x-grid3-row');
+//             if(row){
+//                 var index = row.rowIndex;
+//                 if(this.isSelected(index)){
+//                     this.deselectRow(index);
+//                 }else{
+//                     this.selectRow(index, true);
+//                     this.grid.getView().focusRow(index);
+//                 }
+//             }
+//         }
+//     },
+// 
+//     
+//     onHdMouseDown : function(e, t) {
+//         if(t.className == 'x-grid3-hd-checker'){
+//             e.stopEvent();
+//             var hd = Ext.fly(t.parentNode);
+//             var isChecked = hd.hasClass('x-grid3-hd-checker-on');
+//             if(isChecked){
+//                 hd.removeClass('x-grid3-hd-checker-on');
+//                 this.clearSelections();
+//             }else{
+//                 hd.addClass('x-grid3-hd-checker-on');
+//                 this.selectAll();
+//             }
+//         }
+//     },
+// 
+//     
+//     renderer : function(v, p, record){
+//         return '<div class="x-grid3-row-checker">&#160;</div>';
+//     }
+// });
+
 //
 // create closure
 //
 (function($) {    
     
-    var $this = null; // reference to the jQuery table object
-    var store = null;
-    var grid = null;
+    $this = null; // reference to the jQuery table object
+    store = null;
+    grid = null;
     var options = null;
     var locales = {}; // Stores the translated strings fetched from the server. Use translate(msgid, defaultValue)
     
@@ -18,7 +104,7 @@
             autoLoad: false,  
             groupField: '', // kinda ugly way to trick the table into disable grouping by default
             remoteGroup: true,
-            autoDestroy:true,
+            autoDestroy:false,
             
             //params that will be sent with every request 
             baseParams: {   
@@ -46,26 +132,26 @@
                 if (grid){
                     grid.destroy();
                 }
-
                 // translations contains the translated strings that will be used in the ui. 
                 locales = store.reader.meta.translations;
-
                 // sorting information
                 store.sortInfo = {
                     field: store.reader.meta.config.sort,
                     direction: store.reader.meta.config.dir
                 };
 
+                var sm =  new Ext.grid.RowSelectionModel();
+                var columns = store.reader.meta.columns;
+                
                 // Set up the ColumnModel
                 var cm = new Ext.grid.ColumnModel({
-                    columns: store.reader.meta.columns,
+                    columns: columns,
                     defaults: {
                             sortable: false,
                             menuDisabled: false,
                             width: 110
                         }
                     });
-                    
                 // If we have less than 5 visible columns the grid will be 
                 // rendered with forceFit
                 var visible_columns = 0;
@@ -84,10 +170,35 @@
                 }    
                 grid = new Ext.grid.GridPanel({
                     //set up the GridPanel
+                    columnLines: true,
                     store: store,
                     cm: cm,
                     stripeRows: true,
                     autoHeight:true,
+                    xtype: "grid",
+                    //XXX: GridDragDropRowOrder has to be the first plugin!
+                    plugins: [new Ext.ux.dd.GridDragDropRowOrder({
+                        copy: false, // false by default
+                        scrollable: true, // enable scrolling support (default is false)
+                        targetCfg: {}, // any properties to apply to the actual DropTarget
+                        listeners: {
+                            afterrowmove: function(dropTarget, rowIndex, rindex, selections){
+                                var new_order = [];
+                                for(var i = 0; i<store.getCount(); i++){
+                                    new_order.push(store.getAt(i).json.id);
+                                }
+                                $.ajax({
+                                   url: '@@tabbed_view/reorder',
+                                   cache: true,
+                                   type: "POST",
+                                   data: {
+                                       new_order: new_order
+                                   } 
+                                });
+                            }
+                        }
+                    })],
+
                     view: new Ext.grid.GroupingView({
                                forceFit:forceFit,
                                //enableGrouping:false,
@@ -100,27 +211,17 @@
                                // E.g.: Auftragstyp: Zum Bericht / Antrag (2 Objekte)
                                groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "'+translate('itemsPlural', 'Items')+'" : "'+translate('itemsSingular', 'Item')+'"]})'
                            }),
-                    sm: new Ext.grid.RowSelectionModel({
-                            listeners: {
-                                selectionchange: function(smObj) {
-                                    var records = smObj.selections.map;
-                                    var ds = this.grid.store;
-                                    $this.find('input.selectable:checked').attr('checked', false);
-                                    $.each(records, function(key, value){
-                                        var index = ds.indexOfId(key);
-                                        $('input.selectable').eq(index).attr('checked', true);
-                                    });
-                                },
-                                beforerowselect: function( smObj, rowIndex, keepExisting, record ){
-                                    /*if(smObj.isSelected(rowIndex)){
-                                        return false;
-                                    }*/
-                                }
-                            }
-                        }),
+                    sm: sm,
                     listeners: {
                         afterrender: function(panel){
-                            
+
+                            //drag 'n' drop reordering is only available if sort field is 'draggable'
+                            if(store.sortInfo.field == 'draggable'){
+                                unlockDragDrop();
+                            }else{
+                                lockDragDrop();
+                            }
+
                             if(!forceFit){
                                 //ugly hacks we need to use horizontal scrolling combined with autoHeight
                                 //enable horizontal scrolling
@@ -140,20 +241,21 @@
                             */ 
                             if(store.reader.meta['static'] != undefined){
                                 $.each(store.reader.meta['static'], function(key, value) { 
-                                    $('#'+key+'_container.ftwtable').replaceWith(value);
+                                    $('#'+key+'_container.ftwtable').html(value);
                                 });   
                             }
                             options.onLoad();
+                            
                         }
                     }
                 });
                 // set up autoExpandColumn
                 if(store.reader.meta.config.auto_expand_column!=undefined){
-                    grid.autoExpandColumn = store.reader.meta.config.auto_expand_column;     
+                    grid.autoExpandColumn = store.reader.meta.config.auto_expand_column;
+                    grid.autoExpandMin = 200;
+                    grid.autoExpandMax = 300;
                 }
-                grid.autoExpandMin = 200;
-                grid.autoExpandMax = 300;
-                
+
                 // render the table if ther're records to show.
                 if(store.reader.jsonData.rows.length){
                     grid.render($this.attr('id'));
@@ -169,11 +271,20 @@
         // start the magic.
         store.load();
 
-        //special handling of select boxes
-        $('input.selectable[type=checkbox]', $this).live('click', function(e){
-            return false;
-        });
-        
+    };
+    
+    unlockDragDrop = function(){
+      //XXX: We assume that [0] is the GridDragDropRowOrder plugin
+      grid.plugins[0].target.unlock();  
+      grid.ddText = "{0} selected rowen{1}";  
+      $this.removeClass('draglocked');
+    };
+    
+    lockDragDrop = function(){
+      //XXX: We assume that [0] is the GridDragDropRowOrder plugin
+      grid.plugins[0].target.lock();  
+      grid.ddText = translate('dragDropLocked', "Drag 'n' Drop not possible");  
+      $this.addClass('draglocked');
     };
 
 
