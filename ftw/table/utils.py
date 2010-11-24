@@ -30,8 +30,8 @@ class TableGenerator(object):
 
 
     #msgids of strings that will be used in the GridView. domain=ftw.table
-    _translations = ['sortDescText', 'sortAscText', 'columnsText', 
-                   'showGroupsText', 'groupByText', 'itemsPlural', 
+    _translations = ['sortDescText', 'sortAscText', 'columnsText',
+                   'showGroupsText', 'groupByText', 'itemsPlural',
                    'itemsSingular']
 
     context = None
@@ -107,7 +107,7 @@ class TableGenerator(object):
                         col['sortable'] = True
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
-                    
+
                 meta_data['config'] ={}
                 meta_data['config']['sort'] = selected[0]
                 sort_order = selected[1]
@@ -134,15 +134,13 @@ class TableGenerator(object):
                     if isinstance(value, Message):
                         value = hooks.getSite().translate(value)
                     row[key] = value
-                    if hasattr(content, 'getObjPositionInParent'):
-                        row['getObjPositionInParent'] = content.getObjPositionInParent
                     row['id'] = content.id
                 table['rows'].append(row)
-                
+
             #add static html snippets. Eg batching, buttons, etc
             if 'static' in self.options:
                 meta_data['static'] = deepcopy(self.options['static'])
-                
+
             #add translations for the table
             meta_data['translations'] = {}
             for msgid in msgids:
