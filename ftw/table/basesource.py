@@ -107,3 +107,40 @@ class BaseTableSource(object):
         """
 
         raise NotImplemented
+
+    def group_results(self, results, column):
+        """Does the grouping of the `results` by a specific `column` (dict
+        based column definition used by generator utility). It modifies the
+        results by extending each row with a group information. For keeping
+        the row untouched, replaces each row with a tuple containing group
+        and row, the generator utility will unpack the tuple and work with
+        the row again.
+        """
+        new_results = []
+
+        value_label_map = {}
+
+        for row in results:
+            attr = column['attr']
+
+            # get the value for this row - not transformed yet
+            value = u''
+            if hasattr(row, attr):
+                value = getattr(row, attr)
+            elif hasattr(row,'__iter__') and attr in row:
+                value = row[attr]
+
+            # now transform only the first distinct raw value. this makes
+            # the grouping work with different HTML (transformed) but same
+            # raw text - this is very important!
+            if value in value_label_map:
+                label = value_label_map[value]
+            else:
+                label = value_label_map[value] = column['transform'](row, value)
+
+            # add the new row in a tuple containg group and row. the generator
+            # utility will then unpack the tuple.
+            new_results.append(row, label)
+
+        return new_results
+

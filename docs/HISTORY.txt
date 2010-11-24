@@ -5,6 +5,9 @@ Changelog
 1.1c5
 -----
 
+* Implemented server-side grouping in table sources.
+  [jbaumann]
+
 
 1.1c4
 -----
