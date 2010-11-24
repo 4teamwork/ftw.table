@@ -53,13 +53,6 @@ class TableGenerator(object):
         self.contents = contents
         self.options = options
 
-        # grouping enabled?
-        if self.contents and len(self.contents) and \
-                isinstance(self.contents[0], tuple):
-            self.grouping_enabled = True
-        else:
-            self.grouping_enabled = False
-
         # TODO: implement json support
         if output == 'html':
             # XXX
@@ -130,7 +123,8 @@ class TableGenerator(object):
 
             for content in self.contents:
                 row = {}
-                if self.grouping_enabled:
+                if isinstance(content, tuple):
+                    # group is enabled.
                     # when group is enabled, the rows should be tuples
                     # containg the group label
                     if not isinstance(content, tuple):
