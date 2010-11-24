@@ -1,3 +1,15 @@
+Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
+    // private
+    onGroupByClick : function(){
+        this.grid.store.baseParams['groupBy'] = this.cm.getDataIndex(this.hdCtxIndex);
+        this.enableGrouping = true;
+        this.beforeMenuShow(); // Make sure the checkboxes get properly set when changing groups
+        this.refresh();
+        this.grid.store.reload();
+    }    
+});
+
+
 //approach for own selection model
 
 // Ext.grid.FTWTableCheckboxSelectionModel = Ext.extend(Ext.grid.RowSelectionModel, {
@@ -103,7 +115,7 @@
             remoteSort: true,
             autoLoad: false,  
             groupField: '', // kinda ugly way to trick the table into disable grouping by default
-            remoteGroup: true,
+            remoteGroup: false,
             autoDestroy:false,
             
             //params that will be sent with every request 
@@ -128,6 +140,9 @@
                 
                 // will be called if we get new metadata from the server. E.g. diffrent columns.
                 metachange : function(store, meta){
+                if(store.reader.meta.config.group != undefined){
+                    store.groupField = store.reader.meta.config.group;    
+                }
                 // On metadachange we have to create a new grid. Therefore destroy the old one 
                 if (grid){
                     grid.destroy();
@@ -199,8 +214,10 @@
                         }
                     })],
 
-                    view: new Ext.grid.GroupingView({
+                    view: new Ext.grid.FTWTableGroupingView({
                                forceFit:forceFit,
+                               groupMode:'value',
+                               hideGroupedColumn: true,
                                //enableGrouping:false,
                                // Text visible in the grids ui.
                                sortDescText: translate('sortDescText', 'Sort Descending'),
@@ -258,7 +275,15 @@
 
                 // render the table if ther're records to show.
                 if(store.reader.jsonData.rows.length){
+                    cstate = grid.getState();
+                    cstate['columns'][0].width = 499;
+                    cstate['columns'][2].width = 499;
+                    cstate['columns'][3].width = 499;
+                    cstate['columns'][4].width = 499;
+                    cstate['columns'][5].width = 499;
                     grid.render($this.attr('id'));
+                    grid.applyState(cstate);
+                    grid.saveState();
                 }else{
                     //show message and abord
                     $('#message_no_contents').show();  

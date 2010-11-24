@@ -140,7 +140,7 @@ class BaseTableSource(object):
 
             # add the new row in a tuple containg group and row. the generator
             # utility will then unpack the tuple.
-            new_results.append(row, label)
+            new_results.append((row, label))
 
         return new_results
 
