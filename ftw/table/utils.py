@@ -134,7 +134,8 @@ class TableGenerator(object):
                     if isinstance(value, Message):
                         value = hooks.getSite().translate(value)
                     row[key] = value
-                    row['id'] = content.id
+                    if 'id' in row:
+                        row['id'] = content.id
                 table['rows'].append(row)
 
             #add static html snippets. Eg batching, buttons, etc
