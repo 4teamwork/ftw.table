@@ -137,8 +137,8 @@ class TableGenerator(object):
                         col['sortable'] = True
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
-                    
-                meta_data['config'] ={}    
+
+                meta_data['config'] ={}
                 # if grouping is enabled add additional column
                 if self.grouping_enabled:
                     col = deepcopy(COLUMN)
@@ -157,6 +157,24 @@ class TableGenerator(object):
                 if self.options and 'auto_expand_column' in self.options:
                     aecolumn = self.options['auto_expand_column']
                     meta_data['config']['auto_expand_column'] = aecolumn
+
+            for content in self.contents:
+                row = {}
+                for column in self.columns:
+                    key =  (column.get('sort_index', None) or
+                            column['attr'] or
+                            column['title'] or
+                            column['transform'].__name__)
+
+                    value = self.get_value(content, column)
+                    if value == Missing.Value:
+                        value = ''
+                    if isinstance(value, Message):
+                        value = hooks.getSite().translate(value)
+                    row[key] = value
+                    if 'id' in row:
+                        row['id'] = content.id
+                table['rows'].append(row)
 
             #add static html snippets. Eg batching, buttons, etc
             if 'static' in self.options:
