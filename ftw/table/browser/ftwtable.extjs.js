@@ -192,27 +192,27 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                     autoHeight:true,
                     xtype: "grid",
                     //XXX: GridDragDropRowOrder has to be the first plugin!
-                    // plugins: [new Ext.ux.dd.GridDragDropRowOrder({
-                    //     copy: false, // false by default
-                    //     scrollable: true, // enable scrolling support (default is false)
-                    //     targetCfg: {}, // any properties to apply to the actual DropTarget
-                    //     listeners: {
-                    //         afterrowmove: function(dropTarget, rowIndex, rindex, selections){
-                    //             var new_order = [];
-                    //             for(var i = 0; i<store.getCount(); i++){
-                    //                 new_order.push(store.getAt(i).json.id);
-                    //             }
-                    //             $.ajax({
-                    //                url: '@@tabbed_view/reorder',
-                    //                cache: true,
-                    //                type: "POST",
-                    //                data: {
-                    //                    new_order: new_order
-                    //                }
-                    //             });
-                    //         }
-                    //     }
-                    // })],
+                    plugins: [new Ext.ux.dd.GridDragDropRowOrder({
+                        copy: false, // false by default
+                        scrollable: true, // enable scrolling support (default is false)
+                        targetCfg: {}, // any properties to apply to the actual DropTarget
+                        listeners: {
+                            afterrowmove: function(dropTarget, rowIndex, rindex, selections){
+                                var new_order = [];
+                                for(var i = 0; i<store.getCount(); i++){
+                                    new_order.push(store.getAt(i).json.id);
+                                }
+                                $.ajax({
+                                   url: '@@tabbed_view/reorder',
+                                   cache: true,
+                                   type: "POST",
+                                   data: {
+                                       new_order: new_order
+                                   }
+                                });
+                            }
+                        }
+                    })],
 
                     view: new Ext.grid.FTWTableGroupingView({
                                forceFit:forceFit,
@@ -233,11 +233,11 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                         afterrender: function(panel){
 
                             //drag 'n' drop reordering is only available if sort field is 'draggable'
-                            // if(store.sortInfo.field == 'draggable'){
-                            //     unlockDragDrop();
-                            // }else{
-                            //     lockDragDrop();
-                            // }
+                            if(store.sortInfo.field == 'draggable'){
+                                unlockDragDrop();
+                            }else{
+                                lockDragDrop();
+                            }
 
                             if(!forceFit){
                                 //ugly hacks we need to use horizontal scrolling combined with autoHeight
