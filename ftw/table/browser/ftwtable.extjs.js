@@ -155,7 +155,17 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                     direction: store.reader.meta.config.dir
                 };
 
-                var sm =  new Ext.grid.RowSelectionModel();
+                var sm =  new Ext.grid.RowSelectionModel({listeners: {
+                                selectionchange: function(smObj) {
+                                    var records = smObj.selections.map;
+                                    var ds = this.grid.store;
+                                    $this.find('input.selectable:checked').attr('checked', false);
+                                    $.each(records, function(key, value){
+                                        var index = ds.indexOfId(key);
+                                        $('input.selectable').eq(index).attr('checked', true);
+                                    });
+                                }
+                            }});
                 var columns = store.reader.meta.columns;
 
                 // Set up the ColumnModel
@@ -174,7 +184,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                 var forceFit = false;
                 for(var i=0; i < cm.columns.length; i++){
                     var col = cm.columns[i];
-                    if(col.hidden != undefined && col.hidden == true){
+                    if(col.hidden != undefined && col.hidden === true){
                         hidden_columns++;
                     }else{
                         visible_columns++;
