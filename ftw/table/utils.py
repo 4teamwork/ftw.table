@@ -158,24 +158,6 @@ class TableGenerator(object):
                     aecolumn = self.options['auto_expand_column']
                     meta_data['config']['auto_expand_column'] = aecolumn
 
-            for content in self.contents:
-                row = {}
-                for column in self.columns:
-                    key =  (column.get('sort_index', None) or
-                            column['attr'] or
-                            column['title'] or
-                            column['transform'].__name__)
-
-                    value = self.get_value(content, column)
-                    if value == Missing.Value:
-                        value = ''
-                    if isinstance(value, Message):
-                        value = hooks.getSite().translate(value)
-                    row[key] = value
-                    if 'id' in row:
-                        row['id'] = content.id
-                table['rows'].append(row)
-
             #add static html snippets. Eg batching, buttons, etc
             if 'static' in self.options:
                 meta_data['static'] = deepcopy(self.options['static'])
