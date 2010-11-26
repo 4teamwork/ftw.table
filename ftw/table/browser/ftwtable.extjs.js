@@ -236,7 +236,8 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                                showGroupsText: translate('showGroupsText', 'Show in Groups'),
                                groupByText: translate('groupByText', 'Group By This Field'),
                                // E.g.: Auftragstyp: Zum Bericht / Antrag (2 Objekte)
-                               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "'+translate('itemsPlural', 'Items')+'" : "'+translate('itemsSingular', 'Item')+'"]})'
+                               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "'+translate('itemsPlural', 'Items')+'" : "'+translate('itemsSingular', 'Item')+'"]})',
+                               showGroupName: false
                            }),
                     sm: sm,
                     listeners: {
