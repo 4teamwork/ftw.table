@@ -306,14 +306,14 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                                      store.reload();
                                    }
                         },
-                        afterrender: function(panel){
-
-                            //drag 'n' drop reordering is only available if sort field is 'draggable'
-                            if(store.sortInfo.field == 'draggable'){
-                                unlockDragDrop();
-                            }else{
-                                lockDragDrop();
-                            }
+                      viewready: function(grid) {
+                        // need to fix the table widths from store - if they are defined
+                        // there
+                        var state = Ext.state.Manager.get('ftwtable');
+                        for(var i=0; i<state.columns.length; i++) {
+                          var col = state.columns[i];
+                          grid.colModel.setColumnWidth(i, col.width);
+                        }
 
                             if(!forceFit){
                                 //ugly hacks we need to use horizontal scrolling combined with autoHeight
@@ -322,6 +322,16 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                                 //set width of the header div to the same value as the table
                                 var inner_width = $('.x-grid3-header table').width();
                                 $('.x-grid3-header').width(inner_width);
+                            }
+
+                      },
+                        afterrender: function(panel){
+
+                            //drag 'n' drop reordering is only available if sort field is 'draggable'
+                            if(store.sortInfo.field == 'draggable'){
+                                unlockDragDrop();
+                            }else{
+                                lockDragDrop();
                             }
 
                             /* meta.static contains plain html that we inject into the DOM using key+'_container' as selector.
