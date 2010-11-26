@@ -9,6 +9,38 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
     }
 });
 
+Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
+  constructor : function(config){
+        Ext.state.FTWPersistentProvider.superclass.constructor.call(this);
+        Ext.apply(this, config);
+    },
+
+    // private
+    set : function(name, value){
+        Ext.state.FTWPersistentProvider.superclass.set.call(this, name, value);
+      $.ajax({
+        url: '@@tabbed_view/setgridstate',
+        cache: false,
+        type: "POST",
+        data: {
+          // XXX does JSON.stringify work always?
+          gridstate: JSON.stringify(this.state[name]),
+          view_name: tabbedview.prop('view_name')
+        }
+      });
+    },
+
+    get : function(name, defaultValue){
+      if(!this.state[name] && store.reader.meta.config.gridstate) {
+        this.state[name] = JSON.parse(store.reader.meta.config.gridstate);
+      }
+      return typeof this.state[name] == "undefined" ?
+        defaultValue : this.state[name];
+    }
+
+
+});
+
 
 //approach for own selection model
 
@@ -105,7 +137,9 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
     store = null;
     grid = null;
     var options = null;
-    var locales = {}; // Stores the translated strings fetched from the server. Use translate(msgid, defaultValue)
+    var locales = {}; // Stores the translated strings fetched from
+  // the server. Use translate(msgid, defaultValue)
+  Ext.state.Manager.setProvider(new Ext.state.FTWPersistentProvider());
 
     $.fn.ftwtable.createTable = function(table, url, options){
         options = options;
@@ -145,7 +179,11 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                 }
                 // On metadachange we have to create a new grid. Therefore destroy the old one
                 if (grid){
-                    grid.destroy();
+                  // if the grid exists, let the state provider store
+                  // our config
+                  Ext.state.Manager.set('ftwtable', grid.getState());
+                  // and destroy the grid
+                  grid.destroy();
                 }
                 // translations contains the translated strings that will be used in the ui.
                 locales = store.reader.meta.translations;
@@ -200,6 +238,8 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                     cm: cm,
                     stripeRows: true,
                     autoHeight:true,
+                  stateful:true,
+                  stateId:"ftwtable",
                     xtype: "grid",
                     //XXX: GridDragDropRowOrder has to be the first plugin!
                     plugins: [new Ext.ux.dd.GridDragDropRowOrder({
@@ -214,7 +254,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                                 }
                                 $.ajax({
                                    url: '@@tabbed_view/reorder',
-                                   cache: true,
+                                   cache: false,
                                    type: "POST",
                                    data: {
                                        new_order: new_order
@@ -241,6 +281,25 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                            }),
                     sm: sm,
                     listeners: {
+                      //   beforestatesave: function() {
+                      //           $.ajax({
+                      //              url: '@@tabbed_view/setgridstate',
+                      //              cache: false,
+                      //              type: "POST",
+                      //              data: {
+                      //                // XXX does JSON.stringify work always?
+                      //                gridstate: JSON.stringify(grid.getState()),
+                      //                view_name: tabbedview.prop('view_name')
+                      //              }
+                      //           });
+
+                      //   },
+                      // staterestore: function() {
+                      //   console.info('YYY');
+                      //   xxx = JSON.parse(store.reader.meta.config.gridstate);
+                      // // grid.applyState(xxx);
+                      //   console.info('YYY2');
+                      // },
                         groupchange: function(grid, state) {
                                    if(!state) {
                                      store.baseParams['groupBy'] = '';
@@ -292,15 +351,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
 
                 // render the table if ther're records to show.
                 if(store.reader.jsonData.rows.length){
-                    cstate = grid.getState();
-                    cstate['columns'][0].width = 499;
-                    cstate['columns'][2].width = 499;
-                    cstate['columns'][3].width = 499;
-                    cstate['columns'][4].width = 499;
-                    cstate['columns'][5].width = 499;
                     grid.render($this.attr('id'));
-                    grid.applyState(cstate);
-                    grid.saveState();
                 }else{
                     //show message and abord
                     $('#message_no_contents').show();

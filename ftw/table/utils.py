@@ -147,6 +147,7 @@ class TableGenerator(object):
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
 
+                meta_data['config']['gridstate'] = options.get('gridstate', None)
                 meta_data['config']['sort'] = selected[0]
                 sort_order = selected[1]
                 if sort_order is None:
