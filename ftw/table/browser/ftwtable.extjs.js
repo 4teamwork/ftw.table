@@ -241,6 +241,12 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
                            }),
                     sm: sm,
                     listeners: {
+                        groupchange: function(grid, state) {
+                                   if(!state) {
+                                     store.baseParams['groupBy'] = '';
+                                     store.reload();
+                                   }
+                        },
                         afterrender: function(panel){
 
                             //drag 'n' drop reordering is only available if sort field is 'draggable'
