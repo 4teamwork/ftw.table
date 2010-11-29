@@ -198,6 +198,15 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             listeners: {
               groupchange: function(grid, state) {
                 if(!state) {
+                  // hide the groupBy column - which was just enabled
+                  // because grouping was disabled
+                  var groupByCol = grid.grid.colModel.getIndexById('groupBy');
+                  if(groupByCol !== -1) {
+                    grid.grid.colModel.setHidden(groupByCol, true);
+                  }
+
+                  // reload the store - this removes grouping and
+                  // reenables batching etc.
                   store.baseParams['groupBy'] = '';
                   store.reload();
                 }
@@ -212,7 +221,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 if(state) {
                   for(var i=0; i<state.columns.length; i++) {
                     if(state.columns[i].hidden) {
-                      grid.colModel.setHidden(i, true);
+                      var index = grid.colModel.getIndexById(state.columns[i].id);
+                      if(index !== -1) {
+                        grid.colModel.setHidden(index, true);
+                      }
                     }
                   }
                 }
@@ -226,7 +238,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 var state = Ext.state.Manager.get(stateName());
                 if(state) {
                   for(var i=0; i<state.columns.length; i++) {
-                    grid.colModel.setColumnWidth(i, state.columns[i].width);
+                    var index = grid.colModel.getIndexById(state.columns[i].id);
+                    if(index !== -1) {
+                      grid.colModel.setColumnWidth(index, state.columns[i].width);
+                    }
                   }
                 }
 
