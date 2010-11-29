@@ -42,93 +42,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
 });
 
 
-//approach for own selection model
-
-// Ext.grid.FTWTableCheckboxSelectionModel = Ext.extend(Ext.grid.RowSelectionModel, {
-//
-//
-//
-//     header : '<div class="x-grid3-hd-checker">&#160;</div>',
-//
-//     width : 20,
-//
-//     sortable : false,
-//
-//
-//     menuDisabled : true,
-//     fixed : true,
-//     hideable: false,
-//     dataIndex : '',
-//     id : 'checker',
-//     isColumn: true,
-//
-//     constructor : function(){
-//         Ext.grid.FTWTableCheckboxSelectionModel.superclass.constructor.apply(this, arguments);
-//         if(this.checkOnly){
-//             this.handleMouseDown = Ext.emptyFn;
-//         }
-//     },
-//
-//
-//     initEvents : function(){
-//         Ext.grid.FTWTableCheckboxSelectionModel.superclass.initEvents.call(this);
-//         this.grid.on('render', function(){
-//             Ext.fly(this.grid.getView().innerHd).on('mousedown', this.onHdMouseDown, this);
-//         }, this);
-//     },
-//
-//
-//     processEvent : function(name, e, grid, rowIndex, colIndex){
-//         console.log(name);
-//         if (name == 'mousedown') {
-//             this.onMouseDown(e, e.getTarget());
-//             return false;
-//         } else {
-//             return Ext.grid.Column.prototype.processEvent.apply(this, arguments);
-//         }
-//     },
-//
-//
-//     onMouseDown : function(e, t){
-//         console.log(123);
-//         if(e.button === 0 && t.className == 'x-grid3-row-checker'){
-//             e.stopEvent();
-//             var row = e.getTarget('.x-grid3-row');
-//             if(row){
-//                 var index = row.rowIndex;
-//                 if(this.isSelected(index)){
-//                     this.deselectRow(index);
-//                 }else{
-//                     this.selectRow(index, true);
-//                     this.grid.getView().focusRow(index);
-//                 }
-//             }
-//         }
-//     },
-//
-//
-//     onHdMouseDown : function(e, t) {
-//         if(t.className == 'x-grid3-hd-checker'){
-//             e.stopEvent();
-//             var hd = Ext.fly(t.parentNode);
-//             var isChecked = hd.hasClass('x-grid3-hd-checker-on');
-//             if(isChecked){
-//                 hd.removeClass('x-grid3-hd-checker-on');
-//                 this.clearSelections();
-//             }else{
-//                 hd.addClass('x-grid3-hd-checker-on');
-//                 this.selectAll();
-//             }
-//         }
-//     },
-//
-//
-//     renderer : function(v, p, record){
-//         return '<div class="x-grid3-row-checker">&#160;</div>';
-//     }
-// });
-
-//
 // create closure
 //
 (function($) {
@@ -313,6 +226,16 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   $('.x-grid3-header').width(inner_width);
                 }
 
+                // Checkboxes / radios are usually have the
+                // "selectable" css class. When using a extjs
+                // selection model, they are not selectable anymore
+                // because of the event handling system of
+                // extjs. That's why we just put a invisble div on the
+                // checkbox for preventing the browser-events beeing
+                // fired when clicking on the checkbox. The extjs
+                // selection model will now select the checkbox - if
+                // its needed - the browser and the ext js selection
+                // model will now not compete any more.
                 $('.selectable').each(function() {
                   var checkbox = $(this);
                   $('<div class="table-checkbox-overlay"></div>').css({
