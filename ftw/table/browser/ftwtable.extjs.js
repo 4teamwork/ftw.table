@@ -289,11 +289,14 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               },
               viewready: function(grid) {
                 // need to fix the table widths from store - if they are defined
-                // there
+                // there. Also hide columns marked as "hidden"
                 var state = Ext.state.Manager.get(stateName());
                 for(var i=0; i<state.columns.length; i++) {
                   var col = state.columns[i];
                   grid.colModel.setColumnWidth(i, col.width);
+                  if(col.hidden) {
+                    grid.colModel.setHidden(i, col.hidden);
+                  }
                 }
 
                 if(!forceFit){
