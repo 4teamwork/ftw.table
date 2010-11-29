@@ -281,25 +281,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             }),
             sm: sm,
             listeners: {
-              //   beforestatesave: function() {
-              //           $.ajax({
-              //              url: '@@tabbed_view/setgridstate',
-              //              cache: false,
-              //              type: "POST",
-              //              data: {
-              //                // XXX does JSON.stringify work always?
-              //                gridstate: JSON.stringify(grid.getState()),
-              //                view_name: tabbedview.prop('view_name')
-              //              }
-              //           });
-
-              //   },
-              // staterestore: function() {
-              //   console.info('YYY');
-              //   xxx = JSON.parse(store.reader.meta.config.gridstate);
-              // // grid.applyState(xxx);
-              //   console.info('YYY2');
-              // },
               groupchange: function(grid, state) {
                 if(!state) {
                   store.baseParams['groupBy'] = '';
