@@ -52,6 +52,15 @@ class ITableSource(Interface):
         """Executes the query and returns a tuple of `results` and `length`.
         """
 
+    def group_results(results, column):
+        """Does the grouping of the `results` by a specific `column` (dict
+        based column definition used by generator utility). It modifies the
+        results by extending each row with a group information. For keeping
+        the row untouched, replaces each row with a tuple containing group
+        and row, the generator utility will unpack the tuple and work with
+        the row again.
+        """
+
 
 class ITableSourceConfig(Interface):
     """A table source config provides information for the table source such as

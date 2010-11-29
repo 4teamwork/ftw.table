@@ -1,3 +1,47 @@
+Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
+    // private
+    onGroupByClick : function(){
+        this.grid.store.baseParams['groupBy'] = this.cm.getDataIndex(this.hdCtxIndex);
+        this.enableGrouping = true;
+        this.beforeMenuShow(); // Make sure the checkboxes get properly set when changing groups
+        this.refresh();
+        this.grid.store.reload();
+    }
+});
+
+Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
+  constructor : function(config){
+        Ext.state.FTWPersistentProvider.superclass.constructor.call(this);
+        Ext.apply(this, config);
+    },
+
+    // private
+    set : function(name, value){
+        Ext.state.FTWPersistentProvider.superclass.set.call(this, name, value);
+      $.ajax({
+        url: '@@tabbed_view/setgridstate',
+        cache: false,
+        type: "POST",
+        data: {
+          // XXX does JSON.stringify work always?
+          gridstate: JSON.stringify(this.state[name]),
+          view_name: tabbedview.prop('view_name')
+        }
+      });
+    },
+
+    get : function(name, defaultValue){
+      if(!this.state[name] && store.reader.meta.config.gridstate) {
+        this.state[name] = JSON.parse(store.reader.meta.config.gridstate);
+      }
+      return typeof this.state[name] == "undefined" ?
+        defaultValue : this.state[name];
+    }
+
+
+});
+
+
 //approach for own selection model
 
 // Ext.grid.FTWTableCheckboxSelectionModel = Ext.extend(Ext.grid.RowSelectionModel, {
@@ -93,7 +137,9 @@
     store = null;
     grid = null;
     var options = null;
-    var locales = {}; // Stores the translated strings fetched from the server. Use translate(msgid, defaultValue)
+    var locales = {}; // Stores the translated strings fetched from
+  // the server. Use translate(msgid, defaultValue)
+  Ext.state.Manager.setProvider(new Ext.state.FTWPersistentProvider());
 
     $.fn.ftwtable.createTable = function(table, url, options){
         options = options;
@@ -103,7 +149,7 @@
             remoteSort: true,
             autoLoad: false,
             groupField: '', // kinda ugly way to trick the table into disable grouping by default
-            remoteGroup: true,
+            remoteGroup: false,
             autoDestroy:false,
 
             //params that will be sent with every request
@@ -128,9 +174,16 @@
 
                 // will be called if we get new metadata from the server. E.g. diffrent columns.
                 metachange : function(store, meta){
+                if(store.reader.meta.config.group != undefined){
+                    store.groupField = store.reader.meta.config.group;
+                }
                 // On metadachange we have to create a new grid. Therefore destroy the old one
                 if (grid){
-                    grid.destroy();
+                  // if the grid exists, let the state provider store
+                  // our config
+                  Ext.state.Manager.set('ftwtable', grid.getState());
+                  // and destroy the grid
+                  grid.destroy();
                 }
                 // translations contains the translated strings that will be used in the ui.
                 locales = store.reader.meta.translations;
@@ -140,7 +193,17 @@
                     direction: store.reader.meta.config.dir
                 };
 
-                var sm =  new Ext.grid.RowSelectionModel();
+                var sm =  new Ext.grid.RowSelectionModel({listeners: {
+                                selectionchange: function(smObj) {
+                                    var records = smObj.selections.map;
+                                    var ds = this.grid.store;
+                                    $this.find('input.selectable:checked').attr('checked', false);
+                                    $.each(records, function(key, value){
+                                        var index = ds.indexOfId(key);
+                                        $('input.selectable').eq(index).attr('checked', true);
+                                    });
+                                }
+                            }});
                 var columns = store.reader.meta.columns;
 
                 // Set up the ColumnModel
@@ -159,7 +222,7 @@
                 var forceFit = false;
                 for(var i=0; i < cm.columns.length; i++){
                     var col = cm.columns[i];
-                    if(col.hidden != undefined && col.hidden == true){
+                    if(col.hidden != undefined && col.hidden === true){
                         hidden_columns++;
                     }else{
                         visible_columns++;
@@ -175,32 +238,36 @@
                     cm: cm,
                     stripeRows: true,
                     autoHeight:true,
+                  stateful:true,
+                  stateId:"ftwtable",
                     xtype: "grid",
                     //XXX: GridDragDropRowOrder has to be the first plugin!
-                    // plugins: [new Ext.ux.dd.GridDragDropRowOrder({
-                    //     copy: false, // false by default
-                    //     scrollable: true, // enable scrolling support (default is false)
-                    //     targetCfg: {}, // any properties to apply to the actual DropTarget
-                    //     listeners: {
-                    //         afterrowmove: function(dropTarget, rowIndex, rindex, selections){
-                    //             var new_order = [];
-                    //             for(var i = 0; i<store.getCount(); i++){
-                    //                 new_order.push(store.getAt(i).json.id);
-                    //             }
-                    //             $.ajax({
-                    //                url: '@@tabbed_view/reorder',
-                    //                cache: true,
-                    //                type: "POST",
-                    //                data: {
-                    //                    new_order: new_order
-                    //                }
-                    //             });
-                    //         }
-                    //     }
-                    // })],
+                    plugins: [new Ext.ux.dd.GridDragDropRowOrder({
+                        copy: false, // false by default
+                        scrollable: true, // enable scrolling support (default is false)
+                        targetCfg: {}, // any properties to apply to the actual DropTarget
+                        listeners: {
+                            afterrowmove: function(dropTarget, rowIndex, rindex, selections){
+                                var new_order = [];
+                                for(var i = 0; i<store.getCount(); i++){
+                                    new_order.push(store.getAt(i).json.id);
+                                }
+                                $.ajax({
+                                   url: '@@tabbed_view/reorder',
+                                   cache: false,
+                                   type: "POST",
+                                   data: {
+                                       new_order: new_order
+                                   }
+                                });
+                            }
+                        }
+                    })],
 
-                    view: new Ext.grid.GroupingView({
+                    view: new Ext.grid.FTWTableGroupingView({
                                forceFit:forceFit,
+                               groupMode:'value',
+                               hideGroupedColumn: true,
                                //enableGrouping:false,
                                // Text visible in the grids ui.
                                sortDescText: translate('sortDescText', 'Sort Descending'),
@@ -209,18 +276,44 @@
                                showGroupsText: translate('showGroupsText', 'Show in Groups'),
                                groupByText: translate('groupByText', 'Group By This Field'),
                                // E.g.: Auftragstyp: Zum Bericht / Antrag (2 Objekte)
-                               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "'+translate('itemsPlural', 'Items')+'" : "'+translate('itemsSingular', 'Item')+'"]})'
+                               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "'+translate('itemsPlural', 'Items')+'" : "'+translate('itemsSingular', 'Item')+'"]})',
+                               showGroupName: false
                            }),
                     sm: sm,
                     listeners: {
-                        afterrender: function(panel){
+                      //   beforestatesave: function() {
+                      //           $.ajax({
+                      //              url: '@@tabbed_view/setgridstate',
+                      //              cache: false,
+                      //              type: "POST",
+                      //              data: {
+                      //                // XXX does JSON.stringify work always?
+                      //                gridstate: JSON.stringify(grid.getState()),
+                      //                view_name: tabbedview.prop('view_name')
+                      //              }
+                      //           });
 
-                            //drag 'n' drop reordering is only available if sort field is 'draggable'
-                            // if(store.sortInfo.field == 'draggable'){
-                            //     unlockDragDrop();
-                            // }else{
-                            //     lockDragDrop();
-                            // }
+                      //   },
+                      // staterestore: function() {
+                      //   console.info('YYY');
+                      //   xxx = JSON.parse(store.reader.meta.config.gridstate);
+                      // // grid.applyState(xxx);
+                      //   console.info('YYY2');
+                      // },
+                        groupchange: function(grid, state) {
+                                   if(!state) {
+                                     store.baseParams['groupBy'] = '';
+                                     store.reload();
+                                   }
+                        },
+                      viewready: function(grid) {
+                        // need to fix the table widths from store - if they are defined
+                        // there
+                        var state = Ext.state.Manager.get('ftwtable');
+                        for(var i=0; i<state.columns.length; i++) {
+                          var col = state.columns[i];
+                          grid.colModel.setColumnWidth(i, col.width);
+                        }
 
                             if(!forceFit){
                                 //ugly hacks we need to use horizontal scrolling combined with autoHeight
@@ -229,6 +322,16 @@
                                 //set width of the header div to the same value as the table
                                 var inner_width = $('.x-grid3-header table').width();
                                 $('.x-grid3-header').width(inner_width);
+                            }
+
+                      },
+                        afterrender: function(panel){
+
+                            //drag 'n' drop reordering is only available if sort field is 'draggable'
+                            if(store.sortInfo.field == 'draggable'){
+                                unlockDragDrop();
+                            }else{
+                                lockDragDrop();
                             }
 
                             /* meta.static contains plain html that we inject into the DOM using key+'_container' as selector.
