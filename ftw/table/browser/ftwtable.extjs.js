@@ -312,6 +312,15 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   var inner_width = $('.x-grid3-header table').width();
                   $('.x-grid3-header').width(inner_width);
                 }
+
+                $('.selectable').each(function() {
+                  var checkbox = $(this);
+                  $('<div class="table-checkbox-overlay"></div>').css({
+                    height: checkbox.height(),
+                    width: checkbox.width(),
+                    position: 'absolute'
+                  }).insertBefore(checkbox);
+                });
               },
 
               afterrender: function(panel){
