@@ -279,7 +279,9 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "'+translate('itemsPlural', 'Items')+'" : "'+translate('itemsSingular', 'Item')+'"]})',
               showGroupName: false
             }),
+
             sm: sm,
+
             listeners: {
               groupchange: function(grid, state) {
                 if(!state) {
@@ -287,6 +289,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   store.reload();
                 }
               },
+
               viewready: function(grid) {
                 // need to fix the table widths from store - if they are defined
                 // there. Also hide columns marked as "hidden"
@@ -307,8 +310,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   var inner_width = $('.x-grid3-header table').width();
                   $('.x-grid3-header').width(inner_width);
                 }
-
               },
+
               afterrender: function(panel){
 
                 //drag 'n' drop reordering is only available if sort field is 'draggable'
