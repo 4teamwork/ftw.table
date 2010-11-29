@@ -181,7 +181,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
           if (grid){
             // if the grid exists, let the state provider store
             // our config
-            Ext.state.Manager.set('ftwtable', grid.getState());
+            Ext.state.Manager.set(stateName(), grid.getState());
             // and destroy the grid
             grid.destroy();
           }
@@ -238,8 +238,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             cm: cm,
             stripeRows: true,
             autoHeight:true,
-            stateful:true,
-            stateId:"ftwtable",
+            stateful: true,
+            stateId: stateName(),
             xtype: "grid",
             //XXX: GridDragDropRowOrder has to be the first plugin!
             plugins: [new Ext.ux.dd.GridDragDropRowOrder({
@@ -290,7 +290,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               viewready: function(grid) {
                 // need to fix the table widths from store - if they are defined
                 // there
-                var state = Ext.state.Manager.get('ftwtable');
+                var state = Ext.state.Manager.get(stateName());
                 for(var i=0; i<state.columns.length; i++) {
                   var col = state.columns[i];
                   grid.colModel.setColumnWidth(i, col.width);
@@ -378,6 +378,13 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
     }else{
       return defaultValue || key;
     }
+  };
+
+  stateName = function() {
+    // returns the name of the state - which includes the current tab
+    // since multiple states are present when switching between tabs
+    // in tabbedview
+    return 'ftwtable-'.concat(tabbedview.prop('view_name')).replace('.', '-');
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){
