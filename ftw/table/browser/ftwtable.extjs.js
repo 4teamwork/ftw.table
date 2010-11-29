@@ -203,17 +203,30 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 }
               },
 
-              viewready: function(grid) {
-                // need to fix the table widths from store - if they are defined
-                // there. Also hide columns marked as "hidden"
+              beforerender: function(grid) {
+                // When the state is loaded, somehow the columns
+                // marked as hidden are not set to hidden
+                // automatically in the column model. So let's hide
+                // them manually before rendering.
                 var state = Ext.state.Manager.get(stateName());
                 if(state) {
                   for(var i=0; i<state.columns.length; i++) {
-                    var col = state.columns[i];
-                    grid.colModel.setColumnWidth(i, col.width);
-                    if(col.hidden) {
-                      grid.colModel.setHidden(i, col.hidden);
+                    if(state.columns[i].hidden) {
+                      grid.colModel.setHidden(i, true);
                     }
+                  }
+                }
+              },
+
+              viewready: function(grid) {
+                // Somehow the width of columns, which was stored
+                // persistently in the grid state, is overriden while
+                // rendering the grid. After everything is visible we
+                // need to fix the width of each column.
+                var state = Ext.state.Manager.get(stateName());
+                if(state) {
+                  for(var i=0; i<state.columns.length; i++) {
+                    grid.colModel.setColumnWidth(i, state.columns[i].width);
                   }
                 }
 
