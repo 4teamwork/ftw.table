@@ -5,6 +5,9 @@ Changelog
 1.1c6
 -----
 
+* Do not allow to sort descending on the "draggable" column in extjs, because it does not make sense at may break the ordering.
+  [jbaumann]
+
 * Fix ordering bug, which caused that the ID of the row was missing in the extjs store
   [jbaumann]
 

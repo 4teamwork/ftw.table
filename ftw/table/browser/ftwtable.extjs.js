@@ -298,6 +298,26 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 }
                 options.onLoad();
 
+              },
+
+              sortchange: function(panel, sortInfo) {
+                // disable sorting on column "draggable" when sorting
+                // by this column. This disables reversing the sort
+                // order of "draggable", because it does not make
+                // sense (since it's objectPositionInParent)
+                var col = grid.colModel.getColumnById('draggable');
+                if(col) {
+                  if(sortInfo.field == 'draggable' && sortInfo.direction == 'ASC') {
+                    col.sortable = false;
+                  } else if(sortInfo.field == 'draggable' && sortInfo.direction == 'DESC') {
+                    // not very nice: force to sort ascending, when
+                    // sorting on "draggable". Descending does not
+                    // make any sense..
+                    store.sort(sortInfo.field, 'ASC');
+                  } else {
+                    col.sortable = true;
+                  }
+                }
               }
             }
           });
