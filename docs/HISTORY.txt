@@ -5,6 +5,9 @@ Changelog
 1.1c6
 -----
 
+* Read sort_on attribute from grid storage
+  [jbaumann]
+
 
 1.1c5
 -----

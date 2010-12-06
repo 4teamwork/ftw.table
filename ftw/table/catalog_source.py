@@ -131,6 +131,11 @@ class CatalogTableSource(BaseTableSource):
                         del query['sort_order']
                     self.config._custom_sort_method = \
                         self.config.custom_sort_indexes.get(index_type)
+
+        # special handling for EXTJ grid reordering
+        if query.get('sort_on') == 'draggable':
+            query['sort_on'] = 'getObjPositionInParent'
+
         return query
 
     def extend_query_with_textfilter(self, query, text):
