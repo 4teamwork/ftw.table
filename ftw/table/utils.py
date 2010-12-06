@@ -98,8 +98,10 @@ class TableGenerator(object):
                     if isinstance(value, Message):
                         value = hooks.getSite().translate(value)
                     row[key] = value
-                    if 'id' in row:
+                    try:
                         row['id'] = content.id
+                    except AttributeError:
+                        pass
                 table['rows'].append(row)
 
 

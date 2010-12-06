@@ -5,6 +5,9 @@ Changelog
 1.1c6
 -----
 
+* Fix ordering bug, which caused that the ID of the row was missing in the extjs store
+  [jbaumann]
+
 * Read sort_on attribute from grid storage
   [jbaumann]
 
