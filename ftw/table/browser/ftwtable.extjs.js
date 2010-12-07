@@ -330,6 +330,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               }
             }
           });
+          // end grid=
 
           // set up autoExpandColumn
           if(store.reader.meta.config.auto_expand_column!=undefined){
