@@ -90,6 +90,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
           if(store.reader.meta.config.group != undefined){
             store.groupField = store.reader.meta.config.group;
           }
+
           // On metadachange we have to create a new grid. Therefore destroy the old one
           if (grid){
             // if the grid exists, let the state provider store
@@ -98,6 +99,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             // and destroy the grid
             grid.destroy();
           }
+
           // translations contains the translated strings that will be used in the ui.
           locales = store.reader.meta.translations;
           // sorting information
@@ -117,6 +119,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               });
             }
           }});
+
           var columns = store.reader.meta.columns;
 
           // Set up the ColumnModel
@@ -128,11 +131,13 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               width: 110
             }
           });
+
           // If we have less than 5 visible columns the grid will be
           // rendered with forceFit
           var visible_columns = 0;
           var hidden_columns = 0;
           var forceFit = false;
+
           for(var i=0; i < cm.columns.length; i++){
             var col = cm.columns[i];
             if(col.hidden != undefined && col.hidden === true){
@@ -141,9 +146,11 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               visible_columns++;
             }
           }
+
           if(visible_columns<=5){
             forceFit = true;
           }
+
           grid = new Ext.grid.GridPanel({
             //set up the GridPanel
             columnLines: true,
@@ -154,12 +161,14 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             stateful: true,
             stateId: stateName(),
             xtype: "grid",
+
             //XXX: GridDragDropRowOrder has to be the first plugin!
             plugins: [new Ext.ux.dd.GridDragDropRowOrder({
               copy: false, // false by default
               scrollable: true, // enable scrolling support (default is false)
               targetCfg: {}, // any properties to apply to the actual DropTarget
               listeners: {
+
                 afterrowmove: function(dropTarget, rowIndex, rindex, selections){
                   var new_order = [];
                   for(var i = 0; i<store.getCount(); i++){
@@ -321,6 +330,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               }
             }
           });
+
           // set up autoExpandColumn
           if(store.reader.meta.config.auto_expand_column!=undefined){
             grid.autoExpandColumn = store.reader.meta.config.auto_expand_column;
