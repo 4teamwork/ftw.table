@@ -25,7 +25,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       data: {
         // XXX does JSON.stringify work always?
         gridstate: JSON.stringify(this.state[name]),
-        view_name: tabbedview.prop('view_name')
+        view_name: stateName()
       }
     });
   },
@@ -383,7 +383,11 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
     // returns the name of the state - which includes the current tab
     // since multiple states are present when switching between tabs
     // in tabbedview
-    return 'ftwtable-'.concat(tabbedview.prop('view_name')).replace('.', '-');
+    if(typeof(a) != "undefined") {
+      return 'ftwtable-'.concat(tabbedview.prop('view_name')).replace('.', '-');
+    } else {
+      return location.href.split('/').reverse()[0].replace('.', '-').replace('@', '');
+    }
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){

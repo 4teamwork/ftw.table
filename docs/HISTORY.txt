@@ -5,6 +5,9 @@ Changelog
 1.1c7
 -----
 
+* Fixed bug in extjs implementation: do not expect tabbedview to be there, but use it if it is
+  [jbaumann]
+
 
 1.1c6
 -----
