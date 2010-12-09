@@ -383,8 +383,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
     // returns the name of the state - which includes the current tab
     // since multiple states are present when switching between tabs
     // in tabbedview
-    if(typeof(a) != "undefined") {
-      return 'ftwtable-'.concat(tabbedview.prop('view_name')).replace('.', '-');
+    if(typeof(tabbedview) != "undefined") {
+      return tabbedview.prop('view_name').replace('.', '-');
     } else {
       return location.href.split('/').reverse()[0].replace('.', '-').replace('@', '');
     }
