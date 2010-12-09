@@ -5,6 +5,9 @@ Changelog
 1.1c8
 -----
 
+* Extjs: Fix for making batching work even when grouping enabled
+  [jbaumann]
+
 * Extjs: removed ftwtable-prefix for state storage, since this is used for guessing the view later.
   Also fixed typo in tabbedview check.
   [jbaumann]

@@ -3,6 +3,11 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   onGroupByClick : function(){
     this.grid.store.baseParams['groupBy'] = this.cm.getDataIndex(this.hdCtxIndex);
     this.enableGrouping = true;
+    // if we have a tabbedview, we need to tell it that we
+    // are not grouping anymore
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.param('groupBy', store.baseParams['groupBy']);
+    }
     this.beforeMenuShow(); // Make sure the checkboxes get properly set when changing groups
     this.refresh();
     this.grid.store.reload();
@@ -219,6 +224,12 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   store.baseParams['groupBy'] = '';
                   store.reload();
                 }
+
+                // if we have a tabbedview, we need to tell it that we
+                // are not grouping anymore
+                if(typeof(tabbedview) != "undefined") {
+                  tabbedview.param('groupBy', store.baseParams['groupBy']);
+                }
               },
 
               beforerender: function(grid) {
@@ -284,7 +295,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               },
 
               afterrender: function(panel){
-
                 //drag 'n' drop reordering is only available if sort field is 'draggable'
                 if(store.sortInfo.field == 'draggable'){
                   unlockDragDrop();
