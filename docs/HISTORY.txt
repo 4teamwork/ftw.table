@@ -5,6 +5,9 @@ Changelog
 1.1c8
 -----
 
+* Do not allow to sort by "draggable" and to group at the same - this is contradicting.
+  [jbaumann]
+
 * Extjs Checkbox: Protect-Layer ist zu klein (firefox)
   [jbaumann]
 

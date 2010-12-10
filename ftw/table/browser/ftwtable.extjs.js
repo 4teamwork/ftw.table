@@ -3,11 +3,19 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   onGroupByClick : function(){
     this.grid.store.baseParams['groupBy'] = this.cm.getDataIndex(this.hdCtxIndex);
     this.enableGrouping = true;
+
     // if we have a tabbedview, we need to tell it that we
     // are not grouping anymore
     if(typeof(tabbedview) != "undefined") {
       tabbedview.param('groupBy', store.baseParams['groupBy']);
     }
+
+    if(store.baseParams['groupBy'] && this.grid.store.sortInfo.field == 'draggable') {
+      // we are grouping and sorting by draggable - do not allow this.
+      // let's just sort by the groupBy-column
+      this.grid.store.sort(store.baseParams['groupBy'], 'ASC');
+    }
+
     this.beforeMenuShow(); // Make sure the checkboxes get properly set when changing groups
     this.refresh();
     this.grid.store.reload();
@@ -317,6 +325,20 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 }
                 options.onLoad();
 
+                // We shouldn't be able to group and sort by "draggable" at the
+                // same time.
+                // So we need to disable sorting by "draggable" when
+                // grouping is enabled, and enable it when grouping is disabled.
+                var draggableCol = grid.colModel.getColumnById('draggable');
+                if(draggableCol) {
+                  if(store.baseParams['groupBy']) {
+                    // grouping is enabled
+                    draggableCol.sortable = false;
+                  } else {
+                    // grouping is disabled
+                    draggableCol.sortable = true;
+                  }
+                }
               },
 
               sortchange: function(panel, sortInfo) {
