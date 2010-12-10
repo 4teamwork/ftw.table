@@ -147,6 +147,8 @@ class TableGenerator(object):
                     col = deepcopy(COLUMN)
                     field = deepcopy(FIELD)
                     meta_data['config']['group'] = field['name'] = col['dataIndex'] = col['header'] = col['id'] = 'groupBy'
+                    col['sortable'] = False
+                    col['hideable'] = False
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
 

@@ -5,6 +5,9 @@ Changelog
 1.1c8
 -----
 
+* Do not show "groupBy" column in column menu -> make it not hideable.
+  [jbaumann]
+
 * Do not allow to sort by "draggable" and to group at the same - this is contradicting.
   [jbaumann]
 
