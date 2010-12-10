@@ -5,6 +5,9 @@ Changelog
 1.1c8
 -----
 
+* Extjs Checkbox: Protect-Layer ist zu klein (firefox)
+  [jbaumann]
+
 * Extjs: Fix for making batching work even when grouping enabled
   [jbaumann]
 

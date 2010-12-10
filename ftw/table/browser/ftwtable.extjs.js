@@ -287,8 +287,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 $('.selectable').each(function() {
                   var checkbox = $(this);
                   $('<div class="table-checkbox-overlay"></div>').css({
-                    height: checkbox.height(),
-                    width: checkbox.width(),
+                    height: checkbox.outerHeight(),
+                    width: checkbox.outerWidth(),
                     position: 'absolute'
                   }).insertBefore(checkbox);
                 });
