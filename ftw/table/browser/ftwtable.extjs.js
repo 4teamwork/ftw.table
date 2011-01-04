@@ -299,6 +299,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                     position: 'absolute'
                   }).insertBefore(checkbox);
                 });
+
+                /* Hide the "No contents" element if we have
+                   no contents */
+                $('#message_no_contents').hide();
               },
 
               afterrender: function(panel){
@@ -422,6 +426,11 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){
+    if(store.reader.meta['static'] != undefined){
+      $.each(store.reader.meta['static'], function(key, value) {
+        $('#'+key+'_container.ftwtable').html('');
+      });
+    }
     $.fn.ftwtable.destroy();
     $.fn.ftwtable.createTable(table, query, options);
   };
