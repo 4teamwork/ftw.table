@@ -5,6 +5,9 @@ Changelog
 1.1c9
 -----
 
+* Extjs: fixed updating of static contents.
+  [jbaumann]
+
 
 1.1c8
 -----
