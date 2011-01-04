@@ -32,7 +32,7 @@ class TableGenerator(object):
     #msgids of strings that will be used in the GridView. domain=ftw.table
     _translations = ['sortDescText', 'sortAscText', 'columnsText',
                    'showGroupsText', 'groupByText', 'itemsPlural',
-                   'itemsSingular']
+                   'itemsSingular', 'selectedRowen', 'dragDropLocked']
 
     context = None
     @property

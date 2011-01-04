@@ -15,6 +15,9 @@ msgstr ""
 msgid "columnsText"
 msgstr "Spalten"
 
+msgid "dragDropLocked"
+msgstr "Drag 'n' Drop nicht möglich"
+
 msgid "groupByText"
 msgstr "Nach dieser Spalte gruppieren"
 
@@ -32,5 +35,8 @@ msgstr "Aufsteigend"
 
 msgid "sortDescText"
 msgstr "Absteigend"
+
+msgid "{0} selected rowen{1}"
+msgstr "{0} Zeile selektiert{1}"
 
 
