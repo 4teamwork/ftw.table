@@ -27,6 +27,9 @@ msgstr "Objekte"
 msgid "itemsSingular"
 msgstr "Objekt"
 
+msgid "selectedRowen"
+msgstr "{0} Zeile Selektiert"
+
 msgid "showGroupsText"
 msgstr "Gruppiert darstellen"
 
@@ -35,8 +38,5 @@ msgstr "Aufsteigend"
 
 msgid "sortDescText"
 msgstr "Absteigend"
-
-msgid "{0} selected rowen{1}"
-msgstr "{0} Zeile selektiert{1}"
 
 

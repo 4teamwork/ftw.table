@@ -394,7 +394,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   unlockDragDrop = function(){
     //XXX: We assume that [0] is the GridDragDropRowOrder plugin
     grid.plugins[0].target.unlock();
-    grid.ddText = translate('selected_rowen', '{0} selected rowen{1}');
+    grid.ddText = translate('selectedRowen', '{0} selected rowen{1}');
     $this.removeClass('draglocked');
   };
 

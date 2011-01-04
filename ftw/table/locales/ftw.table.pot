@@ -38,7 +38,7 @@ msgstr ""
 msgid "itemsSingular"
 msgstr ""
 
-msgid "{0} selected rowen{1}"
+msgid "selectedRowen"
 msgstr ""
 
 msgid "dragDropLocked"
