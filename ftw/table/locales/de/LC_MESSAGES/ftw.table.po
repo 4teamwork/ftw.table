@@ -28,7 +28,7 @@ msgid "itemsSingular"
 msgstr "Objekt"
 
 msgid "selectedRowen"
-msgstr "{0} Zeile selektiert"
+msgstr "{0} Zeile(n) selektiert"
 
 msgid "showGroupsText"
 msgstr "Gruppiert darstellen"
