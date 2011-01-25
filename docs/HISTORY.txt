@@ -4,7 +4,8 @@ Changelog
 
 1.1
 ---
-
+* Make date helper methods failsave, if there's no valid date return None.
+  [25.01.2011, mathias.leimgruber]
 
 1.1c11
 ------

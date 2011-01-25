@@ -45,13 +45,20 @@ def readable_date_time_text(item, date):
         strftimestring = "%s, %%H:%%M" % 'heute' #XXX i18n not working atm
     elif date.strftime('%Y%m%d') == yesterday:
         strftimestring = "%s, %%H:%%M" % 'gestern' #XXX i18n not working atm
-    return date.strftime(strftimestring)
+    try:
+        return date.strftime(strftimestring)
+    except ValueError:
+        return None
+
 
 def readable_date_time(item, date):
     strftimestring = '%d.%m.%Y %H:%M'
     if date == None:
         return None
-    return date.strftime(strftimestring)
+    try:
+        return date.strftime(strftimestring)
+    except ValueError:
+        return None
 
 def readable_date_text(item, date):
     today = datetime.today().strftime('%Y%m%d')
@@ -63,7 +70,11 @@ def readable_date_text(item, date):
         strftimestring = 'heute' #XXX i18n not working atm
     elif date.strftime('%Y%m%d') == yesterday:
         strftimestring = 'gestern' #XXX i18n not working atm
-    return date.strftime(strftimestring)
+    try:
+        return date.strftime(strftimestring)
+    except ValueError:
+        return None
+
 
 def readable_date(item, date):
     if not date:
@@ -71,7 +82,10 @@ def readable_date(item, date):
     strftimestring = '%d.%m.%Y'
     if date == None:
         return None
-    return date.strftime(strftimestring)
+    try:
+        return date.strftime(strftimestring)
+    except ValueError:
+        return None
 
 def linked(item, value, show_icon=True):
     url_method = lambda: '#'
