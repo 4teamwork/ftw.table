@@ -2,6 +2,10 @@ Changelog
 =========
 
 
+1.2
+---
+
+
 1.1
 ---
 * Make date helper methods failsave, if there's no valid date return None.
