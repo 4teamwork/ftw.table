@@ -285,21 +285,11 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 // "selectable" css class. When using a extjs
                 // selection model, they are not selectable anymore
                 // because of the event handling system of
-                // extjs. That's why we just put a invisble div on the
-                // checkbox for preventing the browser-events beeing
-                // fired when clicking on the checkbox. The extjs
-                // selection model will now select the checkbox - if
-                // its needed - the browser and the ext js selection
-                // model will now not compete any more.
-                $('.selectable').each(function() {
-                  var checkbox = $(this);
-                  $('<div class="table-checkbox-overlay"></div>').css({
-                    height: checkbox.outerHeight(),
-                    width: checkbox.outerWidth(),
-                    position: 'absolute'
-                  }).insertBefore(checkbox);
+                // extjs. Therefore we disable the click event on checkboxes.
+                $(".selectable").click(function(event) {
+                    event.preventDefault();
                 });
-
+                
                 /* Hide the "No contents" element if we have
                    no contents */
                 $('#message_no_contents').hide();
