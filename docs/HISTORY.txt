@@ -5,6 +5,10 @@ Changelog
 1.2
 ---
 
+* issue #845 Tabbed View: Selektieren von Zeilen klappt nicht in IE8
+  https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/845
+  [fsprenger]
+
 
 1.1
 ---
