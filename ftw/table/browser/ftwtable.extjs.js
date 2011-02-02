@@ -289,6 +289,12 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 $(".selectable").click(function(event) {
                     event.preventDefault();
                 });
+                // pre-selected checkboxes should be selected rows. We have to 
+                // tell ext-js to select these
+                var sm = grid.getSelectionModel();
+                $("input[checked=checked]").each(function(i, e) {
+                    sm.selectRow($(e).closest(".x-grid3-row").index(), 1);
+                })
                 
                 /* Hide the "No contents" element if we have
                    no contents */
