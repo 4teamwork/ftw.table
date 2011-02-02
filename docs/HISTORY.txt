@@ -4,7 +4,7 @@ Changelog
 
 1.3
 ---
-* issue #771 Standardabläufe können nicht ausgelöst werden
+* issue #771 Standardabläufe koennen nicht ausgelöst werden
   https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/771
   [fsprenger]
 
