@@ -4,6 +4,10 @@ Changelog
 
 1.3
 ---
+
+* removed umlauts
+  [ttschanz]
+
 * issue #771 Standardablaeufe koennen nicht ausgeloest werden
   https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/771
   [fsprenger]
