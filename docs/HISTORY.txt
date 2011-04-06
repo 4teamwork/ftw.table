@@ -16,6 +16,7 @@ Changelog
   https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/771
   [fsprenger]
 
+
 1.2
 ---
 
@@ -26,8 +27,10 @@ Changelog
 
 1.1
 ---
+
 * Make date helper methods failsave, if there's no valid date return None.
   [25.01.2011, mathias.leimgruber]
+
 
 1.1c11
 ------
@@ -120,11 +123,13 @@ Changelog
 
 1.0a5
 -----
+
 * #22 Verbesserungen Poi tabbed_view: added quick_preview helper
   [06.05.2010, phgross]
 
 1.0a4
 -----
+
 * Issue #55 tabbed_view for ftw_Timesheet erstellen
   https://extranet.4teamwork.ch/intranet/10-interne-projekte/teamraum/teamraum-3/tracker-teamraum3/55
   changed TableGenerator to use without the standard listing template and use a specific template
