@@ -5,6 +5,10 @@ Changelog
 1.4
 ---
 
+* cleaned up package, moved it to github (https://github.com/4teamwork/ftw.table)
+  and prepared for release on pypi
+  [jbaumann]
+
 
 1.3
 ---
