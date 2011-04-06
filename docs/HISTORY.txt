@@ -13,7 +13,6 @@ Changelog
   [fsprenger]
 
 * issue #771 Standardablaeufe koennen nicht ausgeloest werden
-  https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/771
   [fsprenger]
 
 
@@ -21,7 +20,6 @@ Changelog
 ---
 
 * issue #845 Tabbed View: Selektieren von Zeilen klappt nicht in IE8
-  https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/845
   [fsprenger]
 
 
@@ -117,7 +115,6 @@ Changelog
 ---
 
 * Issue #28 POI: Wenn im Titel ein HTML Tag vorkommt (z.B. <pre>) dann funktioniert die Auflistung im Tabbed View nicht mehr
-  https://extranet.4teamwork.ch/intranet/10-interne-projekte/ftwprodukte/tracker-ftw-produkte/28/
   added htmlentities replacing in the linked and quick_preview helper
   [26.05.2010, phgross]
 
@@ -131,7 +128,6 @@ Changelog
 -----
 
 * Issue #55 tabbed_view for ftw_Timesheet erstellen
-  https://extranet.4teamwork.ch/intranet/10-interne-projekte/teamraum/teamraum-3/tracker-teamraum3/55
   changed TableGenerator to use without the standard listing template and use a specific template
 
 1.0a3

@@ -27,14 +27,14 @@ Generate a table from a list of dicts
         <tr>
 <BLANKLINE>
                 <th id="header-name">
-                    <span>name</span> 
+                    <span>name</span>
                 </th>
-<BLANKLINE>        
-<BLANKLINE>        
+<BLANKLINE>
+<BLANKLINE>
                 <th id="header-date">
-                    <span>date</span> 
+                    <span>date</span>
                 </th>
-<BLANKLINE>       
+<BLANKLINE>
         </tr>
     </thead>
     <tbody>
@@ -101,9 +101,9 @@ make your own helper.. E.g. to reverse the names
     ...
 </table>
 
-# doesn't work atm and is not needed. Fix or discard later...  
-#generate columns from an Interface. needs some re-factoring/thinking.. not really useful atm.  
-# 
+# doesn't work atm and is not needed. Fix or discard later...
+#generate columns from an Interface. needs some re-factoring/thinking.. not really useful atm.
+#
 # >>> from zope import interface, schema
 # >>> class IEmployee(interface.Interface):
 # ...     name = schema.Text(title=u"Name")
@@ -154,15 +154,15 @@ You can overwrite/extend the the css_mapping. E.g. if you want to use swissgerma
 
 >>> css_mapping = {
 ...            'table': 'tabaeueli',
-...            'sortable': 'sortierbar', 
+...            'sortable': 'sortierbar',
 ...            'sort-selected': 'dasda',
 ...            'sort-asc': 'ufe',
 ...            'sort-desc': 'abe',
 ...            'th_prefix': 'chopf'
 ...            }
->>> print generator.generate(employees, columns, 
-...                                     sortable=sortable, 
-...                                     selected=selected, 
+>>> print generator.generate(employees, columns,
+...                                     sortable=sortable,
+...                                     selected=selected,
 ...                                     css_mapping=css_mapping)
 <table class="tabaeueli">
 ...
@@ -176,13 +176,13 @@ And now use it with plone.. and try it out with some more compley valuess
 Create some test content
 
 >>> generator = component.getUtility(ITableGenerator, 'ftw.tablegenerator')
->>> books = [('Oblomow',  'Iwan A. Gontscharow'), 
+>>> books = [('Oblomow',  'Iwan A. Gontscharow'),
 ...            ('Cuentos de amor de locura y de muerte', 'Horacio Quiroga'),
 ...            ('Die grosse Haifischjagd', 'Hunter S. Thompson'),
 ...            ('Visual Intelligence', 'Donald D. Hoffman'),
 ...            ('Silence','John Cage'),
 ...            ('Small Gods', 'Terry Pratchett'),
-...            ('How real is real?: Confusion; disinformation; communication', 'Paul Watzlawick') 
+...            ('How real is real?: Confusion; disinformation; communication', 'Paul Watzlawick')
 ...            ]
 >>> from plone.i18n.normalizer.interfaces import IIDNormalizer
 >>> normalize = component.getUtility(IIDNormalizer).normalize
@@ -199,12 +199,12 @@ now we need some helpers and "simulate" the acl
 >>> def checkbox(item, value):
 ...     return '<input type="checkbox" name="uids:list" value="%s" />' % item.UID
 >>> def linked(item, value):
-...     return '<a href="%s">%s</a>' % (item.getPath(), value) 
+...     return '<a href="%s">%s</a>' % (item.getPath(), value)
 >>> def readable_author(item, value):
 ...     return the_acl.get(value)
->>> columns = (('', checkbox), 
-...            ('Title', linked), 
-...            'Description', 
+>>> columns = (('', checkbox),
+...            ('Title', linked),
+...            'Description',
 ...            ('modified', helper.readable_date_text),
 ...            ('Creator', readable_author))
 >>> print generator.generate(results, columns)
@@ -221,7 +221,6 @@ now we need some helpers and "simulate" the acl
 </table>
 
 
-Issue #388: https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/388 
 Generate Table using a list of dicts.
 >>> columns = [
 ...           {'transform' : checkbox},
@@ -233,7 +232,7 @@ Generate Table using a list of dicts.
 ...            'column_title' : 'Author'},
 ...           {'column' : 'modified',
 ...            'transform' : helper.readable_date_text},
-...           {'column' : 'Creator'}           
+...           {'column' : 'Creator'}
 ... ]
 >>> print generator.generate(results, columns)
 <table class="listing">
@@ -253,22 +252,22 @@ Generate Table using a list of dicts.
 <BLANKLINE>
 <BLANKLINE>
                 <th id="header-sortable_title">
-                    <span>Title</span> 
+                    <span>Title</span>
                 </th>
 <BLANKLINE>
 <BLANKLINE>
                 <th id="header-Description">
-                    <span>Author</span> 
+                    <span>Author</span>
                 </th>
 <BLANKLINE>
 <BLANKLINE>
                 <th id="header-modified">
-                    <span>modified</span> 
+                    <span>modified</span>
                 </th>
 <BLANKLINE>
 <BLANKLINE>
                 <th id="header-Creator">
-                    <span>Creator</span> 
+                    <span>Creator</span>
                 </th>
 <BLANKLINE>
         </tr>
@@ -310,12 +309,12 @@ test list and dicts mixed up
         <col class="col-sortable_title" />
     ...
         <th id="header-sortable_title">
-            <span>Title</span> 
+            <span>Title</span>
         </th>
         <th id="header-sortable_title">
-            <span>Title</span> 
+            <span>Title</span>
         </th>
-    ...   
+    ...
         <td>
             <a href="/plone/Members/test_user_1_/silence">Silence</a>
         </td>
@@ -327,4 +326,4 @@ test list and dicts mixed up
 
 
 
- 
+
