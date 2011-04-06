@@ -7,7 +7,7 @@ maintainer = 'Jonas Baumann'
 setup(name='ftw.table',
       version=version,
       description='Table generator utility for use within zope.',
-      long_description=open("README.txt").read() + "\n" + \
+      long_description=open("README.rst").read() + "\n" + \
           open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
