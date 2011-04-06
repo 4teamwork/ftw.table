@@ -2,14 +2,13 @@ from setuptools import setup, find_packages
 import os
 
 version = open('ftw/table/version.txt').read().strip()
-maintainer = 'Victor baumann'
+maintainer = 'Jonas Baumann'
 
 setup(name='ftw.table',
       version=version,
-      description="Generates HTML-Tables" + \
-          ' (Maintainer %s)' % maintainer,
+      description='Table generator utility for use within zope.',
       long_description=open("README.txt").read() + "\n" + \
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+          open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Programming Language :: Python",
@@ -26,9 +25,9 @@ setup(name='ftw.table',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'setuptools',
-          # -*- Extra requirements: -*-
-      ],
+        'setuptools',
+        # -*- Extra requirements: -*-
+        ],
       extras_require={
         'extjs': ['collective.js.extjs'],
         },
