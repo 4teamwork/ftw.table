@@ -1,0 +1,57 @@
+Started by user anonymous
+Checkout:workspace / /var/lib/jenkins/jobs/ftw.table-GITHUB/workspace - hudson.remoting.LocalChannel@1371c0c
+Using strategy: Default
+Last Built Revision: Revision 6a3b2a971993c28d9ce306376f99901c60ed28a1 (origin/master)
+Checkout:workspace / /var/lib/jenkins/jobs/ftw.table-GITHUB/workspace - hudson.remoting.LocalChannel@1371c0c
+Fetching changes from the remote Git repository
+Fetching upstream changes from git@github.com:4teamwork/ftw.table.git
+Seen branch in repository origin/master
+Commencing build of Revision 6a3b2a971993c28d9ce306376f99901c60ed28a1 (origin/master)
+Checking out Revision 6a3b2a971993c28d9ce306376f99901c60ed28a1 (origin/master)
+[workspace] $ /bin/sh -xe /tmp/hudson3760318394724686993.sh
++ '[' '!' -L buildout.cfg ']'
++ '[' '!' -x bin/buildout ']'
++ bin/develop up --force
++ bin/buildout
+Develop: '/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/.'
+warning: no previously-included files matching '._*' found anywhere in distribution
+Unused options for buildout: 'eggs'.
+Updating _mr.developer.
+Updating zc-recipe-egg.
+Updating test.
+Updating coverage-report.
++ bin/test --coverage=../../coverage
+Running Products.PloneTestCase.layer.PloneSite tests:
+  Set up Testing.ZopeTestCase.layer.ZopeLite in 21.983 seconds.
+  Set up Products.PloneTestCase.layer.ZCML in 41.159 seconds.
+  Set up Products.PloneTestCase.layer.PloneSite in 1 minutes 15.898 seconds.
+  Ran 1 tests with 0 failures and 0 errors in 8.495 seconds.
+Tearing down left over layers:
+  Tear down Products.PloneTestCase.layer.PloneSite in 3.995 seconds.
+  Tear down Products.PloneTestCase.layer.ZCML in 0.028 seconds.
+  Tear down Testing.ZopeTestCase.layer.ZopeLite in 0.000 seconds.
+lines   cov%   module   (path)
+   60    45%   ftw.table.basesource   (/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/ftw/table/basesource.py)
+   94    30%   ftw.table.catalog_source   (/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/ftw/table/catalog_source.py)
+   35    88%   ftw.table.column   (/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/ftw/table/column.py)
+  117    35%   ftw.table.helper   (/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/ftw/table/helper.py)
+   79   100%   ftw.table.interfaces   (/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/ftw/table/interfaces.py)
+   21    95%   ftw.table.tests   (/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/ftw/table/tests.py)
+  207    51%   ftw.table.utils   (/var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/ftw/table/utils.py)
++ bin/coveragereport
++ pylint ftw.table-GITHUB
++ tee pylint.txt
+ftw.table-GITHUB:1: [F0001] No module named table-GITHUB
+[TASKS] Scanning workspace files for tasks...
+Recording test results
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : /var/lib/jenkins/scripts/git-note-result-async.sh
+[workspace] $ /bin/sh -xe /tmp/hudson8973248689373572341.sh
++ /var/lib/jenkins/scripts/git-note-result-async.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[htmlpublisher] Archiving HTML reports...
+[htmlpublisher] Archiving at PROJECT level /var/lib/jenkins/jobs/ftw.table-GITHUB/workspace/report to /var/lib/jenkins/jobs/ftw.table-GITHUB/htmlreports/Coverage_report
+Finished: SUCCESS
