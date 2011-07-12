@@ -5,6 +5,12 @@ Changelog
 1.5
 ---
 
+* enabled resizable also for the last column
+  [fsprenger]
+  
+* fixed batching_enabled attribute for the CatalogTableSource
+  [phgross]
+
 
 1.4
 ---

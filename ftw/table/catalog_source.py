@@ -39,6 +39,7 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
     depth = -1
     types = []
     object_provides = None
+    batching_enabled = True
     search_options = {}
     custom_sort_indexes = {
             'Products.PluginIndexes.DateIndex.DateIndex': default_custom_sort}

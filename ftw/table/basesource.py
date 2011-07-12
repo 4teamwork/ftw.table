@@ -68,7 +68,7 @@ class BaseTableSource(object):
                 query, self.config.filter_text)
 
         # batching
-        if self.config.batching_enabled and not self.lazy:
+        if self.config.batching_enabled and not self.config.lazy:
             query = self.extend_query_with_batching(query)
 
         return query
