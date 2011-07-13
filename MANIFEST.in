@@ -4,3 +4,4 @@ include *.txt
 include *.rst
 global-exclude *.pyc
 global-exclude ._*
+global-exclude *.mo
