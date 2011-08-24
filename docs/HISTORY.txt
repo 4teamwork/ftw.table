@@ -5,6 +5,8 @@ Changelog
 1.6
 ---
 
+* added test-buildout for plone 4.1
+  [eschmutz]
 
 1.5
 ---
