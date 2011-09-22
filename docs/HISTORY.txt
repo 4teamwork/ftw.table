@@ -5,6 +5,10 @@ Changelog
 1.6
 ---
 
+* Issue #1176 alle translatinos mit from zope.i18n import translate
+  https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/1176
+  [eschmutz]
+
 * added test-buildout for plone 4.1
   [eschmutz]
 
@@ -13,7 +17,7 @@ Changelog
 
 * enabled resizable also for the last column
   [fsprenger]
-  
+
 * fixed batching_enabled attribute for the CatalogTableSource
   [phgross]
 

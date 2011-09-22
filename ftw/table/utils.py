@@ -96,7 +96,9 @@ class TableGenerator(object):
                     if value == Missing.Value:
                         value = ''
                     if isinstance(value, Message):
-                        value = hooks.getSite().translate(value)
+                        value = translate(value,
+                                          domain='ftw.table',
+                                          context=self.context)
                     row[key] = value
                     try:
                         row['id'] = content.id
@@ -120,8 +122,9 @@ class TableGenerator(object):
                     col = deepcopy(COLUMN)
                     col['dataIndex'] = key
                     if isinstance(column['title'], Message):
-                        col['header'] = self.site.translate(column['title'],
-                                                  column['title'].domain)
+                        col['header'] = translate(column['title'],
+                                                  column['title'].domain,
+                                                  context = self.request)
                     else:
                         col['header'] = column['title']
                     col['id'] = key
@@ -171,8 +174,9 @@ class TableGenerator(object):
             #add translations for the table
             meta_data['translations'] = {}
             for msgid in msgids:
-                meta_data['translations'][msgid] = self.site.translate(msgid,
-                                                        domain='ftw.table')
+                meta_data['translations'][msgid] = translate(msgid,
+                                                        domain='ftw.table',
+                                                        context=self.context)
             if meta_data:
                 table['metaData'] = meta_data
             jsonstr = json.dumps(table)
