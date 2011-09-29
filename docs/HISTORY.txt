@@ -2,30 +2,29 @@ Changelog
 =========
 
 
-1.6
----
+1.6 (unreleased)
+----------------
 
-* Issue #1176 alle translatinos mit from zope.i18n import translate
-  https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/1176
+- adjust all translations, so that they use now the zope.i18n translate method
   [eschmutz]
 
-* added test-buildout for plone 4.1
+- added test-buildout for plone 4.1
   [eschmutz]
 
-1.5
----
+1.5 (2011-07-13)
+----------------
 
-* enabled resizable also for the last column
+- enabled resizable also for the last column
   [fsprenger]
 
-* fixed batching_enabled attribute for the CatalogTableSource
+- fixed batching_enabled attribute for the CatalogTableSource
   [phgross]
 
 
 1.4
 ---
 
-* cleaned up package, moved it to github (https://github.com/4teamwork/ftw.table)
+- cleaned up package, moved it to github (https://github.com/4teamwork/ftw.table)
   and prepared for release on pypi
   [jbaumann]
 
@@ -33,24 +32,24 @@ Changelog
 1.3
 ---
 
-* removed umlauts
+- removed umlauts
   [fsprenger]
 
-* issue #771 Standardablaeufe koennen nicht ausgeloest werden
+- issue #771 Standardablaeufe koennen nicht ausgeloest werden
   [fsprenger]
 
 
 1.2
 ---
 
-* issue #845 Tabbed View: Selektieren von Zeilen klappt nicht in IE8
+- issue #845 Tabbed View: Selektieren von Zeilen klappt nicht in IE8
   [fsprenger]
 
 
 1.1
 ---
 
-* Make date helper methods failsave, if there's no valid date return None.
+- Make date helper methods failsave, if there's no valid date return None.
   [25.01.2011, mathias.leimgruber]
 
 
@@ -61,32 +60,32 @@ Changelog
 1.1c10
 ------
 
-* fixed translations
+- fixed translations
   [ttschanz]
 
 1.1c9
 -----
 
-* Extjs: fixed updating of static contents.
+- Extjs: fixed updating of static contents.
   [jbaumann]
 
 
 1.1c8
 -----
 
-* Do not show "groupBy" column in column menu -> make it not hideable.
+- Do not show "groupBy" column in column menu -> make it not hideable.
   [jbaumann]
 
-* Do not allow to sort by "draggable" and to group at the same - this is contradicting.
+- Do not allow to sort by "draggable" and to group at the same - this is contradicting.
   [jbaumann]
 
-* Extjs Checkbox: Protect-Layer ist zu klein (firefox)
+- Extjs Checkbox: Protect-Layer ist zu klein (firefox)
   [jbaumann]
 
-* Extjs: Fix for making batching work even when grouping enabled
+- Extjs: Fix for making batching work even when grouping enabled
   [jbaumann]
 
-* Extjs: removed ftwtable-prefix for state storage, since this is used for guessing the view later.
+- Extjs: removed ftwtable-prefix for state storage, since this is used for guessing the view later.
   Also fixed typo in tabbedview check.
   [jbaumann]
 
@@ -94,27 +93,27 @@ Changelog
 1.1c7
 -----
 
-* Fixed bug in extjs implementation: do not expect tabbedview to be there, but use it if it is
+- Fixed bug in extjs implementation: do not expect tabbedview to be there, but use it if it is
   [jbaumann]
 
 
 1.1c6
 -----
 
-* Do not allow to sort descending on the "draggable" column in extjs, because it does not make sense at may break the ordering.
+- Do not allow to sort descending on the "draggable" column in extjs, because it does not make sense at may break the ordering.
   [jbaumann]
 
-* Fix ordering bug, which caused that the ID of the row was missing in the extjs store
+- Fix ordering bug, which caused that the ID of the row was missing in the extjs store
   [jbaumann]
 
-* Read sort_on attribute from grid storage
+- Read sort_on attribute from grid storage
   [jbaumann]
 
 
 1.1c5
 -----
 
-* Implemented server-side grouping in table sources.
+- Implemented server-side grouping in table sources.
   [jbaumann]
 
 
@@ -125,7 +124,7 @@ Changelog
 1.1c3
 -----
 
-* Disabled translation of column titles in template, since it would not work in json mode too.
+- Disabled translation of column titles in template, since it would not work in json mode too.
   You need to switch from tuple column definition to dict column definition or to Column-object
   definition where you can translate the column title in your own domain using Message objects.
   [28.10.2010, jbaumann]
@@ -138,20 +137,20 @@ Changelog
 1.1
 ---
 
-* Issue #28 POI: Wenn im Titel ein HTML Tag vorkommt (z.B. <pre>) dann funktioniert die Auflistung im Tabbed View nicht mehr
+- Issue #28 POI: Wenn im Titel ein HTML Tag vorkommt (z.B. <pre>) dann funktioniert die Auflistung im Tabbed View nicht mehr
   added htmlentities replacing in the linked and quick_preview helper
   [26.05.2010, phgross]
 
 1.0a5
 -----
 
-* #22 Verbesserungen Poi tabbed_view: added quick_preview helper
+- #22 Verbesserungen Poi tabbed_view: added quick_preview helper
   [06.05.2010, phgross]
 
 1.0a4
 -----
 
-* Issue #55 tabbed_view for ftw_Timesheet erstellen
+- Issue #55 tabbed_view for ftw_Timesheet erstellen
   changed TableGenerator to use without the standard listing template and use a specific template
 
 1.0a3
@@ -165,5 +164,5 @@ Changelog
 1.0
 ---
 
-* Initial release
+- Initial release
 
