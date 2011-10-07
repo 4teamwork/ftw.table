@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7 (unreleased)
+1.7 (2011-10-07)
 ----------------
 
 - https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/1224
