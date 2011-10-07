@@ -176,7 +176,7 @@ class TableGenerator(object):
             for msgid in msgids:
                 meta_data['translations'][msgid] = translate(msgid,
                                                         domain='ftw.table',
-                                                        context=self.context)
+                                                        context=self.request)
             if meta_data:
                 table['metaData'] = meta_data
             jsonstr = json.dumps(table)
