@@ -30,7 +30,7 @@ def readable_author(item, author):
     name = author
     user = item.acl_users.getUserById(author)
     if user is not None:
-        name = user.getProperty('fullname', author)
+        name = user.getProperty('fullname', author) or author
         if not len(name):
             name = author
     return '<a href="%s/author/%s">%s</a>' % (item.portal_url(), author, name)
