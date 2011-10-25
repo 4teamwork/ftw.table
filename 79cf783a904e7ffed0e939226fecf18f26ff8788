@@ -1,0 +1,279 @@
+Started by an SCM change
+Checkout:workspace / /var/lib/jenkins/jobs/ftw.table/workspace - hudson.remoting.LocalChannel@1c8401f
+Using strategy: Default
+Last Built Revision: Revision b0edea31e337cf06322e203f11616c1a6c072a56 (origin/HEAD, origin/master)
+Checkout:workspace / /var/lib/jenkins/jobs/ftw.table/workspace - hudson.remoting.LocalChannel@1c8401f
+Fetching changes from 1 remote Git repository
+Fetching upstream changes from git@github.com:4teamwork/ftw.table.git
+Seen branch in repository origin/HEAD
+Seen branch in repository origin/es_translations
+Seen branch in repository origin/master
+Seen branch in repository origin/translations
+Commencing build of Revision 79cf783a904e7ffed0e939226fecf18f26ff8788 (origin/HEAD, origin/master)
+Checking out Revision 79cf783a904e7ffed0e939226fecf18f26ff8788 (origin/HEAD, origin/master)
+Warning : There are multiple branch changesets here
+[workspace] $ /bin/sh -xe /tmp/hudson347804575776622339.sh
++ '[' '!' -L buildout.cfg ']'
++ '[' '!' -x bin/buildout ']'
++ bin/develop up --force
++ bin/buildout
+Develop: '/var/lib/jenkins/jobs/ftw.table/workspace/.'
+warning: no previously-included files matching '._*' found anywhere in distribution
+warning: no previously-included files matching '*.mo' found anywhere in distribution
+Unused options for buildout: 'eggs'.
+Updating _mr.developer.
+Updating zc-recipe-egg.
+Updating test.
+Updating coverage-report.
++ bin/test --coverage=../../coverage
+Running Products.PloneTestCase.layer.PloneSite tests:
+  Set up Testing.ZopeTestCase.layer.ZopeLite in 28.478 seconds.
+  Set up Products.PloneTestCase.layer.ZCML in 48.069 seconds.
+  Set up Products.PloneTestCase.layer.PloneSite in 1 minutes 20.084 seconds.
+  Ran 1 tests with 0 failures and 0 errors in 8.519 seconds.
+Tearing down left over layers:
+  Tear down Products.PloneTestCase.layer.PloneSite in 3.960 seconds.
+  Tear down Products.PloneTestCase.layer.ZCML in 0.028 seconds.
+  Tear down Testing.ZopeTestCase.layer.ZopeLite in 0.000 seconds.
+lines   cov%   module   (path)
+   60    45%   ftw.table.basesource   (/var/lib/jenkins/jobs/ftw.table/workspace/ftw/table/basesource.py)
+   95    31%   ftw.table.catalog_source   (/var/lib/jenkins/jobs/ftw.table/workspace/ftw/table/catalog_source.py)
+   35    88%   ftw.table.column   (/var/lib/jenkins/jobs/ftw.table/workspace/ftw/table/column.py)
+  117    35%   ftw.table.helper   (/var/lib/jenkins/jobs/ftw.table/workspace/ftw/table/helper.py)
+   79   100%   ftw.table.interfaces   (/var/lib/jenkins/jobs/ftw.table/workspace/ftw/table/interfaces.py)
+   21    95%   ftw.table.tests   (/var/lib/jenkins/jobs/ftw.table/workspace/ftw/table/tests.py)
+  211    50%   ftw.table.utils   (/var/lib/jenkins/jobs/ftw.table/workspace/ftw/table/utils.py)
++ bin/coveragereport
++ pylint ftw.table
++ tee pylint.txt
+ftw/table/helper.py:13: [C0301] Line too long (190/80)
+ftw/table/helper.py:17: [C0301] Line too long (259/80)
+ftw/table/helper.py:134: [C0301] Line too long (90/80)
+ftw/table/helper.py:135: [C0301] Line too long (96/80)
+ftw/table/helper.py:137: [C0301] Line too long (100/80)
+ftw/table/helper.py:27: [W0511] TODO: terribly inefficient. Make some HelperCommons or something
+ftw/table/helper.py:45: [W0511] XXX i18n not working atm
+ftw/table/helper.py:47: [W0511] XXX i18n not working atm
+ftw/table/helper.py:70: [W0511] XXX i18n not working atm
+ftw/table/helper.py:72: [W0511] XXX i18n not working atm
+ftw/table/helper.py:20: [C0324, readable_size] Comma not followed by a space
+    for x in ['bytes','KB','MB','GB','TB']:
+                     ^^
+ftw/table/basesource.py:33: [E0711, BaseTableSourceConfig.get_base_query] NotImplemented raised - should raise NotImplementedError
+ftw/table/basesource.py:28: [R0201, BaseTableSourceConfig.get_base_query] Method could be a function
+ftw/table/basesource.py:76: [R0201, BaseTableSource.validate_base_query] Method could be a function
+ftw/table/basesource.py:83: [R0201, BaseTableSource.extend_query_with_ordering] Method could be a function
+ftw/table/basesource.py:90: [R0201, BaseTableSource.extend_query_with_textfilter] Method could be a function
+ftw/table/basesource.py:97: [R0201, BaseTableSource.extend_query_with_batching] Method could be a function
+ftw/table/basesource.py:109: [E0711, BaseTableSource.search_results] NotImplemented raised - should raise NotImplementedError
+ftw/table/basesource.py:105: [R0201, BaseTableSource.search_results] Method could be a function
+ftw/table/basesource.py:111: [R0201, BaseTableSource.group_results] Method could be a function
+ftw/table/catalog_source.py:124: [W0212, CatalogTableSource.extend_query_with_ordering] Access to a protected member _catalog of a client class
+ftw/table/catalog_source.py:91: [W0201, CatalogTableSource.catalog] Attribute '_catalog' defined outside __init__
+ftw/table/utils.py:152: [C0301] Line too long (123/80)
+ftw/table/utils.py:158: [C0301] Line too long (81/80)
+ftw/table/utils.py:238: [C0301] Line too long (82/80)
+ftw/table/utils.py:268: [C0301] Line too long (93/80)
+ftw/table/utils.py:57: [W0511] TODO: implement json support
+ftw/table/utils.py:59: [W0511] XXX
+ftw/table/utils.py:67: [W0511] XXX dirty
+ftw/table/utils.py:7: [W0403] Relative import 'column', should be 'ftw.table.column'
+ftw/table/utils.py:17: [R0902, TableGenerator] Too many instance attributes (8/7)
+ftw/table/utils.py:39: [R0201, TableGenerator.request] Method could be a function
+ftw/table/utils.py:44: [R0201, TableGenerator.site] Method could be a function
+ftw/table/utils.py:47: [W0102, TableGenerator.generate] Dangerous default value {} as argument
+ftw/table/utils.py:47: [W0102, TableGenerator.generate] Dangerous default value [] as argument
+ftw/table/utils.py:47: [W0102, TableGenerator.generate] Dangerous default value {} as argument
+ftw/table/utils.py:47: [R0913, TableGenerator.generate] Too many arguments (11/5)
+ftw/table/utils.py:47: [R0914, TableGenerator.generate] Too many local variables (25/15)
+ftw/table/utils.py:147: [C0323, TableGenerator.generate] Operator not followed by a space
+                meta_data['config'] ={}
+                                    ^
+ftw/table/utils.py:47: [R0912, TableGenerator.generate] Too many branches (26/12)
+ftw/table/utils.py:47: [R0915, TableGenerator.generate] Too many statements (89/50)
+ftw/table/utils.py:188: [R0201, TableGenerator.get_value] Method could be a function
+ftw/table/utils.py:241: [R0201, TableGenerator.process_column] Method could be a function
+ftw/table/utils.py:50: [W0201, TableGenerator.generate] Attribute 'sortable' defined outside __init__
+ftw/table/utils.py:86: [W0201, TableGenerator.generate] Attribute 'grouping_enabled' defined outside __init__
+ftw/table/utils.py:51: [W0201, TableGenerator.generate] Attribute 'selected' defined outside __init__
+ftw/table/utils.py:52: [W0201, TableGenerator.generate] Attribute 'columns' defined outside __init__
+ftw/table/utils.py:65: [W0201, TableGenerator.generate] Attribute 'css_mapping' defined outside __init__
+ftw/table/utils.py:54: [W0201, TableGenerator.generate] Attribute 'options' defined outside __init__
+ftw/table/utils.py:53: [W0201, TableGenerator.generate] Attribute 'contents' defined outside __init__
+ftw/table/column.py:7: [C0301] Line too long (150/80)
+ftw/table/column.py:12: [C0301] Line too long (101/80)
+ftw/table/column.py:18: [C0301] Line too long (136/80)
+ftw/table/column.py:24: [C0301] Line too long (136/80)
+ftw/table/column.py:36: [C0324] Comma not followed by a space
+COLUMN = {'id':'','header': '', 'dataIndex': ''}
+                 ^^
+ftw/table/column.py:46: [W0612, Column.__init__] Unused variable 'value'
+ftw/table/interfaces.py:20: [E0213, ITableSource.__init__] Method should have "self" as first argument
+ftw/table/interfaces.py:24: [E0211, ITableSource.build_query] Method has no argument
+ftw/table/interfaces.py:29: [E0213, ITableSource.validate_base_query] Method should have "self" as first argument
+ftw/table/interfaces.py:33: [E0213, ITableSource.extend_query_with_ordering] Method should have "self" as first argument
+ftw/table/interfaces.py:38: [E0213, ITableSource.extend_query_with_textfilter] Method should have "self" as first argument
+ftw/table/interfaces.py:43: [E0213, ITableSource.extend_query_with_batching] Method should have "self" as first argument
+ftw/table/interfaces.py:51: [E0213, ITableSource.search_results] Method should have "self" as first argument
+ftw/table/interfaces.py:55: [E0213, ITableSource.group_results] Method should have "self" as first argument
+ftw/table/interfaces.py:111: [E0211, ITableSourceConfig.update_config] Method has no argument
+ftw/table/interfaces.py:117: [E0211, ITableSourceConfig.get_base_query] Method has no argument
+
+Report
+======
+510 statements analysed.
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |0        |=          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |0.000    |=          |
++-------------------------+------+---------+-----------+
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |9      |9          |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |11     |11         |=          |81.82       |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|method   |36     |36         |=          |75.00       |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|function |18     |18         |=          |5.56        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |16     |16       |=          |
++-----------+-------+---------+-----------+
+|refactor   |16     |16       |=          |
++-----------+-------+---------+-----------+
+|warning    |22     |22       |=          |
++-----------+-------+---------+-----------+
+|error      |12     |12       |=          |
++-----------+-------+---------+-----------+
+
+% errors / warnings by module
+-----------------------------
+
++-------------------------+------+--------+---------+-----------+
+|module                   |error |warning |refactor |convention |
++=========================+======+========+=========+===========+
+|ftw.table.interfaces     |83.33 |0.00    |0.00     |0.00       |
++-------------------------+------+--------+---------+-----------+
+|ftw.table.basesource     |16.67 |0.00    |43.75    |0.00       |
++-------------------------+------+--------+---------+-----------+
+|ftw.table.utils          |0.00  |63.64   |56.25    |31.25      |
++-------------------------+------+--------+---------+-----------+
+|ftw.table.helper         |0.00  |22.73   |0.00     |37.50      |
++-------------------------+------+--------+---------+-----------+
+|ftw.table.catalog_source |0.00  |9.09    |0.00     |0.00       |
++-------------------------+------+--------+---------+-----------+
+|ftw.table.column         |0.00  |4.55    |0.00     |31.25      |
++-------------------------+------+--------+---------+-----------+
+
+Messages
+--------
+
++-----------+------------+
+|message id |occurrences |
++===========+============+
+|C0301      |13          |
++-----------+------------+
+|R0201      |11          |
++-----------+------------+
+|W0511      |8           |
++-----------+------------+
+|W0201      |8           |
++-----------+------------+
+|E0213      |7           |
++-----------+------------+
+|W0102      |3           |
++-----------+------------+
+|E0211      |3           |
++-----------+------------+
+|E0711      |2           |
++-----------+------------+
+|C0324      |2           |
++-----------+------------+
+|W0612      |1           |
++-----------+------------+
+|W0403      |1           |
++-----------+------------+
+|W0212      |1           |
++-----------+------------+
+|R0915      |1           |
++-----------+------------+
+|R0914      |1           |
++-----------+------------+
+|R0913      |1           |
++-----------+------------+
+|R0912      |1           |
++-----------+------------+
+|R0902      |1           |
++-----------+------------+
+|C0323      |1           |
++-----------+------------+
+
+Global evaluation
+-----------------
+Your code has been rated at 7.76/10 (previous run: 7.76/10)
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |617    |67.65 |617      |=          |
++----------+-------+------+---------+-----------+
+|docstring |157    |17.21 |157      |=          |
++----------+-------+------+---------+-----------+
+|comment   |36     |3.95  |36       |=          |
++----------+-------+------+---------+-----------+
+|empty     |102    |11.18 |102      |=          |
++----------+-------+------+---------+-----------+
+
+External dependencies
+---------------------
+::
+
+    ftw
+      \-table (ftw.table.tests)
+        \-basesource
+        | \-BaseTableSource (ftw.table.catalog_source)
+        | \-BaseTableSourceConfig (ftw.table.catalog_source)
+        \-column
+        | \-COLUMN (ftw.table.utils)
+        | \-FIELD (ftw.table.utils)
+        | \-METADATA (ftw.table.utils)
+        \-interfaces
+          \-ICatalogTableSourceConfig (ftw.table.catalog_source)
+          \-ITableSource (ftw.table.catalog_source,ftw.table.basesource)
+          \-ITableSourceConfig (ftw.table.basesource)
+
+[TASKS] Scanning workspace files for tasks...
+[TASKS] Found 8 open tasks.
+Recording test results
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : /var/lib/jenkins/scripts/git-note-result-async.sh
+[workspace] $ /bin/sh -xe /tmp/hudson3674979338070185554.sh
++ /var/lib/jenkins/scripts/git-note-result-async.sh
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+[htmlpublisher] Archiving HTML reports...
+[htmlpublisher] Archiving at PROJECT level /var/lib/jenkins/jobs/ftw.table/workspace/report to /var/lib/jenkins/jobs/ftw.table/htmlreports/Coverage_report
+Finished: SUCCESS
