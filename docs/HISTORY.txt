@@ -18,8 +18,7 @@ Changelog
 1.7 (2011-10-07)
 ----------------
 
-- https://extranet.4teamwork.ch/projects/opengever-kanton-zug/sprint-backlog/1224
-  fixed translations for extjs-table
+- fixed translations for extjs-table
   [eschmutz]
 
 
@@ -31,6 +30,7 @@ Changelog
 
 - added test-buildout for plone 4.1
   [eschmutz]
+
 
 1.5 (2011-07-13)
 ----------------
@@ -56,14 +56,11 @@ Changelog
 - removed umlauts
   [fsprenger]
 
-- issue #771 Standardablaeufe koennen nicht ausgeloest werden
-  [fsprenger]
-
 
 1.2
 ---
 
-- issue #845 Tabbed View: Selektieren von Zeilen klappt nicht in IE8
+- IE8 fix for selecting rows
   [fsprenger]
 
 
@@ -100,7 +97,7 @@ Changelog
 - Do not allow to sort by "draggable" and to group at the same - this is contradicting.
   [jbaumann]
 
-- Extjs Checkbox: Protect-Layer ist zu klein (firefox)
+- Extjs Checkbox: Protect-Layer was too small (firefox)
   [jbaumann]
 
 - Extjs: Fix for making batching work even when grouping enabled
@@ -148,31 +145,29 @@ Changelog
 - Disabled translation of column titles in template, since it would not work in json mode too.
   You need to switch from tuple column definition to dict column definition or to Column-object
   definition where you can translate the column title in your own domain using Message objects.
-  [28.10.2010, jbaumann]
-
-
-1.1c2
------
+  [jbaumann]
 
 
 1.1
 ---
 
-- Issue #28 POI: Wenn im Titel ein HTML Tag vorkommt (z.B. <pre>) dann funktioniert die Auflistung im Tabbed View nicht mehr
-  added htmlentities replacing in the linked and quick_preview helper
-  [26.05.2010, phgross]
+- added htmlentities replacing in the linked and quick_preview helper
+  [phgross]
+
 
 1.0a5
 -----
 
-- #22 Verbesserungen Poi tabbed_view: added quick_preview helper
-  [06.05.2010, phgross]
+- added quick_preview helper
+  [phgross]
+
 
 1.0a4
 -----
 
-- Issue #55 tabbed_view for ftw_Timesheet erstellen
-  changed TableGenerator to use without the standard listing template and use a specific template
+- changed TableGenerator to use without the standard listing template and use a specific template
+  [pgross]
+
 
 1.0a3
 -----
