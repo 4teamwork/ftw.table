@@ -8,8 +8,6 @@ Changelog
 - Fix readable_author: should also work if fullname of user is None.
   [jone]
 
-- Nothing changed yet.
-
 
 1.7 (2011-10-07)
 ----------------
