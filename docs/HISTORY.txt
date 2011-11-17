@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.8 (unreleased)
-----------------
+1.7.1 (2011-11-17)
+------------------
 
 - Fix readable_author: should also work if fullname of user is None.
   [jone]
