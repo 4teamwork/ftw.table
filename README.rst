@@ -12,6 +12,12 @@ drag'n'drop ordering, checkboxes, etc.
 Links
 =====
 
-- Package on pypi: http://pypi.python.org/pypi/ftw.table
 - Main github project repository: https://github.com/4teamwork/ftw.table
 - Issue tracker: https://github.com/4teamwork/ftw.table/issues
+- Package on pypi: http://pypi.python.org/pypi/ftw.table
+
+
+Maintainer
+==========
+
+This package is produced and maintained by `4teamwork <http://www.4teamwork.ch/>`_ company.
