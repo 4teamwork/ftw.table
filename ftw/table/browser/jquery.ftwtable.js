@@ -112,15 +112,15 @@
 
   function parseParams(){
     return $.param($this.data(DATA_KEY));
-  };
+  }
 
   function onBeforeLoad(){
     return $this;
-  };
+  }
 
   function onLoad(text, status, response){
     return $this;
-  };
+  }
 
   //
   // public methods

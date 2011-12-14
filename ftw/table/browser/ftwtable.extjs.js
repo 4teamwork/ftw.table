@@ -75,8 +75,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   // the server. Use translate(msgid, defaultValue)
   Ext.state.Manager.setProvider(new Ext.state.FTWPersistentProvider());
 
-  $.fn.ftwtable.createTable = function(table, url, options){
-    options = options;
+  $.fn.ftwtable.createTable = function(table, url, opts){
+    options = opts;
     $this = table;
     store = new Ext.data.GroupingStore({
       // set up the store
