@@ -132,7 +132,7 @@
         });
     };
     
-    $.fn.ftwtable.reloadTable = function(query){ 
+    $.fn.ftwtable.reloadTable = function(table, query, options){
     };
     
     $.fn.ftwtable.select = function(start, end){ 
