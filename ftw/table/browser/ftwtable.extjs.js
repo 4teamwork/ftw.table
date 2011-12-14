@@ -22,12 +22,12 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   },
   // private
   onColumnWidthUpdated : function(col, w, tw){
-      Ext.grid.GroupingView.superclass.onColumnWidthUpdated.call(this, col, w, tw);
-      this.updateGroupWidths();
-      //set width of the header div to the same value as the table
-      //we need a few extra pixel to make the resizable handle draggable
-      var inner_width = $('.x-grid3-header table').width() + 5;
-      $('.x-grid3-header').width(inner_width);
+    Ext.grid.GroupingView.superclass.onColumnWidthUpdated.call(this, col, w, tw);
+    this.updateGroupWidths();
+    //set width of the header div to the same value as the table
+    //we need a few extra pixel to make the resizable handle draggable
+    var inner_width = $('.x-grid3-header table').width() + 5;
+    $('.x-grid3-header').width(inner_width);
   }
 });
 
@@ -66,7 +66,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
 
 // create closure
 //
-(function($) {  
+(function($) {
   $this = null; // reference to the jQuery table object
   store = null;
   grid = null;
@@ -145,12 +145,12 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
           // workaround to make the last column resizeable in IE - add an
           // empty column
           columns.push({
-              dataIndex: "dummy",
-              header: "",
-              id: "dummy",
-              menuDisabled: true,
-              sortable: false,
-              width: 1});
+            dataIndex: "dummy",
+            header: "",
+            id: "dummy",
+            menuDisabled: true,
+            sortable: false,
+            width: 1});
           // Set up the ColumnModel
 
           // Set up the ColumnModel
@@ -307,15 +307,15 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 // because of the event handling system of
                 // extjs. Therefore we disable the click event on checkboxes.
                 $(".selectable").click(function(event) {
-                    event.preventDefault();
+                  event.preventDefault();
                 });
-                // pre-selected checkboxes should be selected rows. We have to 
+                // pre-selected checkboxes should be selected rows. We have to
                 // tell ext-js to select these
                 var sm = grid.getSelectionModel();
                 $("input[checked=checked]").each(function(i, e) {
-                    sm.selectRow($(e).closest(".x-grid3-row").index(), 1);
+                  sm.selectRow($(e).closest(".x-grid3-row").index(), 1);
                 });
-                
+
                 /* Hide the "No contents" element if we have
                    no contents */
                 $('#message_no_contents').hide();
