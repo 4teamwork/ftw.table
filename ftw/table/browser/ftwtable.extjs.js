@@ -358,6 +358,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                     draggableCol.sortable = true;
                   }
                 }
+                $this.trigger('gridRendered');
               },
 
               sortchange: function(panel, sortInfo) {
