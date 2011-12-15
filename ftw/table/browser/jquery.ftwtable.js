@@ -137,11 +137,13 @@
 
   $.fn.ftwtable.createTable = function(table, query, options){
     $this.load(query, null, function(){
+      tabbedview.view_container.trigger('gridRendered');
       $o.onLoad();
     });
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){
+    $.fn.ftwtable.createTable($this, buildQuery(), $o);
   };
 
   $.fn.ftwtable.select = function(start, end){
