@@ -4,9 +4,7 @@
 (function($) {
 
   var $this = null;
-  mi = null;
   var $o = null;
-  var _params = {};
   var DATA_KEY = 'ftwtable';
 
   //
@@ -23,7 +21,6 @@
       // iterate and reformat each matched element
       return this.each(function() {
         $this = $(this);
-        mi = $this;
         $this.data(DATA_KEY, {});
         // build element specific options
         $o = $.meta ? $.extend({}, opts, $this.data()) : opts;
@@ -31,7 +28,6 @@
         methods.param('show', 'templates');
         methods.param('path', '/');
         $o.onBeforeLoad();
-        //methods.reload();
         $.fn.ftwtable.createTable($this, buildQuery(), $o);
         //add events
         // $('th.sortable', $this).live('click', function(e){
