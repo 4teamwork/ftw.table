@@ -118,6 +118,19 @@
     return $this;
   }
 
+  function get_checkbox_range(start, end) {
+    var all = $('#listing_container input[type=checkbox]:visible');
+    if (start == 'all') {
+      return all;
+
+    } else if (start && end) {
+      return all.slice(start, end + 1);
+
+    } else if (end == undefined) {
+      return all.eq(start);
+    }
+  }
+
   //
   // public methods
   //
@@ -132,13 +145,11 @@
   };
 
   $.fn.ftwtable.select = function(start, end){
-    // TODO: implement table selection
-    //console.log(start+' '+end);
+    return get_checkbox_range(start, end).attr('checked', true);
   };
 
   $.fn.ftwtable.deselect = function(start, end){
-    // TODO: implement table selection
-    //console.log(start+' '+end);
+    return get_checkbox_range(start, end).attr('checked', false);
   };
 
   $.fn.ftwtable.destroy = function(start, end){
