@@ -5,7 +5,14 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add missing features of the default ftwtable jquery plugin implementation:
+
+  - Implement selecting of checkboxes.
+  - Use prepared features of the jquery plugin for supporting both implementations (extjs + default) better.
+  - Trigger events properly.
+  - Various javascript cleanup, remove unused stuff.
+
+  [jone]
 
 
 1.7.1 (2011-11-17)
