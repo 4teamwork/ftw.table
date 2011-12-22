@@ -230,12 +230,18 @@ class TableGenerator(object):
         processed_columns = []
         if isinstance(columns, (list, tuple)):
             for column in columns:
-                processed_columns.append(self.process_column(column))
+                col = self.process_column(column)
+                if col is not None:
+                    processed_columns.append(col)
+
         elif type(columns) == type(interface.Interface):
             column = []
             fields = schema.getFields(columns).items()
             for name, field  in fields:
-                processed_columns.append(self.process_column((field.title, name)))
+                col = self.process_column((field.title, name))
+                if col is not None:
+                    processed_columns.append(col)
+
         return processed_columns
 
     def process_column(self, column):
@@ -243,9 +249,11 @@ class TableGenerator(object):
         transform = lambda x, y: y
         if isinstance(column, basestring):
             attr = sort_index = column
+
         elif isinstance(column, (list, tuple)):
             if len(column) == 1:
                 attr = sort_index = column[0]
+
             elif len(column) == 2:
                 if isinstance(column[1], basestring):
                     attr = column[0]
@@ -253,9 +261,16 @@ class TableGenerator(object):
                 elif callable(column[1]):
                     attr = sort_index = column[0]
                     transform = column[1]
+
             elif len(column) == 3:
                 attr, sort_index, transform = column
+
         elif isinstance(column, dict):
+            # skip column if condition function returns False
+            condition = column.get('condition', None)
+            if callable(condition) and condition() == False:
+                return None
+
             attr = column.get('column', attr)
             title = column.get('column_title', title)
             sort_index = column.get('sort_index', sort_index)

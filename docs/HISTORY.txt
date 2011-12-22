@@ -5,6 +5,9 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
+- Add support for condition functions in dict-based column definitions.
+  [jone]
+
 - Add missing features of the default ftwtable jquery plugin implementation:
 
   - Implement selecting of checkboxes.
