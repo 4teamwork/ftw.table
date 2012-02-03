@@ -108,7 +108,7 @@ class CatalogTableSource(BaseTableSource):
         """
 
         # special handling for EXTJ grid reordering
-        if self.request.get('sort',  '') == 'draggable':
+        if self.request.get('sort', '') == 'draggable':
             query['sort_on'] = 'getObjPositionInParent'
             if self.config.sort_reverse:
                 query['sort_order'] = 'reverse'

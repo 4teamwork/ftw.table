@@ -25,8 +25,7 @@ class TableGenerator(object):
                    'sort-selected': 'sort-selected',
                    'sort-asc': 'sort-asc',
                    'sort-reverse': 'sort-reverse',
-                   'th_prefix': 'header'
-                   }
+                   'th_prefix': 'header'}
 
 
     #msgids of strings that will be used in the GridView. domain=ftw.table
@@ -35,6 +34,7 @@ class TableGenerator(object):
                    'itemsSingular', 'selectedRowen', 'dragDropLocked']
 
     context = None
+
     @property
     def request(self):
         site = hooks.getSite()
@@ -45,14 +45,14 @@ class TableGenerator(object):
         return hooks.getSite()
 
     def generate(self, contents, columns, sortable=False,
-                 selected=(None,None), css_mapping={}, translations=[],
+                 selected=(None, None), css_mapping={}, translations=[],
                  template=None, options={}, output='html', meta_data=None):
         self.sortable = sortable
         self.selected = selected
         self.columns = self.process_columns(columns)
         self.contents = contents
         self.options = options
-        self.grouping_enabled  = False
+        self.grouping_enabled = False
 
         # TODO: implement json support
         if output == 'html':
@@ -87,7 +87,7 @@ class TableGenerator(object):
                     content, row['groupBy'] = content
 
                 for column in self.columns:
-                    key =  (column.get('sort_index', None) or
+                    key = (column.get('sort_index', None) or
                             column['attr'] or
                             column['title'] or
                             column['transform'].__name__)
@@ -112,7 +112,7 @@ class TableGenerator(object):
                 meta_data = deepcopy(METADATA)
                 for column in self.columns:
 
-                    key =  (column.get('sort_index', None) or
+                    key = (column.get('sort_index', None) or
                             column['attr'] or
                             column['title'] or
                             column['transform'].__name__)
@@ -144,18 +144,21 @@ class TableGenerator(object):
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
 
-                meta_data['config'] ={}
+                meta_data['config'] = {}
                 # if grouping is enabled add additional column
                 if self.grouping_enabled:
                     col = deepcopy(COLUMN)
                     field = deepcopy(FIELD)
-                    meta_data['config']['group'] = field['name'] = col['dataIndex'] = col['header'] = col['id'] = 'groupBy'
+                    meta_data['config']['group'] = field['name'] = \
+                        col['dataIndex'] = col['header'] = \
+                        col['id'] = 'groupBy'
                     col['sortable'] = False
                     col['hideable'] = False
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
 
-                meta_data['config']['gridstate'] = options.get('gridstate', None)
+                meta_data['config']['gridstate'] = options.get(
+                    'gridstate', None)
                 meta_data['config']['sort'] = selected[0]
                 sort_order = selected[1]
                 if sort_order is None:
@@ -184,7 +187,6 @@ class TableGenerator(object):
         else:
             return 'unsupported output format'
 
-
     def get_value(self, content, column):
         attr = column['attr']
         transform = column['transform']
@@ -192,7 +194,7 @@ class TableGenerator(object):
         value = u''
         if hasattr(content, attr):
             value = getattr(content, attr)
-        elif hasattr(content,'__iter__') and attr in content:
+        elif hasattr(content, '__iter__') and attr in content:
             value = content[attr]
         return transform(content, value)
 
@@ -208,7 +210,7 @@ class TableGenerator(object):
             if attr == self.selected[0]:
                 class_.append(self.css_mapping['sort-selected'])
                 name = 'sort-' + self.selected[1]
-                if self.css_mapping.has_key(name):
+                if name in self.css_mapping:
                     class_.append(self.css_mapping[name])
             return ' '.join(class_)
         return None
@@ -218,7 +220,7 @@ class TableGenerator(object):
         attr = column['sort_index']
         if len(attr):
             id_ = attr
-        elif column.has_key('transform'):
+        elif 'transform' in column:
             name = column['transform'].__name__
             if name != '<lambda>':
                 id_ = name
@@ -237,7 +239,7 @@ class TableGenerator(object):
         elif type(columns) == type(interface.Interface):
             column = []
             fields = schema.getFields(columns).items()
-            for name, field  in fields:
+            for name, field in fields:
                 col = self.process_column((field.title, name))
                 if col is not None:
                     processed_columns.append(col)
@@ -280,6 +282,7 @@ class TableGenerator(object):
         sort_index = len(sort_index) and sort_index or attr
 
         #return attr, sort_index, transform
-        return {'attr':attr, 'title':title , 'sort_index':sort_index, 'transform': transform}
-
-
+        return {'attr': attr,
+                'title': title,
+                'sort_index': sort_index,
+                'transform': transform}

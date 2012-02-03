@@ -9,20 +9,33 @@ import os.path
 def draggable(item, value):
     return '<span id="draggable-%s" class="draggable">::</span>' % item.id
 
+
 def path_checkbox(item, value):
-    return '<input type="checkbox" class="noborder selectable" name="paths:list" id="%s" value="%s" alt="Select %s" title="Select %s" />' % (item.id, item.getPath(),  item.Title, item.Title)
+    return ''''<input type="checkbox" class="noborder selectable"
+    name="paths:list" id="%s" value="%s"
+    alt="Select %s" title="Select %s" />''' % (
+        item.id, item.getPath(), item.Title, item.Title)
+
 
 def path_radiobutton(item, value):
-    _marker = [object(),]
-    return '<input type="radio" class="noborder selectable" name="paths:list" id="%s" value="%s" alt="Select %s" title="Select %s"%s />' % (item.id, item.getPath(),  item.Title, item.Title, item.REQUEST.get('paths', _marker)[0]==item.getPath() and ' checked')
+    _marker = [object(), ]
+    return ''''<input type="radio" class="noborder selectable"
+    name="paths:list" id="%s" value="%s" alt="Select %s" '
+    title="Select %s"%s />''' % (
+        item.id, item.getPath(),
+        item.Title,
+        item.Title,
+        item.REQUEST.get('paths', _marker)[0]==item.getPath() and ' checked')
+
 
 def readable_size(item, num):
-    for x in ['bytes','KB','MB','GB','TB']:
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
         if num < 1024.0:
             return "%3.1f%s" % (num, x)
         num /= 1024.0
 
-@ram.cache(lambda m,i,author: author)
+
+@ram.cache(lambda m, i, author: author)
 def readable_author(item, author):
     #TODO: terribly inefficient. Make some HelperCommons or something
     if not author:
@@ -34,6 +47,7 @@ def readable_author(item, author):
         if not len(name):
             name = author
     return '<a href="%s/author/%s">%s</a>' % (item.portal_url(), author, name)
+
 
 def readable_date_time_text(item, date):
     today = datetime.today().strftime('%Y%m%d')
@@ -59,6 +73,7 @@ def readable_date_time(item, date):
         return date.strftime(strftimestring)
     except ValueError:
         return None
+
 
 def readable_date_text(item, date):
     today = datetime.today().strftime('%Y%m%d')
@@ -86,6 +101,7 @@ def readable_date(item, date):
         return date.strftime(strftimestring)
     except ValueError:
         return None
+
 
 def linked(item, value, show_icon=True):
     url_method = lambda: '#'
@@ -119,8 +135,10 @@ def linked(item, value, show_icon=True):
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 
+
 def linked_without_icon(item, value):
     return linked(item, value, show_icon=False)
+
 
 def quick_preview(item, value):
     url_method = lambda: '#'
@@ -131,15 +149,20 @@ def quick_preview(item, value):
         url_method = item.absolute_url
     img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
 
-    # Replace < and > with html entities, because the title becomes include with structure
-    value = value.decode('utf8').replace('<', '&lt;').replace('<', '&gt;').replace('&', '&amp;')
+    # Replace < and > with html entities, because the title becomes
+    # include with structure
+    value = value.decode('utf8').replace('<', '&lt;').replace('<', '&gt;')\
+        .replace('&', '&amp;')
 
-    link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (url_method(), img, value)
+    link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (
+        url_method(), img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 
+
 def translated_string(domain='plone'):
     factory = MessageFactory(domain)
+
     def translate(item, value):
         if not value:
             return value

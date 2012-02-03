@@ -30,7 +30,7 @@ class BaseTableSourceConfig(object):
         (e.g. portal_catalog, sqlalchemy, dict, ...).
         """
 
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class BaseTableSource(object):
@@ -106,7 +106,7 @@ class BaseTableSource(object):
         """Executes the query and returns a tuple of `results`.
         """
 
-        raise NotImplemented
+        raise NotImplementedError
 
     def group_results(self, results, column):
         """Does the grouping of the `results` by a specific `column` (dict
@@ -127,7 +127,7 @@ class BaseTableSource(object):
             value = u''
             if hasattr(row, attr):
                 value = getattr(row, attr)
-            elif hasattr(row,'__iter__') and attr in row:
+            elif hasattr(row, '__iter__') and attr in row:
                 value = row[attr]
 
             # now transform only the first distinct raw value. this makes
@@ -136,11 +136,11 @@ class BaseTableSource(object):
             if value in value_label_map:
                 label = value_label_map[value]
             else:
-                label = value_label_map[value] = column['transform'](row, value)
+                label = value_label_map[value] = column['transform'](
+                    row, value)
 
             # add the new row in a tuple containg group and row. the generator
             # utility will then unpack the tuple.
             new_results.append((row, label))
 
         return new_results
-
