@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="Five">
+
+  <include package="Products.Five" file="meta.zcml" />
+
+  <utility name="ftw.tablegenerator"
+           factory="ftw.table.utils.TableGenerator"
+           provides="ftw.table.interfaces.ITableGenerator" />
+
+
+</configure>

@@ -4,6 +4,11 @@ import os
 version = '1.7.2dev'
 maintainer = 'Jonas Baumann'
 
+tests_require = [
+    'plone.app.testing',
+    # 'plone.mocktestcase',
+    ]
+
 setup(name='ftw.table',
       version=version,
       description='Table generator utility for use within zope.',
@@ -33,8 +38,10 @@ setup(name='ftw.table',
         # -*- Extra requirements: -*-
         ],
 
+      tests_require=tests_require,
       extras_require={
         'extjs': ['collective.js.extjs'],
+        'tests': tests_require
         },
 
       entry_points="""
