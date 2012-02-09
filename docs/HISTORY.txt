@@ -5,6 +5,12 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
+- Single columns can be not sortable by adding 'no_sort' class.
+  [Julian Infanger]
+
+- Show html structure in table header.
+  [Julian Infanger]
+
 - Add support for condition functions in dict-based column definitions.
   [jone]
 

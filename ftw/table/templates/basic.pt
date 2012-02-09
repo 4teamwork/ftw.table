@@ -7,8 +7,8 @@
         <tr>
             <tal:th tal:repeat="th view/columns">
                 <th tal:attributes="id python:view.get_thid(th);
-                                    class python:view.sortable_class(th['sort_index'])">
-                    <span tal:content="python: th['title']" tal:condition="th/title"/>
+                                    class python:th['no_sort'] and 'nosort' or view.sortable_class(th['sort_index'])">
+                    <span tal:content="structure python: th['title']" tal:condition="th/title"/>
                 </th>
             </tal:th>
         </tr>
