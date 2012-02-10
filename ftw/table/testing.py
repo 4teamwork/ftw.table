@@ -1,26 +1,32 @@
-from plone.testing import Layer
-from plone.testing import zca
+from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import applyProfile
+from plone.app.testing import IntegrationTesting
 from zope.configuration import xmlconfig
-from plone.mocktestcase import MockTestCase
+from plone.testing import z2
 
 
-class FtwTableZCMLLayer(Layer):
+class FtwTableLLayer(PloneSandboxLayer):
     """A layer which only sets up the zcml, but does not start a zope
     instance.
     """
 
-    defaultBases = (zca.ZCML_DIRECTIVES, )
+    defaultBases = (PLONE_FIXTURE, )
 
-    def testSetUp(self):
-        self['configurationContext'] = zca.stackConfigurationContext(
-            self.get('configurationContext'))
+    def setUpZope(self, app, configurationContext):
 
-        import ftw.table.tests
-        xmlconfig.file('tests.zcml', ftw.table.tests,
-                       context=self['configurationContext'])
+        import ftw.table
+        xmlconfig.file('configure.zcml', ftw.table,
+                       context=configurationContext)
 
-    def testTearDown(self):
-        del self['configurationContext']
+        z2.installProduct(app, 'ftw.foo')
 
+    def setUpPloneSite(self, portal):
+        # Install into Plone site using portal_setup
+        applyProfile(portal, 'ftw.table:default')
 
-FTWTABLE_ZCML_LAYER = FtwTableZCMLLayer()
+FTW_TABLE_FIXTURE = FtwTableLLayer()
+FTW_TABLE_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(FTW_TABLE_FIXTURE, ),
+    name="ftw.table:Integration")
+

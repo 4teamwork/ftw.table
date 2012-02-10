@@ -25,7 +25,7 @@
         description=""
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
-        
+
     <genericsetup:registerProfile
         name="extjs"
         title="ftw.table:extjs"
