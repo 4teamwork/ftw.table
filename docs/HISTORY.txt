@@ -8,9 +8,6 @@ Changelog
 - Wrap icon class around objects icon.
   [Julian Infanger]
 
-- Single columns can be not sortable by adding 'no_sort' class.
-  [Julian Infanger]
-
 - Show html structure in table header.
   [Julian Infanger]
 

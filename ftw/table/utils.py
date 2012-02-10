@@ -246,7 +246,6 @@ class TableGenerator(object):
 
     def process_column(self, column):
         attr = sort_index = title = u""
-        no_sort = False
         transform = lambda x, y: y
         if isinstance(column, basestring):
             attr = sort_index = column
@@ -276,12 +275,11 @@ class TableGenerator(object):
             title = column.get('column_title', title)
             sort_index = column.get('sort_index', sort_index)
             transform = column.get('transform', transform)
-            no_sort = column.get('no_sort', False)
 
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
 
         #return attr, sort_index, transform
-        return {'attr':attr, 'title':title , 'sort_index':sort_index, 'transform': transform, 'no_sort': no_sort}
+        return {'attr':attr, 'title':title , 'sort_index':sort_index, 'transform': transform}
 
 
