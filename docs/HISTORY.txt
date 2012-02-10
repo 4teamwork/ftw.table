@@ -5,6 +5,9 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
+- Wrap icon class around objects icon.
+  [Julian Infanger]
+
 - Single columns can be not sortable by adding 'no_sort' class.
   [Julian Infanger]
 
@@ -197,4 +200,3 @@ Changelog
 ---
 
 - Initial release
-
