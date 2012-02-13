@@ -94,8 +94,6 @@ def readable_date(item, date):
     if not date:
         return u''
     strftimestring = '%d.%m.%Y'
-    if date == None:
-        return None
     try:
         return date.strftime(strftimestring)
     except (ValueError, AttributeError):

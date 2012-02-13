@@ -20,8 +20,10 @@ class  TestHelperMethods(MockTestCase):
 
         # User
         user_mock = self.mocker.mock(count=False)
-        self.expect(user_mock.getProperty('fullname', ANY)).result('Demo User Name')
+        self.userid = 'Demo User Name'
+        self.expect(user_mock.getProperty('fullname', ANY)).call(lambda x, y: self.userid)
         self.expect(self.item.acl_users.getUserById('demouserid')).result(user_mock)
+        self.expect(self.item.acl_users.getUserById('notexisting')).result(user_mock)
 
         self.replay()
 
@@ -85,6 +87,15 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             readable_author(self.item, 'demouserid'),
             '<a href="/path/to/portal/author/demouserid">Demo User Name</a>')
+
+        self.assertEqual(
+            readable_author(self.item, None),
+            '-')
+
+        self.userid = ''
+        self.assertEqual(
+            readable_author(self.item, 'notexisting'),
+            '<a href="/path/to/portal/author/notexisting">notexisting</a>')
 
     def  test_readable_date_time_text(self):
         from ftw.table.helper import readable_date_time_text
