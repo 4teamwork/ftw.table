@@ -21,9 +21,12 @@ class  TestHelperMethods(MockTestCase):
         # User
         user_mock = self.mocker.mock(count=False)
         self.userid = 'Demo User Name'
-        self.expect(user_mock.getProperty('fullname', ANY)).call(lambda x, y: self.userid)
-        self.expect(self.item.acl_users.getUserById('demouserid')).result(user_mock)
-        self.expect(self.item.acl_users.getUserById('notexisting')).result(user_mock)
+        self.expect(user_mock.getProperty('fullname', ANY)).call(
+            lambda x, y: self.userid)
+        self.expect(self.item.acl_users.getUserById('demouserid')).result(
+            user_mock)
+        self.expect(self.item.acl_users.getUserById('notexisting')).result(
+            user_mock)
 
         self.replay()
 
@@ -47,7 +50,8 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             path_radiobutton(self.item, None),
             ''''<input type="radio" class="noborder selectable"
-    name="paths:list" id="theid" value="/path/to/object" alt="Select the Title" '
+    name="paths:list" id="theid" '
+    value="/path/to/object" alt="Select the Title" '
     title="Select the Title" />''')
 
         # Chamge REQUEST params
@@ -55,7 +59,8 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             path_radiobutton(self.item, None),
             ''''<input type="radio" class="noborder selectable"
-    name="paths:list" id="theid" value="/path/to/object" alt="Select the Title" '
+    name="paths:list" id="theid" '
+    value="/path/to/object" alt="Select the Title" '
     title="Select the Title" checked />''')
 
     def test_readable_size(self):
@@ -198,22 +203,23 @@ class  TestHelperMethods(MockTestCase):
         # With a brain and with icon
         self.assertEqual(
             linked(self.item, self.item.Title),
-            u'<span class="linkWrapper"><a href="http://path/to/portal"><img src="/path/to/portal/icon.gif"/>the Title</a></span>'
-        )
+            u'<span class="linkWrapper"><a href="http://path/to/portal">'
+            '<img src="/path/to/portal/icon.gif"/>the Title</a></span>')
 
         # With a brain and without icon
         self.assertEqual(
             linked_without_icon(self.item, self.item.Title),
-            u'<span class="linkWrapper"><a href="http://path/to/portal">the Title</a></span>'
-        )
+            u'<span class="linkWrapper"><a href="http://path/to/portal">'
+            'the Title</a></span>')
 
     def test_quick_preview(self):
         from ftw.table.helper import quick_preview
 
         self.assertEqual(
             quick_preview(self.item, self.item.Title),
-            u'<span class="linkWrapper"><a class="quick_preview" href="http://path/to/portal/quick_preview"><img src="/path/to/portal/icon.gif"/>the Title</a></span>'
-        )
+            u'<span class="linkWrapper"><a class="quick_preview"'
+            'href="http://path/to/portal/quick_preview">'
+            '<img src="/path/to/portal/icon.gif"/>the Title</a></span>')
 
     def test_translated_string(self):
         """Translate something from ftw.table domain"""
@@ -221,13 +227,10 @@ class  TestHelperMethods(MockTestCase):
 
         self.assertEqual(
             translated_string('ftw.table')(self.item, u'sortAscText'),
-            u'sortAscText'
-        )
+            u'sortAscText')
         self.assertEqual(
             translated_string('ftw.table')(self.item, None),
-            None
-        )
+            None)
         self.assertEqual(
             translated_string('ftw.table')(self.item, 'sortAscText'),
-            u'sortAscText'
-        )
+            u'sortAscText')

@@ -21,9 +21,15 @@ class TestHTMLTableGenerator(unittest.TestCase):
         from datetime import datetime, timedelta
         today = datetime.today()
         employees = [
-            {'name': 'Rincewind', 'date': datetime(today.year, today.month, today.day, 12, 30)},
-            {'name': 'Ponder Stibbons', 'date': datetime(today.year, today.month, today.day, 11, 30)-timedelta(1)},
-            {'name': 'The Librarian', 'date': datetime(2009,1,05, 17, 0)},
+            {'name': 'Rincewind', 'date': datetime(
+                today.year, today.month, today.day, 12, 30)},
+            {'name': 'Ponder Stibbons', 'date': datetime(
+                today.year,
+                today.month,
+                today.day,
+                11, 30)-timedelta(1)},
+            {'name': 'The Librarian', 'date': datetime(
+                2009, 1, 05, 17, 0)},
         ]
         columns = ('name', 'date')
         html_output = generator.generate(employees, columns)
@@ -100,7 +106,8 @@ class TestHTMLTableGenerator(unittest.TestCase):
         self.assertEqual(
             parsed.getElementsByTagName('th')[0]._attrs['class'].nodeValue,
             'sortable')
-        self.assertFalse('class' in parsed.getElementsByTagName('th')[1]._attrs)
+        self.assertFalse(
+            'class' in parsed.getElementsByTagName('th')[1]._attrs)
 
     def test_init_sort_direction_column(self):
         """Make columns sortable and set init
@@ -110,10 +117,11 @@ class TestHTMLTableGenerator(unittest.TestCase):
             {'name': 'some name', 'date': 'somedate'},
         ]
         columns = ('name', 'date')
-        selected = ('name','asc')
+        selected = ('name', 'asc')
         parsed = parseString(
-            generator.generate(employees, columns, sortable=True, selected=selected)
-            )
+            generator.generate(
+                employees, columns, sortable=True, selected=selected))
+
         self.assertEqual(
             parsed.getElementsByTagName('th')[0]._attrs['class'].nodeValue,
             'sortable sort-selected sort-asc')
@@ -126,7 +134,7 @@ class TestHTMLTableGenerator(unittest.TestCase):
             {'name': 'some name', 'date': 'somedate'},
         ]
         columns = ('name', 'date')
-        selected = ('name','asc')
+        selected = ('name', 'asc')
 
         # use alternate css classes
         css_mapping = {
@@ -135,8 +143,8 @@ class TestHTMLTableGenerator(unittest.TestCase):
                 'sort-selected': 'CustomSelectedClass',
                 'sort-asc': 'CustomUpClass',
                 'sort-desc': 'CustomDownClass',
-                'th_prefix': 'custom-header-prefix'
-                }
+                'th_prefix': 'custom-header-prefix'}
+
         # We do not use minidom to parse. Just check if the given html snippeds
         # are available
         html = generator.generate(
@@ -145,13 +153,15 @@ class TestHTMLTableGenerator(unittest.TestCase):
             sortable=True,
             selected=selected,
             css_mapping=css_mapping)
-        self.assertTrue('<table class="CustomTableClass">' in html) # table class
+        self.assertTrue('<table class="CustomTableClass">' in html)
         self.assertTrue(
-            '<th id="custom-header-prefix-name" class="CustomSortableClass CustomSelectedClass CustomUpClass">' in html)
+            '<th id="custom-header-prefix-name" '
+            'class="CustomSortableClass CustomSelectedClass '
+            'CustomUpClass">' in html)
 
         # Test also sort-desc css class mapping with a new generated table
         columns = ('name', 'date')
-        selected = ('date','desc')
+        selected = ('date', 'desc')
         html = generator.generate(
             employees,
             columns,
@@ -159,7 +169,8 @@ class TestHTMLTableGenerator(unittest.TestCase):
             selected=selected,
             css_mapping=css_mapping)
         self.assertTrue(
-            '<th id="custom-header-prefix-date" class="CustomSortableClass CustomSelectedClass CustomDownClass">' in html)
+            '<th id="custom-header-prefix-date" class="CustomSortableClass '
+            'CustomSelectedClass CustomDownClass">' in html)
 
     def test_column_definition_tuple_dict(self):
         """Generate table headers using a dict and a tuple"""
@@ -171,12 +182,11 @@ class TestHTMLTableGenerator(unittest.TestCase):
 
 
         columns = [
-                  {'column' : 'name',
-                   'column_title' : 'NAME',
-                   'sort_index' : 'sortable_name'},
+                  {'column': 'name',
+                   'column_title': 'NAME',
+                   'sort_index': 'sortable_name'},
                    ('date', 'sortable_date'),  # not so readable
-                   ('info', )
-                   ]
+                   ('info', )]
 
         html = generator.generate(employees, columns)
         # generates col tags
@@ -190,8 +200,10 @@ class TestHTMLTableGenerator(unittest.TestCase):
         # look for capitalized table column title
         parsed = parseString(html)
         self.assertEqual(
-            parsed.getElementsByTagName('th')[0].childNodes[1].childNodes[0].data,
+            parsed.getElementsByTagName('th')[0].childNodes[1]\
+                .childNodes[0].data,
             'NAME')
+
     def test_column_transform(self):
         """Transform table data"""
 
@@ -199,7 +211,6 @@ class TestHTMLTableGenerator(unittest.TestCase):
         employees = [
             {'name': 'some name', 'date': 'somedate'},
         ]
-
 
         def string_reverser(item, value):
             """ A helper receives the current item and the value to modify"""
@@ -211,8 +222,7 @@ class TestHTMLTableGenerator(unittest.TestCase):
                    'column_title': 'NAME',
                    'sort_index': 'sortable_name',
                    'transform': string_reverser},
-                   ('date', 'sortable_date', string_reverser)
-                   ]
+                   ('date', 'sortable_date', string_reverser)]
 
         html = generator.generate(employees, columns)
         self.assertTrue('eman emos' in html)
@@ -233,10 +243,8 @@ class TestHTMLTableGenerator(unittest.TestCase):
                   {'column': 'name',
                    'column_title': 'NAME',
                    'sort_index': 'sortable_name',
-                   'condition' : dummy_condition
-                   },
-                   ('date', 'sortable_date', )
-                   ]
+                   'condition': dummy_condition},
+                   ('date', 'sortable_date', )]
 
         html = generator.generate(employees, columns)
         self.assertFalse('<th id="header-sortable_name">' in html)

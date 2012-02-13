@@ -20,12 +20,14 @@ def path_checkbox(item, value):
 def path_radiobutton(item, value):
     _marker = [object(), ]
     return ''''<input type="radio" class="noborder selectable"
-    name="paths:list" id="%s" value="%s" alt="Select %s" '
+    name="paths:list" id="%s" '
+    value="%s" alt="Select %s" '
     title="Select %s"%s />''' % (
         item.id, item.getPath(),
         item.Title,
         item.Title,
-        item.REQUEST.get('paths', _marker)[0]==item.getPath() and ' checked' or '')
+        item.REQUEST.get(
+            'paths', _marker)[0]==item.getPath() and ' checked' or '')
 
 
 def readable_size(item, num):
@@ -62,7 +64,6 @@ def readable_date_time_text(item, date):
     elif date.strftime('%Y%m%d') == yesterday:
         strftimestring = "%s, %%H:%%M" % 'gestern' #XXX i18n not working atm
     return date.strftime(strftimestring)
-
 
 
 def readable_date_time(item, date):
