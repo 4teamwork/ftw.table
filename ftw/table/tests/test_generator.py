@@ -166,7 +166,7 @@ class TestHTMLTableGenerator(unittest.TestCase):
 
         generator = component.getUtility(ITableGenerator, 'ftw.tablegenerator')
         employees = [
-            {'name': 'some name', 'date': 'somedate'},
+            {'name': 'some name', 'date': 'somedate', 'info': 'someinfo'},
         ]
 
 
@@ -174,7 +174,8 @@ class TestHTMLTableGenerator(unittest.TestCase):
                   {'column' : 'name',
                    'column_title' : 'NAME',
                    'sort_index' : 'sortable_name'},
-                   ('date', 'sortable_date') # not so readable
+                   ('date', 'sortable_date'),  # not so readable
+                   ('info', )
                    ]
 
         html = generator.generate(employees, columns)
@@ -208,7 +209,7 @@ class TestHTMLTableGenerator(unittest.TestCase):
         columns = [
                   {'column': 'name',
                    'column_title': 'NAME',
-                   'sort_index': 'sortable_name', 
+                   'sort_index': 'sortable_name',
                    'transform': string_reverser},
                    ('date', 'sortable_date', string_reverser)
                    ]
@@ -216,3 +217,26 @@ class TestHTMLTableGenerator(unittest.TestCase):
         html = generator.generate(employees, columns)
         self.assertTrue('eman emos' in html)
         self.assertTrue('etademos' in html)
+
+    def test_column_condition(self):
+        """It's possible to hide columns by a given condition
+        Only in dict representation possible"""
+
+        generator = component.getUtility(ITableGenerator, 'ftw.tablegenerator')
+        employees = [
+            {'name': 'some name', 'date': 'somedate'},
+        ]
+
+        def dummy_condition():
+            return False
+        columns = [
+                  {'column': 'name',
+                   'column_title': 'NAME',
+                   'sort_index': 'sortable_name',
+                   'condition' : dummy_condition
+                   },
+                   ('date', 'sortable_date', )
+                   ]
+
+        html = generator.generate(employees, columns)
+        self.assertFalse('<th id="header-sortable_name">' in html)

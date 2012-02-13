@@ -6,7 +6,7 @@ maintainer = 'Jonas Baumann'
 
 tests_require = [
     'plone.app.testing',
-    # 'plone.mocktestcase',
+    'plone.mocktestcase',
     ]
 
 setup(name='ftw.table',
@@ -15,7 +15,8 @@ setup(name='ftw.table',
       long_description=open("README.rst").read() + "\n" + \
           open(os.path.join("docs", "HISTORY.txt")).read(),
 
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      # Get more strings from
+      # http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
@@ -41,8 +42,7 @@ setup(name='ftw.table',
       tests_require=tests_require,
       extras_require={
         'extjs': ['collective.js.extjs'],
-        'tests': tests_require
-        },
+        'tests': tests_require},
 
       entry_points="""
       # -*- Entry points: -*-
