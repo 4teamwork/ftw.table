@@ -217,7 +217,7 @@ class  TestHelperMethods(MockTestCase):
 
         self.assertEqual(
             quick_preview(self.item, self.item.Title),
-            u'<span class="linkWrapper"><a class="quick_preview"'
+            u'<span class="linkWrapper"><a class="quick_preview" '
             'href="http://path/to/portal/quick_preview">'
             '<img src="/path/to/portal/icon.gif"/>the Title</a></span>')
 
