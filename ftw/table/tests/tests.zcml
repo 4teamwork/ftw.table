@@ -2,6 +2,7 @@
            i18n_domain="Five">
 
   <include package="Products.Five" file="meta.zcml" />
+  <include package="zope.traversing" />
 
   <utility name="ftw.tablegenerator"
            factory="ftw.table.utils.TableGenerator"

@@ -1,14 +1,38 @@
-from  ftw.table.testing import FTW_TABLE_INTEGRATION_TESTING
+from ftw.table.testing import FTWTABLE_ZCML_LAYER
 from zope import component
 from ftw.table.interfaces import ITableGenerator
 from ftw.table.utils import TableGenerator
-import unittest2 as unittest
+import re
+from zope.app.component.hooks import setSite
 from xml.dom.minidom import parseString
 
+from plone.mocktestcase import MockTestCase
 
-class TestHTMLTableGenerator(unittest.TestCase):
 
-    layer = FTW_TABLE_INTEGRATION_TESTING
+def cleanup_whitespace(html):
+    """replace multiple whitespaces with one single space
+    """
+    return re.sub('\s{2,}', ' ', html)
+
+
+#class TestHTMLTableGenerator(unittest.TestCase):
+class TestHTMLTableGenerator(MockTestCase):
+
+    #layer = FTW_TABLE_INTEGRATION_TESTING
+    layer = FTWTABLE_ZCML_LAYER
+
+    def setUp(self):
+        self.site = self.mocker.mock(count=False)
+        self.request = self.mocker.mock(count=False)
+        self.response = self.mocker.mock(count=False)
+
+        setSite(self.site)
+        self.expect(self.site.REQUEST).result(self.request)
+        self.expect(self.request.debug).result(False)
+        self.expect(self.request.response).result(self.response)
+        self.expect(self.response.getHeader('Content-Type')).result('text/html')
+
+        self.replay()
 
     def test_generator_utility(self):
         """Get Utility"""
@@ -154,10 +178,10 @@ class TestHTMLTableGenerator(unittest.TestCase):
             selected=selected,
             css_mapping=css_mapping)
         self.assertTrue('<table class="CustomTableClass">' in html)
-        self.assertTrue(
+        self.assertIn(
             '<th id="custom-header-prefix-name" '
             'class="CustomSortableClass CustomSelectedClass '
-            'CustomUpClass">' in html)
+            'CustomUpClass">', cleanup_whitespace(html))
 
         # Test also sort-desc css class mapping with a new generated table
         columns = ('name', 'date')
@@ -168,9 +192,9 @@ class TestHTMLTableGenerator(unittest.TestCase):
             sortable=True,
             selected=selected,
             css_mapping=css_mapping)
-        self.assertTrue(
+        self.assertIn(
             '<th id="custom-header-prefix-date" class="CustomSortableClass '
-            'CustomSelectedClass CustomDownClass">' in html)
+            'CustomSelectedClass CustomDownClass">', cleanup_whitespace(html))
 
     def test_column_definition_tuple_dict(self):
         """Generate table headers using a dict and a tuple"""
