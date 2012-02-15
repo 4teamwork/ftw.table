@@ -5,7 +5,6 @@ from ftw.table.utils import TableGenerator
 import re
 from zope.app.component.hooks import setSite
 from xml.dom.minidom import parseString
-
 from plone.mocktestcase import MockTestCase
 
 
@@ -15,10 +14,8 @@ def cleanup_whitespace(html):
     return re.sub('\s{2,}', ' ', html)
 
 
-#class TestHTMLTableGenerator(unittest.TestCase):
 class TestHTMLTableGenerator(MockTestCase):
 
-    #layer = FTW_TABLE_INTEGRATION_TESTING
     layer = FTWTABLE_ZCML_LAYER
 
     def setUp(self):
