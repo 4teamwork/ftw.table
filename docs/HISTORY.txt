@@ -5,6 +5,12 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
+- Wrap icon class around objects icon.
+  [Julian Infanger]
+
+- Show html structure in table header.
+  [Julian Infanger]
+
 - Add support for condition functions in dict-based column definitions.
   [jone]
 
@@ -191,4 +197,3 @@ Changelog
 ---
 
 - Initial release
-
