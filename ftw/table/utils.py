@@ -25,7 +25,8 @@ class TableGenerator(object):
                    'sort-selected': 'sort-selected',
                    'sort-asc': 'sort-asc',
                    'sort-reverse': 'sort-reverse',
-                   'th_prefix': 'header'}
+                   'th_prefix': 'header',
+                   'no_sortable': 'nosort'}
 
 
     #msgids of strings that will be used in the GridView. domain=ftw.table
@@ -54,7 +55,6 @@ class TableGenerator(object):
         self.options = options
         self.grouping_enabled = False
 
-        # TODO: implement json support
         if output == 'html':
             # XXX
             # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
@@ -206,6 +206,8 @@ class TableGenerator(object):
                 class_.append(self.css_mapping['sortable'])
         elif attr in self.sortable:
             class_.append(self.css_mapping['sortable'])
+        else:
+            class_.append(self.css_mapping['no_sortable'])
         if len(class_):
             if attr == self.selected[0]:
                 class_.append(self.css_mapping['sort-selected'])
