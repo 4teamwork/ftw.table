@@ -5,6 +5,9 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
+- Add nosort class to all Columns that aren't sortable.
+  [ttschanz]
+
 - Wrap icon class around objects icon.
   [Julian Infanger]
 
