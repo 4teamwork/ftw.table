@@ -5,6 +5,9 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
+- Added some French translations
+  [ttschanz]
+
 - Wrap icon class around objects icon.
   [Julian Infanger]
 
