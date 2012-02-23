@@ -1,5 +1,7 @@
 from plone.mocktestcase import MockTestCase
 from mocker import ANY
+from zope.app.component.hooks import setSite, getSite
+from Products.CMFCore.utils import getToolByName
 
 
 class  TestHelperMethods(MockTestCase):
@@ -12,8 +14,24 @@ class  TestHelperMethods(MockTestCase):
         self.expect(self.item.getPath()).result('/path/to/object')
         self.expect(self.item.getURL()).result('http://path/to/portal')
         self.expect(self.item.getIcon).result('icon.gif')
+        self.expect(self.item.portal_type).result('MockType')
         # Simple REQUEST
         self.expect(self.item.REQUEST).call(lambda x: self.REQUEST)
+
+        # plone_utils
+        self.site = self.mocker.mock(count=False)
+        self.plone_utils = self.mocker.mock(count=False)
+        # Mock simple normalizeString Method
+        self.expect(self.plone_utils.normalizeString(ANY)).call(lambda x: x.lower())
+        setSite(self.site)
+        self.expect(getToolByName(getSite(), 'plone_utils')).result(self.plone_utils)
+
+        # Moke portal_properties
+        self.prop_tool = self.mocker.mock(count=False)
+        self.expect(self.prop_tool.get('site_properties').getProperty(
+            'typesUseViewActionInListings')).result([])
+        self.expect(getToolByName(getSite(), 'portal_properties')).result(self.prop_tool)
+
 
         # portal_url
         self.expect(self.item.portal_url()).result('/path/to/portal')
@@ -29,6 +47,8 @@ class  TestHelperMethods(MockTestCase):
             user_mock)
 
         self.replay()
+
+
 
     def test_draggable(self):
         from ftw.table.helper import draggable
@@ -204,7 +224,8 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             linked(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal">'
-            '<img src="/path/to/portal/icon.gif"/>the Title</a></span>')
+            '<span class="typeIcon contenttype-mocktype">'
+            '<img src="/path/to/portal/icon.gif"/></span>the Title</a></span>')
 
         # With a brain and without icon
         self.assertEqual(
