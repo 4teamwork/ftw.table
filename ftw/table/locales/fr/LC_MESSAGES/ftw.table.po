@@ -16,22 +16,22 @@ msgid "columnsText"
 msgstr "Colonnes"
 
 msgid "dragDropLocked"
-msgstr ""
+msgstr "Drag 'n' Drop impossible"
 
 msgid "groupByText"
-msgstr ""
+msgstr "Grouper par cette colonne"
 
 msgid "itemsPlural"
-msgstr ""
+msgstr "Objets"
 
 msgid "itemsSingular"
-msgstr ""
+msgstr "Objet"
 
 msgid "selectedRowen"
-msgstr ""
+msgstr "{0} ligne(s) sélectionnée(s)"
 
 msgid "showGroupsText"
-msgstr ""
+msgstr "Affichage groupée"
 
 msgid "sortAscText"
 msgstr "Ascendant"

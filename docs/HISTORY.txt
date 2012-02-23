@@ -8,6 +8,9 @@ Changelog
 - Add nosort class to all Columns that aren't sortable.
   [ttschanz]
 
+- Added some French translations
+  [ttschanz]
+
 - Wrap icon class around objects icon.
   [Julian Infanger]
 
