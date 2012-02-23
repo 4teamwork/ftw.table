@@ -5,6 +5,9 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
+- Added Tests
+  [mathias.leimgruber]
+
 - Add nosort class to all Columns that aren't sortable.
   [ttschanz]
 
