@@ -119,7 +119,7 @@ class TestHTMLTableGenerator(MockTestCase):
             parsed.getElementsByTagName('th')[1]._attrs['class'].nodeValue,
             'sortable')
 
-        # Add sortable class only on column 'name'
+        # Add sortable class only on column 'name', all other has a nosort class
         columns = ('name', 'date')
         sortable = ('name', )
         parsed = parseString(
@@ -127,8 +127,9 @@ class TestHTMLTableGenerator(MockTestCase):
         self.assertEqual(
             parsed.getElementsByTagName('th')[0]._attrs['class'].nodeValue,
             'sortable')
-        self.assertFalse(
-            'class' in parsed.getElementsByTagName('th')[1]._attrs)
+        self.assertEqual(
+            parsed.getElementsByTagName('th')[1]._attrs['class'].nodeValue,
+            u'nosort')
 
     def test_init_sort_direction_column(self):
         """Make columns sortable and set init
