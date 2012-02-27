@@ -224,8 +224,7 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             linked(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal">'
-            '<span class="typeIcon contenttype-mocktype">'
-            '<img src="/path/to/portal/icon.gif"/></span>the &lt;&quot;escaped&quot;&gt; Title</a></span>')
+            '<img src="/path/to/portal/icon.gif"/>the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
         # With a brain and without icon
         self.assertEqual(

@@ -113,11 +113,8 @@ def linked(item, value, show_icon=True):
         url_method = item.absolute_url
 
     if show_icon:
-        plone_utils = getToolByName(getSite(), 'plone_utils')
-        img_class = plone_utils.normalizeString(
-            'contenttype-%s' % item.portal_type)
-        img = u'<span class="typeIcon %s"><img src="%s/%s"/></span>' % (
-            img_class, item.portal_url(), item.getIcon)
+        img = u'<img src="%s/%s"/>' % (
+            item.portal_url(), item.getIcon)
     else:
         img = u''
 
