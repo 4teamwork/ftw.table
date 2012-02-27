@@ -10,7 +10,7 @@ class  TestHelperMethods(MockTestCase):
         self.REQUEST = {}
         self.item = self.mocker.mock(count=False)
         self.expect(self.item.id).result('theid')
-        self.expect(self.item.Title).result('the Title')
+        self.expect(self.item.Title).result('the <"escaped"> Title')
         self.expect(self.item.getPath()).result('/path/to/object')
         self.expect(self.item.getURL()).result('http://path/to/portal')
         self.expect(self.item.getIcon).result('icon.gif')
@@ -62,7 +62,7 @@ class  TestHelperMethods(MockTestCase):
             path_checkbox(self.item, None),
             ''''<input type="checkbox" class="noborder selectable"
     name="paths:list" id="theid" value="/path/to/object"
-    alt="Select the Title" title="Select the Title" />''')
+    alt="Select the &lt;&quot;escaped&quot;&gt; Title" title="Select the &lt;&quot;escaped&quot;&gt; Title" />''')
 
     def test_path_radiobutton(self):
         from ftw.table.helper import path_radiobutton
@@ -71,8 +71,8 @@ class  TestHelperMethods(MockTestCase):
             path_radiobutton(self.item, None),
             ''''<input type="radio" class="noborder selectable"
     name="paths:list" id="theid" '
-    value="/path/to/object" alt="Select the Title" '
-    title="Select the Title" />''')
+    value="/path/to/object" alt="Select the &lt;&quot;escaped&quot;&gt; Title" '
+    title="Select the &lt;&quot;escaped&quot;&gt; Title" />''')
 
         # Chamge REQUEST params
         self.REQUEST = {'paths': ['/path/to/object', ]}
@@ -80,8 +80,8 @@ class  TestHelperMethods(MockTestCase):
             path_radiobutton(self.item, None),
             ''''<input type="radio" class="noborder selectable"
     name="paths:list" id="theid" '
-    value="/path/to/object" alt="Select the Title" '
-    title="Select the Title" checked />''')
+    value="/path/to/object" alt="Select the &lt;&quot;escaped&quot;&gt; Title" '
+    title="Select the &lt;&quot;escaped&quot;&gt; Title" checked />''')
 
     def test_readable_size(self):
         from ftw.table.helper import readable_size
@@ -225,13 +225,13 @@ class  TestHelperMethods(MockTestCase):
             linked(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal">'
             '<span class="typeIcon contenttype-mocktype">'
-            '<img src="/path/to/portal/icon.gif"/></span>the Title</a></span>')
+            '<img src="/path/to/portal/icon.gif"/></span>the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
         # With a brain and without icon
         self.assertEqual(
             linked_without_icon(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal">'
-            'the Title</a></span>')
+            'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
     def test_quick_preview(self):
         from ftw.table.helper import quick_preview
@@ -240,7 +240,7 @@ class  TestHelperMethods(MockTestCase):
             quick_preview(self.item, self.item.Title),
             u'<span class="linkWrapper"><a class="quick_preview" '
             'href="http://path/to/portal/quick_preview">'
-            '<img src="/path/to/portal/icon.gif"/>the Title</a></span>')
+            '<img src="/path/to/portal/icon.gif"/>the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
     def test_translated_string(self):
         """Translate something from ftw.table domain"""

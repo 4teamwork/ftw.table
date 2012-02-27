@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from plone.memoize import ram
 from zope.app.component.hooks import getSite
 from zope.i18nmessageid import MessageFactory
+import cgi
 import os.path
 
 
@@ -11,21 +12,23 @@ def draggable(item, value):
 
 
 def path_checkbox(item, value):
+    title = cgi.escape(item.Title, quote=True)
     return ''''<input type="checkbox" class="noborder selectable"
     name="paths:list" id="%s" value="%s"
     alt="Select %s" title="Select %s" />''' % (
-        item.id, item.getPath(), item.Title, item.Title)
+        item.id, item.getPath(), title, title)
 
 
 def path_radiobutton(item, value):
     _marker = [object(), ]
+    title = cgi.escape(item.Title, quote=True)
     return ''''<input type="radio" class="noborder selectable"
     name="paths:list" id="%s" '
     value="%s" alt="Select %s" '
     title="Select %s"%s />''' % (
         item.id, item.getPath(),
-        item.Title,
-        item.Title,
+        title,
+        title,
         item.REQUEST.get(
             'paths', _marker)[0]==item.getPath() and ' checked' or '')
 
@@ -118,10 +121,7 @@ def linked(item, value, show_icon=True):
     else:
         img = u''
 
-    # Replace < and > with html entities, because the title becomes
-    # include with structure
-    value = value.decode('utf8').replace(
-        '<', '&lt;').replace('<', '&gt;').replace('&', '&amp;')
+    value = cgi.escape(value.decode('utf8'), quote=True)
 
     href = url_method()
 
@@ -151,10 +151,8 @@ def quick_preview(item, value):
         url_method = item.absolute_url
     img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
 
-    # Replace < and > with html entities, because the title becomes
-    # include with structure
-    value = value.decode('utf8').replace('<', '&lt;').replace('<', '&gt;')\
-        .replace('&', '&amp;')
+    value = cgi.escape(value.decode('utf8'), quote=True)
+
 
     link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (
         url_method(), img, value)

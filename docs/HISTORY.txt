@@ -5,7 +5,8 @@ Changelog
 1.7.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adjust different helpers: Made sure the tag content, and tag titles are correctly escaped.
+  [phgross]
 
 
 1.7.2 (2012-02-24)
