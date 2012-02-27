@@ -5,6 +5,9 @@ Changelog
 1.7.3 (unreleased)
 ------------------
 
+- removed contenttype span tag for sprites.
+  [mathias.leimgruber]
+
 - Adjust different helpers: Made sure the tag content, and tag titles are correctly escaped.
   [phgross]
 
