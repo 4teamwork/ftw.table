@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7.4 (unreleased)
+1.7.4 (2012-02-28)
 ------------------
 
 - Fixed stray single-quote in path_checkbox and path_radiobutton helpers
