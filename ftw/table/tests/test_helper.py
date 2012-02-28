@@ -60,7 +60,7 @@ class  TestHelperMethods(MockTestCase):
         from ftw.table.helper import path_checkbox
         self.assertEqual(
             path_checkbox(self.item, None),
-            ''''<input type="checkbox" class="noborder selectable"
+            '''<input type="checkbox" class="noborder selectable"
     name="paths:list" id="theid" value="/path/to/object"
     alt="Select the &lt;&quot;escaped&quot;&gt; Title" title="Select the &lt;&quot;escaped&quot;&gt; Title" />''')
 
@@ -69,7 +69,7 @@ class  TestHelperMethods(MockTestCase):
         # Not checked radiobutton
         self.assertEqual(
             path_radiobutton(self.item, None),
-            ''''<input type="radio" class="noborder selectable"
+            '''<input type="radio" class="noborder selectable"
     name="paths:list" id="theid" '
     value="/path/to/object" alt="Select the &lt;&quot;escaped&quot;&gt; Title" '
     title="Select the &lt;&quot;escaped&quot;&gt; Title" />''')
@@ -78,7 +78,7 @@ class  TestHelperMethods(MockTestCase):
         self.REQUEST = {'paths': ['/path/to/object', ]}
         self.assertEqual(
             path_radiobutton(self.item, None),
-            ''''<input type="radio" class="noborder selectable"
+            '''<input type="radio" class="noborder selectable"
     name="paths:list" id="theid" '
     value="/path/to/object" alt="Select the &lt;&quot;escaped&quot;&gt; Title" '
     title="Select the &lt;&quot;escaped&quot;&gt; Title" checked />''')

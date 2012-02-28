@@ -5,6 +5,9 @@ Changelog
 1.7.4 (unreleased)
 ------------------
 
+- Fixed stray single-quote in path_checkbox and path_radiobutton helpers
+  [lgraf]
+
 - Show contenttype class in linked-helper if there is no icon for this type.
   [Julian Infanger]
 

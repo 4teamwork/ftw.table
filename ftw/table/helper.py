@@ -13,7 +13,7 @@ def draggable(item, value):
 
 def path_checkbox(item, value):
     title = cgi.escape(item.Title, quote=True)
-    return ''''<input type="checkbox" class="noborder selectable"
+    return '''<input type="checkbox" class="noborder selectable"
     name="paths:list" id="%s" value="%s"
     alt="Select %s" title="Select %s" />''' % (
         item.id, item.getPath(), title, title)
@@ -22,7 +22,7 @@ def path_checkbox(item, value):
 def path_radiobutton(item, value):
     _marker = [object(), ]
     title = cgi.escape(item.Title, quote=True)
-    return ''''<input type="radio" class="noborder selectable"
+    return '''<input type="radio" class="noborder selectable"
     name="paths:list" id="%s" '
     value="%s" alt="Select %s" '
     title="Select %s"%s />''' % (
