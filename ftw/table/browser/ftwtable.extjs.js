@@ -31,6 +31,21 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   }
 });
 
+function reset_grid_state() {
+  jq.ajax({
+    url: '@@tabbed_view/setgridstate',
+    cache: false,
+    type: "POST",
+    data: {
+       gridstate: "{}",
+       view_name: stateName()
+    },
+    success: function() {
+      location.reload();
+    }
+  });
+};
+
 Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   constructor : function(config){
     Ext.state.FTWPersistentProvider.superclass.constructor.call(this);
