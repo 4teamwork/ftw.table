@@ -112,9 +112,14 @@ def linked(item, value, show_icon=True):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
 
+    type_class=''
     if show_icon:
+        plone_utils = getToolByName(getSite(), 'plone_utils')
         img = u'<img src="%s/%s"/>' % (
             item.portal_url(), item.getIcon)
+        if not item.getIcon:
+            type_class = ' class="contenttype-%s"' % \
+                plone_utils.normalizeString(item.portal_type)
     else:
         img = u''
 
@@ -130,7 +135,8 @@ def linked(item, value, show_icon=True):
         if item.portal_type in types_using_view:
             href = os.path.join(href, 'view')
 
-    link = u'<a href="%s">%s%s</a>' % (href, img, value)
+    link = u'<a href="%s"%s>%s%s</a>' % (
+        href, type_class, img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 

@@ -5,6 +5,9 @@ Changelog
 1.7.4 (unreleased)
 ------------------
 
+- Show contenttype class in linked-helper if there is no icon for this type.
+  [Julian Infanger]
+
 - Add extjs reset_grid_state function.
   [jone]
 
