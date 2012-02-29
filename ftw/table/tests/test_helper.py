@@ -250,7 +250,7 @@ class  TestHelperMethods(MockTestCase):
             u'sortAscText')
         self.assertEqual(
             translated_string('ftw.table')(self.item, None),
-            None)
+            'None')
         self.assertEqual(
             translated_string('ftw.table')(self.item, 'sortAscText'),
             u'sortAscText')
