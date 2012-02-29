@@ -1,8 +1,9 @@
-from Products.CMFCore.utils import getToolByName
 from datetime import datetime, timedelta
 from plone.memoize import ram
+from Products.CMFCore.utils import getToolByName
 from zope.app.component.hooks import getSite
-from zope.i18nmessageid import MessageFactory
+from zope.globalrequest import getRequest
+from zope.i18n import translate
 import cgi
 import os.path
 
@@ -165,12 +166,8 @@ def quick_preview(item, value):
 
 
 def translated_string(domain='plone'):
-    factory = MessageFactory(domain)
-
-    def translate(item, value):
-        if not value:
-            return value
-        if not isinstance(value, unicode):
-            value = value.decode('utf8')
-        return factory(value)
-    return translate
+    domain = domain
+    def _translate(item, value):
+        return translate(
+            value, context=getRequest(), domain=domain)
+    return _translate
