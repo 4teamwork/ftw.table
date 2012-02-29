@@ -120,6 +120,7 @@ def linked(item, value, show_icon=True):
         if not item.getIcon:
             type_class = ' class="contenttype-%s"' % \
                 plone_utils.normalizeString(item.portal_type)
+            img = u''
     else:
         img = u''
 
