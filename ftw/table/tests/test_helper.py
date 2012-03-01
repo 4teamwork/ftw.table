@@ -22,19 +22,23 @@ class  TestHelperMethods(MockTestCase):
         self.site = self.mocker.mock(count=False)
         self.plone_utils = self.mocker.mock(count=False)
         # Mock simple normalizeString Method
-        self.expect(self.plone_utils.normalizeString(ANY)).call(lambda x: x.lower())
+        self.expect(
+            self.plone_utils.normalizeString(ANY)).call(lambda x: x.lower())
         setSite(self.site)
-        self.expect(getToolByName(getSite(), 'plone_utils')).result(self.plone_utils)
+        self.expect(getToolByName(getSite(),
+                    'plone_utils')).result(self.plone_utils)
 
         # Moke portal_properties
         self.prop_tool = self.mocker.mock(count=False)
         self.expect(self.prop_tool.get('site_properties').getProperty(
             'typesUseViewActionInListings')).result([])
-        self.expect(getToolByName(getSite(), 'portal_properties')).result(self.prop_tool)
+        self.expect(getToolByName(getSite(),
+                    'portal_properties')).result(self.prop_tool)
 
 
         # portal_url
-        self.expect(self.item.portal_url()).result('/path/to/portal')
+        self.expect(getToolByName(getSite(),
+                    'portal_url')()).result('/path/to/portal')
 
         # User
         user_mock = self.mocker.mock(count=False)
