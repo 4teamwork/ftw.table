@@ -45,9 +45,9 @@ class  TestHelperMethods(MockTestCase):
         self.userid = 'Demo User Name'
         self.expect(user_mock.getProperty('fullname', ANY)).call(
             lambda x, y: self.userid)
-        self.expect(self.item.acl_users.getUserById('demouserid')).result(
+        self.expect(getSite().acl_users.getUserById('demouserid')).result(
             user_mock)
-        self.expect(self.item.acl_users.getUserById('notexisting')).result(
+        self.expect(getSite().acl_users.getUserById('notexisting')).result(
             user_mock)
 
         self.replay()
