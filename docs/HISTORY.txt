@@ -5,6 +5,10 @@ Changelog
 1.7.5 (unreleased)
 ------------------
 
+- Get portal_url in helpers with getToolByName, so there is no error if the
+  items are solr flares.
+  [Julian Infanger]
+
 - Icon helper should not return a image if no icon is defined for this type.
   [Julian Infanger]
 

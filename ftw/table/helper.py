@@ -44,6 +44,7 @@ def readable_size(item, num):
 @ram.cache(lambda m, i, author: author)
 def readable_author(item, author):
     #TODO: terribly inefficient. Make some HelperCommons or something
+    portal_url = getToolByName(getSite(), 'portal_url')
     if not author:
         return '-'
     name = author
@@ -52,7 +53,7 @@ def readable_author(item, author):
         name = user.getProperty('fullname', author) or author
         if not len(name):
             name = author
-    return '<a href="%s/author/%s">%s</a>' % (item.portal_url(), author, name)
+    return '<a href="%s/author/%s">%s</a>' % (portal_url(), author, name)
 
 
 def readable_date_time_text(item, date):
@@ -115,9 +116,11 @@ def linked(item, value, show_icon=True):
 
     type_class=''
     if show_icon:
-        plone_utils = getToolByName(getSite(), 'plone_utils')
+        site = getSite()
+        plone_utils = getToolByName(site, 'plone_utils')
+        portal_url = getToolByName(site, 'portal_url')
         img = u'<img src="%s/%s"/>' % (
-            item.portal_url(), item.getIcon)
+            portal_url(), item.getIcon)
         if not item.getIcon:
             type_class = ' class="contenttype-%s"' % \
                 plone_utils.normalizeString(item.portal_type)
@@ -148,13 +151,14 @@ def linked_without_icon(item, value):
 
 
 def quick_preview(item, value):
+    portal_url = getToolByName(getSite(), 'portal_url')
     url_method = lambda: '#'
     #item = hasattr(item, 'aq_explicit') and item.aq_explicit or item
     if hasattr(item, 'getURL'):
         url_method = item.getURL
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
-    img = u'<img src="%s/%s"/>' % (item.portal_url(), item.getIcon)
+    img = u'<img src="%s/%s"/>' % (portal_url(), item.getIcon)
 
     value = cgi.escape(value.decode('utf8'), quote=True)
 
