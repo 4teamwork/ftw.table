@@ -36,6 +36,7 @@ setup(name='ftw.table',
 
       install_requires=[
         'setuptools',
+        'five.globalrequest',
         # -*- Extra requirements: -*-
         ],
 
