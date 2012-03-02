@@ -128,8 +128,9 @@ def linked(item, value, show_icon=True):
             img = u''
     else:
         img = u''
-
-    value = cgi.escape(value.decode('utf8'), quote=True)
+    if not isinstance(value, unicode):
+        value.decode('utf8')
+    value = cgi.escape(value, quote=True)
 
     href = url_method()
 
@@ -160,8 +161,9 @@ def quick_preview(item, value):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
     img = u'<img src="%s/%s"/>' % (portal_url(), item.getIcon)
-
-    value = cgi.escape(value.decode('utf8'), quote=True)
+    if not isinstance(value, unicode):
+        value.decode('utf8')
+    value = cgi.escape(value, quote=True)
 
 
     link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (
