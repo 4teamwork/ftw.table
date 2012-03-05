@@ -8,6 +8,9 @@ Changelog
 - Fixed helpers, so they works with solr flares.
   [Julian Infanger]
 
+- Get portal_url in helpers with getToolByName
+  [Julian Infanger]
+
 - Icon helper should not return a image if no icon is defined for this type.
   [Julian Infanger]
 
