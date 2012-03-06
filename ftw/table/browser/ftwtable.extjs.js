@@ -468,7 +468,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   };
 
   $.fn.ftwtable.destroy = function(){
-    if(grid){
+    if(grid && grid.boxReady){
       grid.destroy();
     }
     if(store){

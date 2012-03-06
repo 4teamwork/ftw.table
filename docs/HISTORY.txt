@@ -5,7 +5,8 @@ Changelog
 1.7.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix extjs bug when switching between listing tabs and non-listing with tabbed view.
+  [jone]
 
 
 1.7.5 (2012-03-05)
