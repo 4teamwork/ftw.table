@@ -5,6 +5,9 @@ Changelog
 1.7.6 (unreleased)
 ------------------
 
+- Improve spinner integration with tabbedview, use new helper functions.
+  [jone]
+
 - Fix extjs bug when switching between listing tabs and non-listing with tabbed view.
   [jone]
 

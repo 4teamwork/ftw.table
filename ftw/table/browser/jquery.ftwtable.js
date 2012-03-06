@@ -138,8 +138,14 @@
   $.fn.ftwtable.createTable = function(table, query, options){
     $this.load(query, null, function(){
       tabbedview.view_container.trigger('gridRendered');
+      if(typeof(tabbedview) != "undefined") {
+        tabbedview.hide_spinner();
+      }
       $o.onLoad();
     });
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.show_spinner();
+    }
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){
@@ -177,5 +183,3 @@
 
 
 })(jQuery);
-
-

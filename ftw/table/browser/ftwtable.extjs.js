@@ -19,6 +19,9 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
     this.beforeMenuShow(); // Make sure the checkboxes get properly set when changing groups
     this.refresh();
     this.grid.store.reload();
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.show_spinner();
+    }
   },
   // private
   onColumnWidthUpdated : function(col, w, tw){
@@ -91,6 +94,9 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   Ext.state.Manager.setProvider(new Ext.state.FTWPersistentProvider());
 
   $.fn.ftwtable.createTable = function(table, url, opts){
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.show_spinner();
+    }
     options = opts;
     $this = table;
     store = new Ext.data.GroupingStore({
@@ -264,6 +270,9 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   // reenables batching etc.
                   store.baseParams['groupBy'] = '';
                   store.reload();
+                  if(typeof(tabbedview) != "undefined") {
+                    tabbedview.show_spinner();
+                  }
                 }
 
                 // if we have a tabbedview, we need to tell it that we
@@ -334,6 +343,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 /* Hide the "No contents" element if we have
                    no contents */
                 $('#message_no_contents').hide();
+
+                if(typeof(tabbedview) != "undefined") {
+                  tabbedview.hide_spinner();
+                }
               },
 
               afterrender: function(panel){
@@ -412,6 +425,9 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
           }else{
             //show message and abord
             $('#message_no_contents').show();
+            if(typeof(tabbedview) != "undefined") {
+              tabbedview.hide_spinner();
+            }
             return;
           }
         }
