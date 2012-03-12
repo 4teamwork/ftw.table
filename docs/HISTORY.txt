@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7.6 (unreleased)
+1.7.6 (2012-03-12)
 ------------------
 
 - Improve spinner integration with tabbedview, use new helper functions.
