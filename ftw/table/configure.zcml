@@ -8,8 +8,6 @@
 
     <include package=".browser" />
 
-    <five:registerPackage package="." />
-
     <i18n:registerTranslations directory="locales" />
 
     <utility name="ftw.tablegenerator"
