@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7.7 (unreleased)
+1.7.7 (2012-03-28)
 ------------------
 
 - Remove registerPackage directive.
