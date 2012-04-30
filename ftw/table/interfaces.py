@@ -35,7 +35,7 @@ class ITableSource(Interface):
         the new query.
         """
 
-    def extend_query_with_textfilter(query):
+    def extend_query_with_textfilter(query, text):
         """Extends the given `query` with text filters. This is only done when
         config's `filter_text` is set.
         """
