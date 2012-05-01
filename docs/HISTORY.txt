@@ -5,7 +5,8 @@ Changelog
 1.7.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Reduce duplicate request when using with tabbedview in non-extjs mode.
+  [jone]
 
 
 1.7.7 (2012-03-28)
