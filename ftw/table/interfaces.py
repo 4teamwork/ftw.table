@@ -44,7 +44,7 @@ class ITableSource(Interface):
         """Extends the given `query` with batching filters and returns the
         new query. This method is only called when batching is enabled in
         the source config with the `batching_enabled` attribute.
-        When `lazy` is set to `False` in the configuration, this method is
+        When `lazy` is set to `True` in the configuration, this method is
         not called.
         """
 

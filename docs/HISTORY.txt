@@ -5,6 +5,9 @@ Changelog
 1.7.8 (unreleased)
 ------------------
 
+- Adjust comment in ITableSource inteface.
+  [eschmutz]
+
 - Reduce duplicate request when using with tabbedview in non-extjs mode.
   [jone]
 
