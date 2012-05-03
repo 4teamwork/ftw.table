@@ -5,6 +5,9 @@ Changelog
 1.7.8 (unreleased)
 ------------------
 
+- Javascript: optimize reload table so that it does not make unecessary requests.
+  [jone]
+
 - Adjust comment in ITableSource inteface.
   [eschmutz]
 

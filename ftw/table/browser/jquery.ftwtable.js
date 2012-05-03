@@ -151,7 +151,17 @@
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){
-    $.fn.ftwtable.createTable($this, buildQuery(), $o);
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.show_spinner();
+    }
+
+    $this.load(query, null, function() {
+      tabbedview.view_container.trigger('gridRendered');
+      if(typeof(tabbedview) != "undefined") {
+        tabbedview.hide_spinner();
+      }
+      $o.onLoad();
+    });
   };
 
   $.fn.ftwtable.select = function(start, end){
