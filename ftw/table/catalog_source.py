@@ -83,13 +83,15 @@ class CatalogTableSource(BaseTableSource):
     implements(ITableSource)
     adapts(ICatalogTableSourceConfig, Interface)
 
+    def __init__(self, config, request):
+        super(CatalogTableSource, self).__init__(config, request)
+        self._catalog = None
+
     @property
     def catalog(self):
-        try:
-            return self._catalog
-        except AttributeError:
+        if self._catalog is None:
             self._catalog = getToolByName(getSite(), 'portal_catalog')
-            return self._catalog
+        return self._catalog
 
     def validate_base_query(self, query):
         """Validates and fixes the base query. Returns the query object.
@@ -165,6 +167,5 @@ class CatalogTableSource(BaseTableSource):
         """
 
         results = self.catalog(**query)
-
 
         return results

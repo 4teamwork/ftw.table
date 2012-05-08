@@ -5,6 +5,9 @@ METADATA = {
     'columns': [],
     }
 
-FIELD = {'name': '', 'type': 'string'}
+FIELD = {'name': '',
+         'type': 'string'}
 
-COLUMN = {'id':'','header': '', 'dataIndex': ''}
+COLUMN = {'id': '',
+          'header': '',
+          'dataIndex': ''}

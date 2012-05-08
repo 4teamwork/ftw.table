@@ -1,10 +1,10 @@
-from  zope import interface
+from zope import interface
 from zope import schema
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from zope.app.component import hooks
 from zope.i18nmessageid.message import Message
 from zope.i18n import translate
-from column import METADATA, FIELD, COLUMN
+from ftw.table.column import METADATA, FIELD, COLUMN
 from copy import deepcopy
 import Missing
 
@@ -20,19 +20,18 @@ class TableGenerator(object):
     template = ViewPageTemplateFile('templates/basic.pt')
 
     _css_mapping = {
-                   'table': 'listing',
-                   'sortable': 'sortable',
-                   'sort-selected': 'sort-selected',
-                   'sort-asc': 'sort-asc',
-                   'sort-reverse': 'sort-reverse',
-                   'th_prefix': 'header',
-                   'no_sortable': 'nosort'}
+        'table': 'listing',
+        'sortable': 'sortable',
+        'sort-selected': 'sort-selected',
+        'sort-asc': 'sort-asc',
+        'sort-reverse': 'sort-reverse',
+        'th_prefix': 'header',
+        'no_sortable': 'nosort'}
 
-
-    #msgids of strings that will be used in the GridView. domain=ftw.table
+    # msgids of strings that will be used in the GridView. domain=ftw.table
     _translations = ['sortDescText', 'sortAscText', 'columnsText',
-                   'showGroupsText', 'groupByText', 'itemsPlural',
-                   'itemsSingular', 'selectedRowen', 'dragDropLocked']
+                     'showGroupsText', 'groupByText', 'itemsPlural',
+                     'itemsSingular', 'selectedRowen', 'dragDropLocked']
 
     context = None
 
@@ -71,8 +70,8 @@ class TableGenerator(object):
 
             msgids = set(self._translations + translations)
 
-            table = dict(totalCount = len(self.contents),
-                        rows = [])
+            table = dict(totalCount=len(self.contents),
+                         rows=[])
 
             for content in self.contents:
                 row = {}
@@ -88,9 +87,9 @@ class TableGenerator(object):
 
                 for column in self.columns:
                     key = (column.get('sort_index', None) or
-                            column['attr'] or
-                            column['title'] or
-                            column['transform'].__name__)
+                           column['attr'] or
+                           column['title'] or
+                           column['transform'].__name__)
 
                     value = self.get_value(content, column)
                     if value == Missing.Value:
@@ -106,16 +105,15 @@ class TableGenerator(object):
                         pass
                 table['rows'].append(row)
 
-
             if meta_data is None:
                 #create metadata for oldstyle column definition
                 meta_data = deepcopy(METADATA)
                 for column in self.columns:
 
                     key = (column.get('sort_index', None) or
-                            column['attr'] or
-                            column['title'] or
-                            column['transform'].__name__)
+                           column['attr'] or
+                           column['title'] or
+                           column['transform'].__name__)
 
                     field = deepcopy(FIELD)
                     field['name'] = key
@@ -124,7 +122,7 @@ class TableGenerator(object):
                     if isinstance(column['title'], Message):
                         col['header'] = translate(column['title'],
                                                   column['title'].domain,
-                                                  context = self.request)
+                                                  context=self.request)
                     else:
                         col['header'] = column['title']
                     col['id'] = key
@@ -177,9 +175,8 @@ class TableGenerator(object):
             #add translations for the table
             meta_data['translations'] = {}
             for msgid in msgids:
-                meta_data['translations'][msgid] = translate(msgid,
-                                                        domain='ftw.table',
-                                                        context=self.request)
+                meta_data['translations'][msgid] = translate(
+                    msgid, domain='ftw.table', context=self.request)
             if meta_data:
                 table['metaData'] = meta_data
             jsonstr = json.dumps(table)

@@ -31,7 +31,7 @@ def path_radiobutton(item, value):
         title,
         title,
         item.REQUEST.get(
-            'paths', _marker)[0]==item.getPath() and ' checked' or '')
+            'paths', _marker)[0] == item.getPath() and ' checked' or '')
 
 
 def readable_size(item, num):
@@ -66,9 +66,9 @@ def readable_date_time_text(item, date):
     if not getattr(date, 'strftime', None):
         return None
     if date.strftime('%Y%m%d') == today:
-        strftimestring = "%s, %%H:%%M" % 'heute' #XXX i18n not working atm
+        strftimestring = "%s, %%H:%%M" % 'heute'  # XXX i18n not working atm
     elif date.strftime('%Y%m%d') == yesterday:
-        strftimestring = "%s, %%H:%%M" % 'gestern' #XXX i18n not working atm
+        strftimestring = "%s, %%H:%%M" % 'gestern'  # XXX i18n not working atm
     return date.strftime(strftimestring)
 
 
@@ -91,9 +91,9 @@ def readable_date_text(item, date):
     if not getattr(date, 'strftime', None):
         return None
     if date.strftime('%Y%m%d') == today:
-        strftimestring = 'heute' #XXX i18n not working atm
+        strftimestring = 'heute'  # XXX i18n not working atm
     elif date.strftime('%Y%m%d') == yesterday:
-        strftimestring = 'gestern' #XXX i18n not working atm
+        strftimestring = 'gestern'  # XXX i18n not working atm
     return date.strftime(strftimestring)
 
 
@@ -115,7 +115,7 @@ def linked(item, value, show_icon=True):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
 
-    type_class=''
+    type_class = ''
     if show_icon:
         site = getSite()
         plone_utils = getToolByName(site, 'plone_utils')
@@ -165,7 +165,6 @@ def quick_preview(item, value):
         value = value.decode('utf8')
     value = cgi.escape(value, quote=True)
 
-
     link = u'<a class="quick_preview" href="%s/quick_preview">%s%s</a>' % (
         url_method(), img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
@@ -174,6 +173,7 @@ def quick_preview(item, value):
 
 def translated_string(domain='plone'):
     domain = domain
+
     def _translate(item, value):
         return translate(
             value, context=getRequest(), domain=domain)
