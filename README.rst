@@ -149,7 +149,7 @@ Links
 - Main github project repository: https://github.com/4teamwork/ftw.table
 - Issue tracker: https://github.com/4teamwork/ftw.table/issues
 - Package on pypi: http://pypi.python.org/pypi/ftw.table
-- Continuous integration: https://jenkins.4teamwork.ch/job/ftw.table/
+- Continuous integration: https://jenkins.4teamwork.ch/search?q=ftw.table
 
 
 Copyright
