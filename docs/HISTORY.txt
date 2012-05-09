@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7.8 (unreleased)
+1.7.8 (2012-05-09)
 ------------------
 
 - Adjust comment in ITableSource inteface.
