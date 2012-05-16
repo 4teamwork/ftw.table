@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7.9 (unreleased)
+1.7.9 (2012-05-16)
 ------------------
 
 - Javascript: optimize reload table so that it does not make unecessary requests.
