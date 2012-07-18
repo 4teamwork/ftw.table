@@ -47,7 +47,7 @@ function reset_grid_state() {
       location.reload();
     }
   });
-};
+}
 
 Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   constructor : function(config){
