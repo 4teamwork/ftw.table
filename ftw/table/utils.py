@@ -133,12 +133,15 @@ class TableGenerator(object):
                             col['sortable'] = True
                         else:
                             col['menuDisabled'] = True
-                        col['width'] = 30
+                        col['width'] = column.get('width', 30)
                         col['hideable'] = False
                         col['resizable'] = False
                         col['fixed'] = True
                     else:
                         col['sortable'] = True
+                        if column.get('width', None):
+                            col['width'] = column['width']
+
                     meta_data['fields'].append(field)
                     meta_data['columns'].append(col)
 
@@ -246,6 +249,7 @@ class TableGenerator(object):
         return processed_columns
 
     def process_column(self, column):
+        width = None
         attr = sort_index = title = u""
         transform = lambda x, y: y
         if isinstance(column, basestring):
@@ -276,6 +280,7 @@ class TableGenerator(object):
             title = column.get('column_title', title)
             sort_index = column.get('sort_index', sort_index)
             transform = column.get('transform', transform)
+            width = column.get('width', None)
 
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
@@ -284,4 +289,5 @@ class TableGenerator(object):
         return {'attr': attr,
                 'title': title,
                 'sort_index': sort_index,
-                'transform': transform}
+                'transform': transform,
+                'width': width}
