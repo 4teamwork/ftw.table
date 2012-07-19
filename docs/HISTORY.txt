@@ -5,6 +5,10 @@ Changelog
 1.7.10 (unreleased)
 -------------------
 
+- Improve the dummy-column hack for improving the resize handle size of the
+  last column.
+  [jone]
+
 - Ext JS: remove forceFit support (stretching column width) because we are now
   able to define the column width in the definition, which is a more accurate
   solution.

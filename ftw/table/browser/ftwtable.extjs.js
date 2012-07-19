@@ -171,8 +171,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             id: "dummy",
             menuDisabled: true,
             sortable: false,
-            width: 1});
-          // Set up the ColumnModel
+            width: 1,
+            hidden: true,
+            hideable: false,
+            fixed: false});
 
           // Set up the ColumnModel
           var cm = new Ext.grid.ColumnModel({
@@ -321,6 +323,14 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 /* Hide the "No contents" element if we have
                    no contents */
                 $('#message_no_contents').hide();
+
+                /* Hide the dummy column which is used for giving the last column
+                   a resize handle. */
+                $('.x-grid3-hd.x-grid3-td-dummy > *').remove();
+                $('.x-grid3-hd.x-grid3-td-dummy').css(
+                    'display', 'table-cell').css(
+                    'width', '5px').css(
+                    'border', 'none');
 
                 if(typeof(tabbedview) != "undefined") {
                   tabbedview.hide_spinner();
