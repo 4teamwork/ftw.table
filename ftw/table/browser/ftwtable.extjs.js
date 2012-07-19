@@ -184,25 +184,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             }
           });
 
-          // If we have less than 5 visible columns the grid will be
-          // rendered with forceFit
-          var visible_columns = 0;
-          var hidden_columns = 0;
-          var forceFit = false;
-
-          for(var i=0; i < cm.columns.length; i++){
-            var col = cm.columns[i];
-            if(col.hidden != undefined && col.hidden === true){
-              hidden_columns++;
-            }else{
-              visible_columns++;
-            }
-          }
-
-          if(visible_columns<=5){
-            forceFit = true;
-          }
-
           grid = new Ext.grid.GridPanel({
             //set up the GridPanel
             columnLines: true,
@@ -239,7 +220,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             })],
 
             view: new Ext.grid.FTWTableGroupingView({
-              forceFit:forceFit,
               groupMode:'value',
               hideGroupedColumn: true,
               //enableGrouping:false,
@@ -315,15 +295,13 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   }
                 }
 
-                if(!forceFit){
-                  //ugly hacks we need to use horizontal scrolling combined with autoHeight
-                  //enable horizontal scrolling
-                  $('.x-grid3-viewport').css('overflow', 'auto');
-                  //set width of the header div to the same value as the table
-                  //we need a few extra pixel to make the resizable handle draggable
-                  var inner_width = $('.x-grid3-header table').width() + 5;
-                  $('.x-grid3-header').width(inner_width);
-                }
+                //ugly hacks we need to use horizontal scrolling combined with autoHeight
+                //enable horizontal scrolling
+                $('.x-grid3-viewport').css('overflow', 'auto');
+                //set width of the header div to the same value as the table
+                //we need a few extra pixel to make the resizable handle draggable
+                var inner_width = $('.x-grid3-header table').width() + 5;
+                $('.x-grid3-header').width(inner_width);
 
                 // Checkboxes / radios are usually have the
                 // "selectable" css class. When using a extjs

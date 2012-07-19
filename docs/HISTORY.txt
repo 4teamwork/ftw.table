@@ -5,6 +5,11 @@ Changelog
 1.7.10 (unreleased)
 -------------------
 
+- Ext JS: remove forceFit support (stretching column width) because we are now
+  able to define the column width in the definition, which is a more accurate
+  solution.
+  [jone]
+
 - Support for defining column widths in dict-style columns using keyword "width".
   [jone]
 
