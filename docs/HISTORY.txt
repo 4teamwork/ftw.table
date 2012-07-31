@@ -18,6 +18,13 @@ Changelog
   [jone]
 
 
+1.7.10 (unreleased)
+-------------------
+
+- Add a link() helper for creating a configured helper on the fly.
+  [jone]
+
+
 1.7.9 (2012-05-16)
 ------------------
 

@@ -8,15 +8,33 @@ class  TestHelperMethods(MockTestCase):
 
     def setUp(self):
         self.REQUEST = {}
+
+        # object
+        self.obj = self.mocker.mock(count=False)
+        self.expect(self.obj.id).result('theid')
+        self.expect(self.obj.getId()).result('theid')
+        self.expect(self.obj.Title()).result('the <"escaped"> Title')
+        self.expect(self.obj.Description()).result(
+            'a <"f\xc3\xa4ncy"> description')
+        self.expect(self.obj.getPath()).result(
+            ['', 'path/', 'to/', 'object'])
+        self.expect(self.obj.absolute_url()).result('http://path/to/portal')
+        self.expect(self.obj.getIcon()).call(lambda: 'icon.gif')
+        self.expect(self.obj.portal_type).result('MockType')
+        self.expect(self.obj.REQUEST).call(lambda x: self.REQUEST)
+
+        # brain
         self.item = self.mocker.mock(count=False)
         self.expect(self.item.id).result('theid')
         self.expect(self.item.Title).result('the <"escaped"> Title')
+        self.expect(self.item.Description).result(
+            'a <"f\xc3\xa4ncy"> description')
         self.expect(self.item.getPath()).result('/path/to/object')
         self.expect(self.item.getURL()).result('http://path/to/portal')
         self.expect(self.item.getIcon).result('icon.gif')
         self.expect(self.item.portal_type).result('MockType')
-        # Simple REQUEST
         self.expect(self.item.REQUEST).call(lambda x: self.REQUEST)
+        self.expect(self.item.getObject()).result(self.obj)
 
         # plone_utils
         self.site = self.mocker.mock(count=False)
@@ -52,7 +70,70 @@ class  TestHelperMethods(MockTestCase):
 
         self.replay()
 
+    def test_link_with_icon(self):
+        from ftw.table.helper import link
+        wrapped = link(icon=True)
 
+        self.assertEqual(
+            wrapped(self.item, self.item.Title),
+            u'<span class="linkWrapper"><a href="http://path/to/portal">'
+            u'<img src="/path/to/portal/icon.gif"/>the &lt;&quot;escaped'
+            u'&quot;&gt; Title</a></span>')
+
+        self.assertEqual(wrapped(self.item, self.item.Title),
+                         wrapped(self.obj, self.obj.Title()))
+
+    def test_link_without_icon(self):
+        from ftw.table.helper import link
+        wrapped = link(icon=False)
+
+        self.assertEqual(
+            wrapped(self.item, self.item.Title),
+            u'<span class="linkWrapper"><a href="http://path/to/portal">'
+            u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
+
+        self.assertEqual(wrapped(self.item, self.item.Title),
+                         wrapped(self.obj, self.obj.Title()))
+
+    def test_link_with_tooltips(self):
+        from ftw.table.helper import link
+        wrapped = link(icon=False, tooltip=True)
+
+        self.assertEqual(
+            wrapped(self.item, self.item.Title),
+            u'<span class="linkWrapper">'
+            u'<a class="rollover" href="http://path/to/portal" '
+            u'title="a &lt;&quot;f\xe4ncy&quot;&gt; description">'
+            u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
+
+        self.assertEqual(wrapped(self.item, self.item.Title),
+                         wrapped(self.obj, self.obj.Title()))
+
+    def test_link_classes(self):
+        from ftw.table.helper import link
+        wrapped = link(icon=False, classes=['foo', 'bar'])
+
+        self.assertEqual(
+            wrapped(self.item, self.item.Title),
+            u'<span class="linkWrapper"><a class="bar foo" '
+            u'href="http://path/to/portal">'
+            u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
+
+        self.assertEqual(wrapped(self.item, self.item.Title),
+                         wrapped(self.obj, self.obj.Title()))
+
+    def test_link_attrs(self):
+        from ftw.table.helper import link
+        wrapped = link(icon=False, attrs={'name': 'foo'})
+
+        self.assertEqual(
+            wrapped(self.item, self.item.Title),
+            u'<span class="linkWrapper"><a href="http://path/to/portal"'
+            u' name="foo">'
+            u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
+
+        self.assertEqual(wrapped(self.item, self.item.Title),
+                         wrapped(self.obj, self.obj.Title()))
 
     def test_draggable(self):
         from ftw.table.helper import draggable
@@ -126,7 +207,7 @@ class  TestHelperMethods(MockTestCase):
             readable_author(self.item, 'notexisting'),
             '<a href="/path/to/portal/author/notexisting">notexisting</a>')
 
-    def  test_readable_date_time_text(self):
+    def test_readable_date_time_text(self):
         from ftw.table.helper import readable_date_time_text
 
         # Returns None if no date is provided
