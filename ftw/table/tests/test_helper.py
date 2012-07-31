@@ -14,7 +14,8 @@ class  TestHelperMethods(MockTestCase):
         self.expect(self.obj.id).result('theid')
         self.expect(self.obj.getId()).result('theid')
         self.expect(self.obj.Title()).result('the <"escaped"> Title')
-        self.expect(self.obj.Description()).result('a <"fancy"> description')
+        self.expect(self.obj.Description()).result(
+            'a <"f\xc3\xa4ncy"> description')
         self.expect(self.obj.getPath()).result(
             ['', 'path/', 'to/', 'object'])
         self.expect(self.obj.absolute_url()).result('http://path/to/portal')
@@ -26,7 +27,8 @@ class  TestHelperMethods(MockTestCase):
         self.item = self.mocker.mock(count=False)
         self.expect(self.item.id).result('theid')
         self.expect(self.item.Title).result('the <"escaped"> Title')
-        self.expect(self.item.Description).result('a <"fancy"> description')
+        self.expect(self.item.Description).result(
+            'a <"f\xc3\xa4ncy"> description')
         self.expect(self.item.getPath()).result('/path/to/object')
         self.expect(self.item.getURL()).result('http://path/to/portal')
         self.expect(self.item.getIcon).result('icon.gif')
@@ -101,7 +103,7 @@ class  TestHelperMethods(MockTestCase):
             wrapped(self.item, self.item.Title),
             u'<span class="linkWrapper">'
             u'<a class="rollower" href="http://path/to/portal" '
-            u'title="a &lt;&quot;fancy&quot;&gt; description">'
+            u'title="a &lt;&quot;f\xe4ncy&quot;&gt; description">'
             u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
         self.assertEqual(wrapped(self.item, self.item.Title),

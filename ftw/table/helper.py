@@ -35,6 +35,9 @@ def link(icon=True, tooltip=False, classes=None, attrs=None):
                 description = description()
 
             if description:
+                if isinstance(description, str):
+                    description = description.decode('utf-8')
+
                 attributes['class'].append('rollower')
                 attributes['title'] = cgi.escape(description, quote=True)
 
