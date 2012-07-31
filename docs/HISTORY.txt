@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.7.10 (unreleased)
--------------------
+1.8 (unreleased)
+----------------
 
 - Improve the dummy-column hack for improving the resize handle size of the
   last column.
