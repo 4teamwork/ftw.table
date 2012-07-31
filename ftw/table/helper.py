@@ -13,7 +13,7 @@ def link(icon=True, tooltip=False, classes=None, attrs=None):
 
     Attributes:
     icon -- Shows a content type icon.
-    tooltip -- Adds a "title" attribute and a "rollower" class.
+    tooltip -- Adds a "title" attribute and a "rollover" class.
     classes -- A list of additional classes.
     attrs -- A dict of additional attributes.
     """
@@ -38,7 +38,7 @@ def link(icon=True, tooltip=False, classes=None, attrs=None):
                 if isinstance(description, str):
                     description = description.decode('utf-8')
 
-                attributes['class'].append('rollower')
+                attributes['class'].append('rollover')
                 attributes['title'] = cgi.escape(description, quote=True)
 
         return linked(item, value, show_icon=icon, attrs=attributes)

@@ -102,7 +102,7 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             wrapped(self.item, self.item.Title),
             u'<span class="linkWrapper">'
-            u'<a class="rollower" href="http://path/to/portal" '
+            u'<a class="rollover" href="http://path/to/portal" '
             u'title="a &lt;&quot;f\xe4ncy&quot;&gt; description">'
             u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
