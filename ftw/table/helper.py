@@ -8,6 +8,40 @@ import cgi
 import os.path
 
 
+def link(icon=True, tooltip=False, classes=None, attrs=None):
+    """Generates a helper.
+
+    Attributes:
+    icon -- Shows a content type icon.
+    tooltip -- Adds a "title" attribute and a "rollower" class.
+    classes -- A list of additional classes.
+    attrs -- A dict of additional attributes.
+    """
+    if classes is None:
+        classes = []
+    if attrs is None:
+        attrs = {}
+
+    assert isinstance(classes, list)
+    assert isinstance(attrs, dict)
+
+    def _helper(item, value):
+        attributes = attrs.copy()
+        attributes['class'] = classes[:]
+
+        if tooltip:
+            description = item.Description
+            if callable(description):
+                description = description()
+
+            if description:
+                attributes['class'].append('rollower')
+                attributes['title'] = cgi.escape(description, quote=True)
+
+        return linked(item, value, show_icon=icon, attrs=attributes)
+    return _helper
+
+
 def draggable(item, value):
     return '<span id="draggable-%s" class="draggable">::</span>' % item.id
 
@@ -107,7 +141,19 @@ def readable_date(item, date):
         return None
 
 
-def linked(item, value, show_icon=True):
+def linked(item, value, show_icon=True, attrs=None):
+    if attrs is None:
+        attrs = {}
+
+    if 'class' not in attrs:
+        attrs['class'] = []
+    elif isinstance(attrs['class'], str):
+        attrs['class'] = attrs['class'].decode('utf-8').strip().split(' ')
+    elif isinstance(attrs, unicode):
+        attrs['class'] = attrs['class'].strip().split(' ')
+    else:
+        attrs['class'] = list(attrs['class'])
+
     url_method = lambda: '#'
     #item = hasattr(item, 'aq_explicit') and item.aq_explicit or item
     if hasattr(item, 'getURL'):
@@ -115,19 +161,24 @@ def linked(item, value, show_icon=True):
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
 
-    type_class = ''
     if show_icon:
         site = getSite()
         plone_utils = getToolByName(site, 'plone_utils')
         portal_url = getToolByName(site, 'portal_url')
-        img = u'<img src="%s/%s"/>' % (
-            portal_url(), item.getIcon)
-        if not item.getIcon:
-            type_class = ' class="contenttype-%s"' % \
-                plone_utils.normalizeString(item.portal_type)
+
+        icon = item.getIcon
+        if callable(icon):
+            icon = icon()
+
+        img = u'<img src="%s/%s"/>' % (portal_url(), icon)
+        if not icon:
+            attrs['class'].append(
+                'contenttype-%s' %
+                plone_utils.normalizeString(item.portal_type))
             img = u''
     else:
         img = u''
+
     if not isinstance(value, unicode):
         value = value.decode('utf8')
     value = cgi.escape(value, quote=True)
@@ -142,8 +193,17 @@ def linked(item, value, show_icon=True):
         if item.portal_type in types_using_view:
             href = os.path.join(href, 'view')
 
-    link = u'<a href="%s"%s>%s%s</a>' % (
-        href, type_class, img, value)
+    attrs['href'] = href
+
+    if attrs['class']:
+        attrs['class'] = ' '.join(sorted(set(attrs['class'])))
+    else:
+        del attrs['class']
+    attrs_str = ' '.join(
+        ['%s="%s"' % (attrkey, attrvalue) for attrkey, attrvalue in
+         sorted(attrs.items())])
+
+    link = u'<a %s>%s%s</a>' % (attrs_str, img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper
 
