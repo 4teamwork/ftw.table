@@ -12,7 +12,7 @@ Purpose
 -------
 
 The main purpose of this library package is to abstract the table generation
-for the ``ftw.tabbedview``_ package but it can also be used in a plain
+for the `ftw.tabbedview`_ package but it can also be used in a plain
 plone / zope installation.
 
 
