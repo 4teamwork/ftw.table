@@ -19,7 +19,7 @@ msgid "dragDropLocked"
 msgstr "Drag 'n' Drop impossible"
 
 msgid "groupByText"
-msgstr "Grouper par cette colonne"
+msgstr "Trier selon ce critère"
 
 msgid "itemsPlural"
 msgstr "Objets"
@@ -31,7 +31,7 @@ msgid "selectedRowen"
 msgstr "{0} ligne(s) sélectionnée(s)"
 
 msgid "showGroupsText"
-msgstr "Affichage groupée"
+msgstr "Affichage trié"
 
 msgid "sortAscText"
 msgstr "Ascendant"
