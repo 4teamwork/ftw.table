@@ -5,6 +5,9 @@ Changelog
 1.8 (unreleased)
 ----------------
 
+- Fixed decoding errors in the readable_author helper.
+  [phgross]
+
 - Added zcml condition for extjs profile.
   [Julian Infanger]
 
