@@ -5,6 +5,9 @@ Changelog
 1.8 (unreleased)
 ----------------
 
+- Added zcml condition for extjs profile.
+  [Julian Infanger]
+
 - Improve the dummy-column hack for improving the resize handle size of the
   last column.
   [jone]

@@ -23,13 +23,17 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
-    <genericsetup:registerProfile
-        name="extjs"
-        title="ftw.table:extjs"
-        directory="profiles/extjs"
-        description=""
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+    <!-- extjs is optional -->
+    <configure zcml:condition="installed collective.js.extjs">
+      <include package="collective.js.extjs" />
+      <genericsetup:registerProfile
+          name="extjs"
+          title="ftw.table:extjs"
+          directory="profiles/extjs"
+          description=""
+          provides="Products.GenericSetup.interfaces.EXTENSION"
+          />
+    </configure>
 
     <!-- table source adapters -->
     <adapter factory=".catalog_source.CatalogTableSource" />
