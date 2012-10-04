@@ -53,7 +53,6 @@ class  TestHelperMethods(MockTestCase):
         self.expect(getToolByName(getSite(),
                     'portal_properties')).result(self.prop_tool)
 
-
         # portal_url
         self.expect(getToolByName(getSite(),
                     'portal_url')()).result('/path/to/portal')
@@ -67,6 +66,14 @@ class  TestHelperMethods(MockTestCase):
             user_mock)
         self.expect(getSite().acl_users.getUserById('notexisting')).result(
             user_mock)
+
+        # umlaut user
+        umlaut_user_mock = self.mocker.mock(count=False)
+        self.umlautsername = 'Dem\xc3\xb6 User Name'
+        self.expect(umlaut_user_mock.getProperty('fullname', ANY)).call(
+            lambda x, y: self.umlautsername)
+        self.expect(getSite().acl_users.getUserById(u'umlautuserid')).result(
+            umlaut_user_mock)
 
         self.replay()
 
@@ -197,6 +204,11 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             readable_author(self.item, 'demouserid'),
             '<a href="/path/to/portal/author/demouserid">Demo User Name</a>')
+
+        self.assertEqual(
+            readable_author(self.item, u'umlautuserid'),
+            '<a href="/path/to/portal/author/umlautuserid">'
+            'Dem\xc3\xb6 User Name</a>')
 
         self.assertEqual(
             readable_author(self.item, None),

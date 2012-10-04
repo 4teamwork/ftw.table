@@ -5,6 +5,9 @@ Changelog
 1.8 (unreleased)
 ----------------
 
+- Fixed decoding errors in the readable_author helper.
+  [phgross]
+
 - Improve the dummy-column hack for improving the resize handle size of the
   last column.
   [jone]
