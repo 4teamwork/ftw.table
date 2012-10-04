@@ -104,7 +104,7 @@ def readable_date_time_text(item, date):
     today = datetime.today().strftime('%Y%m%d')
     yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
     strftimestring = '%d.%m.%Y %H:%M'
-    if date == None:
+    if date is None:
         return None
     if not getattr(date, 'strftime', None):
         return None
@@ -117,7 +117,7 @@ def readable_date_time_text(item, date):
 
 def readable_date_time(item, date):
     strftimestring = '%d.%m.%Y %H:%M'
-    if date == None:
+    if date is None:
         return None
     try:
         return date.strftime(strftimestring)
@@ -129,7 +129,7 @@ def readable_date_text(item, date):
     today = datetime.today().strftime('%Y%m%d')
     yesterday = (datetime.today() - timedelta(1)).strftime('%Y%m%d')
     strftimestring = '%d.%m.%Y'
-    if date == None:
+    if date is None:
         return None
     if not getattr(date, 'strftime', None):
         return None

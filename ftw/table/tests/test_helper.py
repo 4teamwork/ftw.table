@@ -53,7 +53,6 @@ class  TestHelperMethods(MockTestCase):
         self.expect(getToolByName(getSite(),
                     'portal_properties')).result(self.prop_tool)
 
-
         # portal_url
         self.expect(getToolByName(getSite(),
                     'portal_url')()).result('/path/to/portal')
@@ -208,7 +207,8 @@ class  TestHelperMethods(MockTestCase):
 
         self.assertEqual(
             readable_author(self.item, u'umlautuserid'),
-            '<a href="/path/to/portal/author/umlautuserid">Dem\xc3\xb6 User Name</a>')
+            '<a href="/path/to/portal/author/umlautuserid">'
+            'Dem\xc3\xb6 User Name</a>')
 
         self.assertEqual(
             readable_author(self.item, None),
@@ -218,7 +218,6 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             readable_author(self.item, 'notexisting'),
             '<a href="/path/to/portal/author/notexisting">notexisting</a>')
-
 
     def test_readable_date_time_text(self):
         from ftw.table.helper import readable_date_time_text
