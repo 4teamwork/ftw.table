@@ -4,6 +4,7 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="ftw.table">
 
     <include package=".browser" />
@@ -23,13 +24,17 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
-    <genericsetup:registerProfile
-        name="extjs"
-        title="ftw.table:extjs"
-        directory="profiles/extjs"
-        description=""
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+    <!-- extjs is optional -->
+    <configure zcml:condition="installed collective.js.extjs">
+      <include package="collective.js.extjs" />
+      <genericsetup:registerProfile
+          name="extjs"
+          title="ftw.table:extjs"
+          directory="profiles/extjs"
+          description=""
+          provides="Products.GenericSetup.interfaces.EXTENSION"
+          />
+    </configure>
 
     <!-- table source adapters -->
     <adapter factory=".catalog_source.CatalogTableSource" />
