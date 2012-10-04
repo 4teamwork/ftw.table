@@ -91,6 +91,12 @@ def readable_author(item, author):
         name = user.getProperty('fullname', author) or author
         if not len(name):
             name = author
+
+    if isinstance(name, unicode):
+        name = name.encode('utf-8')
+    if isinstance(author, unicode):
+        author = author.encode('utf-8')
+
     return '<a href="%s/author/%s">%s</a>' % (portal_url(), author, name)
 
 

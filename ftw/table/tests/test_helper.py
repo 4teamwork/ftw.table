@@ -68,6 +68,14 @@ class  TestHelperMethods(MockTestCase):
         self.expect(getSite().acl_users.getUserById('notexisting')).result(
             user_mock)
 
+        # umlaut user
+        umlaut_user_mock = self.mocker.mock(count=False)
+        self.umlautsername = 'Dem\xc3\xb6 User Name'
+        self.expect(umlaut_user_mock.getProperty('fullname', ANY)).call(
+            lambda x, y: self.umlautsername)
+        self.expect(getSite().acl_users.getUserById(u'umlautuserid')).result(
+            umlaut_user_mock)
+
         self.replay()
 
     def test_link_with_icon(self):
@@ -199,6 +207,10 @@ class  TestHelperMethods(MockTestCase):
             '<a href="/path/to/portal/author/demouserid">Demo User Name</a>')
 
         self.assertEqual(
+            readable_author(self.item, u'umlautuserid'),
+            '<a href="/path/to/portal/author/umlautuserid">Dem\xc3\xb6 User Name</a>')
+
+        self.assertEqual(
             readable_author(self.item, None),
             '-')
 
@@ -206,6 +218,7 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             readable_author(self.item, 'notexisting'),
             '<a href="/path/to/portal/author/notexisting">notexisting</a>')
+
 
     def test_readable_date_time_text(self):
         from ftw.table.helper import readable_date_time_text
