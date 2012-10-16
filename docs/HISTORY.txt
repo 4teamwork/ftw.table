@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.8 (unreleased)
+1.8 (2012-10-16)
 ----------------
 
 - Fixed decoding errors in the readable_author helper.
