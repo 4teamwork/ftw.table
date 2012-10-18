@@ -96,7 +96,7 @@
     }else{
       params = parseParams();
     }
-    return $('link[rel=kss-base-url]').attr('href') + $o.url + '?' + params;
+    return $('base').attr('href') + $o.url + '?' + params;
     //return $o.url+'?view_name='+tabbedview.prop('view_name');
     //return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
   }
