@@ -5,7 +5,8 @@ Changelog
 1.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use the base tag instead of the `kss-base-url` rel tag to get the base url.
+  [phgross]
 
 
 1.8 (2012-10-16)
