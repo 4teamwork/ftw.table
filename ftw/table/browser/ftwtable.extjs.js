@@ -1,3 +1,5 @@
+Ext.Ajax.timeout = 120000;  // 2 minutes
+
 Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   // private
   onGroupByClick : function(){
