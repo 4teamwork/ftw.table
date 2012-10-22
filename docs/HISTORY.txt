@@ -5,6 +5,9 @@ Changelog
 1.8.1 (unreleased)
 ------------------
 
+- Increase extjs timeout from 0.5 to 2 minutes.
+  [jone]
+
 - Use the base tag instead of the `kss-base-url` rel tag to get the base url.
   [phgross]
 
