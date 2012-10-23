@@ -35,7 +35,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
 });
 
 function reset_grid_state() {
-  jq.ajax({
+  $.ajax({
     url: '@@tabbed_view/setgridstate',
     cache: false,
     type: "POST",
