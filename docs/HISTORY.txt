@@ -5,6 +5,9 @@ Changelog
 1.8.1 (unreleased)
 ------------------
 
+- Adjust javscripts: Use $ instead of deprecated jq.
+  [phgross]
+
 - Increase extjs timeout from 0.5 to 2 minutes.
   [jone]
 
