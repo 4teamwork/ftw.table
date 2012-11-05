@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.8.1 (unreleased)
+1.8.1 (2012-11-05)
 ------------------
 
 - Adjust javscripts: Use $ instead of deprecated jq.
