@@ -96,7 +96,13 @@
     }else{
       params = parseParams();
     }
-    return $('base').attr('href') + $o.url + '?' + params;
+
+    var base_url = $('base').attr('href');
+    if (base_url.slice(-1) != '/'){
+      base_url = base_url + '/';
+    }
+
+    return base_url + $o.url + '?' + params;
     //return $o.url+'?view_name='+tabbedview.prop('view_name');
     //return $o.url+'?show='+methods.param('show')+'&path='+methods.param('path');
   }
