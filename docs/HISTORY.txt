@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.8.2 (unreleased)
+1.8.2 (2012-11-28)
 ------------------
 
 - Fixed base url getter, when the url doesn't ends with a slash.
