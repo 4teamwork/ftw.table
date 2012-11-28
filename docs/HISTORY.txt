@@ -5,7 +5,8 @@ Changelog
 1.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed base url getter, when the url doesn't ends with a slash.
+  [phgross]
 
 
 1.8.1 (2012-11-05)
