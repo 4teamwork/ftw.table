@@ -142,6 +142,20 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(wrapped(self.item, self.item.Title),
                          wrapped(self.obj, self.obj.Title()))
 
+    def test_link_icon_only(self):
+        from ftw.table.helper import link
+        wrapped = link(icon=True, icon_only=True)
+
+        self.assertEqual(
+            wrapped(self.item, self.item.Title),
+            u'<span class="linkWrapper"><a href="http://path/to/portal">'
+            u'<img src="/path/to/portal/icon.gif"/>'
+            u'</a></span>')
+
+        self.assertEqual(wrapped(self.item, self.item.Title),
+                         wrapped(self.obj, self.obj.Title()))
+
+
     def test_draggable(self):
         from ftw.table.helper import draggable
         self.assertEqual(

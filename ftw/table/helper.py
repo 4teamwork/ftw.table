@@ -8,7 +8,7 @@ import cgi
 import os.path
 
 
-def link(icon=True, tooltip=False, classes=None, attrs=None):
+def link(icon=True, tooltip=False, classes=None, attrs=None, icon_only=False):
     """Generates a helper.
 
     Attributes:
@@ -41,7 +41,8 @@ def link(icon=True, tooltip=False, classes=None, attrs=None):
                 attributes['class'].append('rollover')
                 attributes['title'] = cgi.escape(description, quote=True)
 
-        return linked(item, value, show_icon=icon, attrs=attributes)
+        return linked(item, value, show_icon=icon, attrs=attributes,
+                      icon_only=icon_only)
     return _helper
 
 
@@ -150,7 +151,7 @@ def readable_date(item, date):
         return None
 
 
-def linked(item, value, show_icon=True, attrs=None):
+def linked(item, value, show_icon=True, attrs=None, icon_only=False):
     if attrs is None:
         attrs = {}
 
@@ -212,6 +213,8 @@ def linked(item, value, show_icon=True, attrs=None):
         ['%s="%s"' % (attrkey, attrvalue) for attrkey, attrvalue in
          sorted(attrs.items())])
 
+    if icon_only:
+        value = ''
     link = u'<a %s>%s%s</a>' % (attrs_str, img, value)
     wrapper = u'<span class="linkWrapper">%s</span>' % link
     return wrapper

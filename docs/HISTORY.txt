@@ -5,7 +5,8 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Modify link helper - show icon only.
+  [mathias.leimgruber]  
 
 
 1.8.2 (2012-11-28)
