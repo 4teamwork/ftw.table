@@ -5,6 +5,9 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Support for "hidden" key in column definitions (dict).
+  [jone]
+
 - Support for "sortable" key in column definitions (dict).
   [jone]
 
