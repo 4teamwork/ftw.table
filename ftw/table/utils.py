@@ -255,6 +255,10 @@ class TableGenerator(object):
         width = None
         attr = sort_index = title = u""
         transform = lambda x, y: y
+
+        sortable = True
+        hidden = False
+
         if isinstance(column, basestring):
             attr = sort_index = column
 
