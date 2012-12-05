@@ -5,8 +5,11 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Support for "sortable" key in column definitions (dict).
+  [jone]
+
 - Modify link helper - show icon only.
-  [mathias.leimgruber]  
+  [mathias.leimgruber]
 
 
 1.8.2 (2012-11-28)

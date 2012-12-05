@@ -125,7 +125,10 @@ class TableGenerator(object):
                                                   context=self.request)
                     else:
                         col['header'] = column['title']
+
                     col['id'] = key
+                    col['sortable'] = column.get('sortable', True)
+
                     if not column['title']:
                         if key == 'draggable':
                             col['menuDisabled'] = False
@@ -138,7 +141,6 @@ class TableGenerator(object):
                         col['resizable'] = False
                         col['fixed'] = True
                     else:
-                        col['sortable'] = True
                         if column.get('width', None):
                             col['width'] = column['width']
 
@@ -281,6 +283,7 @@ class TableGenerator(object):
             sort_index = column.get('sort_index', sort_index)
             transform = column.get('transform', transform)
             width = column.get('width', None)
+            sortable = column.get('sortable', True)
 
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
@@ -290,4 +293,5 @@ class TableGenerator(object):
                 'title': title,
                 'sort_index': sort_index,
                 'transform': transform,
-                'width': width}
+                'width': width,
+                'sortable': sortable}
