@@ -175,10 +175,6 @@ class TableGenerator(object):
                     aecolumn = self.options['auto_expand_column']
                     meta_data['config']['auto_expand_column'] = aecolumn
 
-            #add static html snippets. Eg batching, buttons, etc
-            if meta_data is not None and 'static' in self.options:
-                meta_data['static'] = deepcopy(self.options['static'])
-
             #add translations for the table
             if meta_data is not None:
                 meta_data['translations'] = {}
@@ -188,6 +184,9 @@ class TableGenerator(object):
 
             if meta_data:
                 table['metaData'] = meta_data
+
+            if 'static' in self.options:
+                table['static_html'] = deepcopy(self.options['static'])
 
             jsonstr = json.dumps(table)
             return jsonstr

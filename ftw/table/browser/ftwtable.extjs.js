@@ -131,6 +131,15 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
 
       listeners: {
 
+        datachanged: function(store) {
+            if (typeof(store.reader.jsonData.static_html) != 'undefined'){
+                $.each(store.reader.jsonData.static_html, function(key, value) {
+                    $('#'+key+'_container.ftwtable').html(value);
+                });
+            }
+            jQuery.tabbedview.hide_spinner();
+        },
+
         // will be called if we get new metadata from the server. E.g. diffrent columns.
         metachange : function(store, meta){
           if(store.reader.meta.config.group != undefined){
@@ -265,13 +274,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             sm: sm,
 
             listeners: {
-              filterupdate: function(filter) {
-                  var query = filter.buildQuery(filter.getFilterData());
-                  for (var key in query) {
-                      store.baseParams[key] = query[key];
-                  }
-              },
-
               groupchange: function(grid, state) {
                 if(!state) {
                   // hide the groupBy column - which was just enabled
@@ -379,19 +381,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   lockDragDrop();
                 }
 
-                /* meta.static contains plain html that we inject into the DOM using key+'_container' as selector.
-                   E.G.:
-                   "static":{
-                   "batching":"<!-- Navigation -->"
-                   [...]
-                   },
-                   $('#batching_container.ftwtable') will be replaced with "<!-- Navigation -->"
-                */
-                if(store.reader.meta['static'] != undefined){
-                  $.each(store.reader.meta['static'], function(key, value) {
-                    $('#'+key+'_container.ftwtable').html(value);
-                  });
-                }
                 options.onLoad();
 
                 // We shouldn't be able to group and sort by "draggable" at the
@@ -497,11 +486,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){
-    if(store.reader.meta['static'] != undefined){
-      $.each(store.reader.meta['static'], function(key, value) {
-        $('#'+key+'_container.ftwtable').html('');
-      });
-    }
     $.fn.ftwtable.destroy();
     $.fn.ftwtable.createTable(table, query, options);
   };
