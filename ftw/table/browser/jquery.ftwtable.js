@@ -162,8 +162,8 @@
     }
 
     $this.load(query, null, function() {
-      tabbedview.view_container.trigger('gridRendered');
       if(typeof(tabbedview) != "undefined") {
+        tabbedview.view_container.trigger('gridRendered');
         tabbedview.hide_spinner();
       }
       $o.onLoad();
