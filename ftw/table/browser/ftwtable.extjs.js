@@ -221,19 +221,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             }
           });
 
-          grid = new Ext.grid.GridPanel({
-            //set up the GridPanel
-            columnLines: true,
-            store: store,
-            cm: cm,
-            stripeRows: true,
-            autoHeight:true,
-            stateful: true,
-            stateId: stateName(),
-            xtype: "grid",
-
-            //XXX: GridDragDropRowOrder has to be the first plugin!
-            plugins: [new Ext.ux.dd.GridDragDropRowOrder({
+          var grid_plugins = new Array(new Ext.ux.dd.GridDragDropRowOrder({
               copy: false, // false by default
               scrollable: true, // enable scrolling support (default is false)
               targetCfg: {}, // any properties to apply to the actual DropTarget
@@ -254,7 +242,41 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   });
                 }
               }
-            })],
+            }));
+
+          if (typeof(Ext.ux.grid.GridFilters) != 'undefined') {
+              var filtered_columns = function() {
+                  var cols = new Array();
+                  for(var i=0; i<columns.length; i++) {
+                      var col = columns[i];
+                      if (col.filter) {
+                          var filter = col.filter;
+                          filter['dataIndex'] = col.dataIndex;
+                          cols.push(filter);
+                      }
+                  }
+                  return cols;
+              }();
+
+              grid_plugins.push(new Ext.ux.grid.GridFilters({
+                  local: false,
+                  filters: filtered_columns
+              }));
+          }
+
+          grid = new Ext.grid.GridPanel({
+            //set up the GridPanel
+            columnLines: true,
+            store: store,
+            cm: cm,
+            stripeRows: true,
+            autoHeight:true,
+            stateful: true,
+            stateId: stateName(),
+            xtype: "grid",
+
+            //XXX: GridDragDropRowOrder has to be the first plugin!
+            plugins: grid_plugins,
 
             view: new Ext.grid.FTWTableGroupingView({
               groupMode:'value',
@@ -274,6 +296,13 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             sm: sm,
 
             listeners: {
+              filterupdate: function(filter) {
+                  var query = filter.buildQuery(filter.getFilterData());
+                  for (var key in query) {
+                      store.baseParams[key] = query[key];
+                  }
+              },
+
               groupchange: function(grid, state) {
                 if(!state) {
                   // hide the groupBy column - which was just enabled
