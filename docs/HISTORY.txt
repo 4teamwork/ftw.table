@@ -5,6 +5,9 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Support for "groupable" key in column definitions (dict).
+  [jone]
+
 - ExtJS: show spinner on every request.
   [jone]
 
