@@ -502,6 +502,12 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
     grid = null;
   };
 
+  $.fn.ftwtable.goto_page = function(pagenumber) {
+    store.baseParams['pagenumber:int'] = pagenumber;
+    jQuery.tabbedview.show_spinner();
+    store.reload();
+  };
+
   $.fn.ftwtable.select = function(start, end){
     var sm = grid.getSelectionModel();
     if (start=='all'){

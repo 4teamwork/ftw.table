@@ -66,6 +66,10 @@
 
     destroy: function(start, end){
       $.fn.ftwtable.destroy(start, end);
+    },
+
+    goto_page: function(pagenumber) {
+      $.fn.ftwtable.goto_page(pagenumber);
     }
   };
 
@@ -168,6 +172,13 @@
       }
       $o.onLoad();
     });
+  };
+
+  $.fn.ftwtable.goto_page = function(pagenumber) {
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.param('pagenumber:int', pagenumber);
+      tabbedview.reload_view();
+    }
   };
 
   $.fn.ftwtable.select = function(start, end){
