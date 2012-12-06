@@ -105,7 +105,7 @@ class TableGenerator(object):
                         pass
                 table['rows'].append(row)
 
-            if meta_data is None:
+            if meta_data is None and not self.options.get('omit_metadata', False):
                 #create metadata for oldstyle column definition
                 meta_data = deepcopy(METADATA)
                 for column in self.columns:
@@ -176,16 +176,19 @@ class TableGenerator(object):
                     meta_data['config']['auto_expand_column'] = aecolumn
 
             #add static html snippets. Eg batching, buttons, etc
-            if 'static' in self.options:
+            if meta_data is not None and 'static' in self.options:
                 meta_data['static'] = deepcopy(self.options['static'])
 
             #add translations for the table
-            meta_data['translations'] = {}
-            for msgid in msgids:
-                meta_data['translations'][msgid] = translate(
-                    msgid, domain='ftw.table', context=self.request)
+            if meta_data is not None:
+                meta_data['translations'] = {}
+                for msgid in msgids:
+                    meta_data['translations'][msgid] = translate(
+                        msgid, domain='ftw.table', context=self.request)
+
             if meta_data:
                 table['metaData'] = meta_data
+
             jsonstr = json.dumps(table)
             return jsonstr
         else:
