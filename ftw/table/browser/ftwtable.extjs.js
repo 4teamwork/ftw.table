@@ -36,6 +36,7 @@ Ext.override(Ext.grid.RowSelectionModel, {
 Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   // private
   onGroupByClick : function(){
+    this.grid.store.baseParams['omit_metadata'] = '0';
     this.grid.store.baseParams['groupBy'] = this.cm.getDataIndex(this.hdCtxIndex);
     this.enableGrouping = true;
 
@@ -146,7 +147,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       baseParams: {
         ext: 'json',
         tableType: 'extjs', // lets the server know that this is a request from EXTJS ...
-        mode: 'json' // ... and that we want JSON data to be returned
+        mode: 'json', // ... and that we want JSON data to be returned
+        omit_metadata: '0' // when 1, keep column defitions
       },
 
       proxy: new Ext.data.HttpProxy({
@@ -315,6 +317,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   // reload the store - this removes grouping and
                   // reenables batching etc.
                   store.baseParams['groupBy'] = '';
+                  grid.store.baseParams['omit_metadata'] = '0';
                   store.reload();
                   if(typeof(tabbedview) != "undefined") {
                     tabbedview.show_spinner();
@@ -438,6 +441,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                     draggableCol.sortable = true;
                   }
                 }
+                store.baseParams['omit_metadata'] = '1';
                 $this.trigger('gridRendered');
               },
 
