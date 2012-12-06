@@ -5,6 +5,12 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Add support for filtering.
+  Install the ``grid-filter`` GS profile of ``collective.js.extjs`` and
+  define the filter configuration with the key ``filter`` in your
+  column definition.
+  [jone]
+
 - Support for "hidden" key in column definitions (dict).
   [jone]
 

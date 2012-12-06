@@ -129,6 +129,7 @@ class TableGenerator(object):
                     col['id'] = key
                     col['sortable'] = column.get('sortable', True)
                     col['hidden'] = column.get('hidden', False)
+                    col['filter'] = column.get('filter', False)
 
                     if not column['title']:
                         if key == 'draggable':
@@ -258,6 +259,7 @@ class TableGenerator(object):
 
         sortable = True
         hidden = False
+        filter_ = None
 
         if isinstance(column, basestring):
             attr = sort_index = column
@@ -290,6 +292,7 @@ class TableGenerator(object):
             width = column.get('width', None)
             sortable = column.get('sortable', True)
             hidden = column.get('hidden', False)
+            filter_ = column.get('filter', None)
 
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
@@ -301,4 +304,5 @@ class TableGenerator(object):
                 'transform': transform,
                 'width': width,
                 'sortable': sortable,
-                'hidden': hidden}
+                'hidden': hidden,
+                'filter': filter_}
