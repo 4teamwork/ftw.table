@@ -164,6 +164,10 @@ Changelog
 - Fix javascript order in ExtJS profile.
   [jone]
 
+- Add a seperate goto_page table function, so that we can
+  change the page in ExtJS withou recreating the table.
+  [jone]
+
 - Add support for filtering.
   Install the ``grid-filter`` GS profile of ``collective.js.extjs`` and
   define the filter configuration with the key ``filter`` in your
