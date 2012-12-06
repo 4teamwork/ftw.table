@@ -5,6 +5,9 @@ Changelog
 1.17.1 (unreleased)
 -------------------
 
+- Support for "groupable" key in column definitions (dict).
+  [jone]
+
 - Drop Plone 4.1 support. [jone]
 
 
