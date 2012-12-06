@@ -164,6 +164,9 @@ Changelog
 - Fix javascript order in ExtJS profile.
   [jone]
 
+- Support for "groupable" key in column definitions (dict).
+  [jone]
+
 - ExtJS: show spinner on every request.
   [jone]
 
