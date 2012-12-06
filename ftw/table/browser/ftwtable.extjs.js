@@ -164,6 +164,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
 
       listeners: {
 
+        beforeload: function(store, options) {
+            jQuery.tabbedview.show_spinner();
+        },
+
         datachanged: function(store) {
             if (typeof(store.reader.jsonData.static_html) != 'undefined'){
                 $.each(store.reader.jsonData.static_html, function(key, value) {

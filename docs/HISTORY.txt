@@ -164,6 +164,9 @@ Changelog
 - Fix javascript order in ExtJS profile.
   [jone]
 
+- ExtJS: show spinner on every request.
+  [jone]
+
 - Add a seperate goto_page table function, so that we can
   change the page in ExtJS withou recreating the table.
   [jone]
