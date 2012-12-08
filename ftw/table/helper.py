@@ -203,7 +203,8 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
         if item.portal_type in types_using_view:
             href = os.path.join(href, 'view')
 
-    attrs['href'] = href
+    if 'href' not in attrs:
+        attrs['href'] = href
 
     if attrs['class']:
         attrs['class'] = ' '.join(sorted(set(attrs['class'])))
