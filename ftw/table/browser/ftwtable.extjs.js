@@ -63,11 +63,6 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   onColumnWidthUpdated : function(col, w, tw){
     Ext.grid.GroupingView.superclass.onColumnWidthUpdated.call(this, col, w, tw);
     this.updateGroupWidths();
-    //set width of the header div to the same value as the table
-    //we need a few extra pixel to make the resizable handle draggable
-    var inner_width = $('.x-grid3-header table').width() + 5;
-    $('.x-grid3-header').width(inner_width);
-    $('.x-grid3-header-offset').width(inner_width);
   }
 });
 
@@ -95,6 +90,13 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   // private
   set : function(name, value){
     Ext.state.FTWPersistentProvider.superclass.set.call(this, name, value);
+
+    //set width of the header div to the same value as the table
+    //we need a few extra pixel to make the resizable handle draggable
+    var inner_width = $('.x-grid3-header table').width() + 5;
+    $('.x-grid3-header').width(inner_width);
+    $('.x-grid3-header-offset').width(inner_width);
+
     $.ajax({
       url: '@@tabbed_view/setgridstate',
       cache: false,
@@ -374,11 +376,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 //ugly hacks we need to use horizontal scrolling combined with autoHeight
                 //enable horizontal scrolling
                 $('.x-grid3-viewport').css('overflow', 'auto');
-                //set width of the header div to the same value as the table
-                //we need a few extra pixel to make the resizable handle draggable
-                var inner_width = $('.x-grid3-header table').width() + 5;
-                $('.x-grid3-header').width(inner_width);
-                $('.x-grid3-header-offset').width(inner_width);
 
                 // Checkboxes / radios are usually have the
                 // "selectable" css class. When using a extjs
