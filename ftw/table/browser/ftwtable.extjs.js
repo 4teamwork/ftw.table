@@ -34,6 +34,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
     //we need a few extra pixel to make the resizable handle draggable
     var inner_width = $('.x-grid3-header table').width() + 5;
     $('.x-grid3-header').width(inner_width);
+    $('.x-grid3-header-offset').width(inner_width);
   }
 });
 
@@ -344,6 +345,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 //we need a few extra pixel to make the resizable handle draggable
                 var inner_width = $('.x-grid3-header table').width() + 5;
                 $('.x-grid3-header').width(inner_width);
+                $('.x-grid3-header-offset').width(inner_width);
 
                 // Checkboxes / radios are usually have the
                 // "selectable" css class. When using a extjs
