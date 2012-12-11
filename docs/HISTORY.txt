@@ -5,6 +5,9 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Fix javascript order in ExtJS profile.
+  [jone]
+
 - Support for "hidden" key in column definitions (dict).
   [jone]
 
