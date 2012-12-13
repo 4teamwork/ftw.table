@@ -5,6 +5,9 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- ExtJS: when pressing enter, open ".default-link" links in new tabs.
+  [jone]
+
 - Support for "groupable" key in column definitions (dict).
   [jone]
 
