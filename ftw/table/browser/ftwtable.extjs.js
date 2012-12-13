@@ -441,6 +441,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 }
                 store.baseParams['omit_metadata'] = '1';
                 $this.trigger('gridRendered');
+
               },
 
               sortchange: function(panel, sortInfo) {
@@ -575,6 +576,25 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       sm.deselectRow(start);
     }
   };
+
+    $(document).keyup(function(event) {
+        /* on ENTER, open all selected issues in a new tab */
+        var src = $(event.srcElement);
+        if(event.keyCode == 13 && !src.is('input') && !src.is('textarea')) {
+            $('.x-grid3-row-selected .default-link').each(function() {
+                if($.browser.webkit === true) {
+                    /* open link in new tab by simulating a mouse event with pressed ctrl / cmd keys */
+                    var evt = document.createEvent("MouseEvents");
+                    evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0,
+                                       true, false, false, true, 0, null);
+                    this.dispatchEvent(evt);
+                } else {
+                    window.open($(this).attr('href'), '_blank');
+                }
+            });
+        }
+    });
+
   //
   // end of closure
   //
