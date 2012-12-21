@@ -332,7 +332,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   // reload the store - this removes grouping and
                   // reenables batching etc.
                   store.baseParams['groupBy'] = '';
-                  grid.store.baseParams['omit_metadata'] = '0';
+                  store.baseParams['omit_metadata'] = '0';
                   store.reload();
                   if(typeof(tabbedview) != "undefined") {
                     tabbedview.show_spinner();
