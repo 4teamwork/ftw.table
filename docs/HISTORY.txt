@@ -5,6 +5,11 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Fix javascript order in ExtJS profile (this time for real).
+  Not only does ftwtable.extjs.js need to be loaded after jquery.ftwtable.js,
+  but also jquery.ftwtable.js after ExtJS (collective.js.extjs-resources/js/ext-all.js).
+  [lgraf]
+
 - Fix javascript order in ExtJS profile.
   [jone]
 

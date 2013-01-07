@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
     <javascript cacheable="True" compression="safe" cookable="True"
-       enabled="1" expression="" id="++resource++jquery.ftwtable.js" />
+       enabled="1" expression="" id="++resource++jquery.ftwtable.js"
+       insert-after="++resource++collective.js.extjs-resources/js/ext-all.js"/>
    <javascript cacheable="True" compression="safe" cookable="True"
       enabled="1" expression="" id="++resource++ftwtable.extjs.js"
       insert-after="++resource++jquery.ftwtable.js" />
