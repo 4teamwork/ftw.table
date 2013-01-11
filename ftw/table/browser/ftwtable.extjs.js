@@ -79,7 +79,8 @@ function reset_grid_state() {
     type: "POST",
     data: {
        gridstate: "{}",
-       view_name: stateName()
+       view_name: stateName(),
+       "grid-state-profile": tabbedview.param('grid-state-profile')
     },
     success: function() {
       location.reload();
@@ -110,7 +111,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       data: {
         // XXX does JSON.stringify work always?
         gridstate: JSON.stringify(this.state[name]),
-        view_name: stateName()
+        view_name: stateName(),
+        "grid-state-profile": tabbedview.param('grid-state-profile')
       }
     });
   },
@@ -174,6 +176,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       listeners: {
 
         beforeload: function(store, options) {
+            Ext.state.Manager.getProvider().state = {};
             jQuery.tabbedview.show_spinner();
         },
 
