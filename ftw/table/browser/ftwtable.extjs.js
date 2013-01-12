@@ -36,29 +36,37 @@ Ext.override(Ext.grid.RowSelectionModel, {
 Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   // private
   onGroupByClick : function(){
-    this.grid.store.baseParams['omit_metadata'] = '0';
-    this.grid.store.baseParams['groupBy'] = this.cm.getDataIndex(this.hdCtxIndex);
-    this.enableGrouping = true;
+      if(store.baseParams['groupBy'] && this.grid.store.sortInfo.field == 'draggable') {
+          // we are grouping and sorting by draggable - do not allow this.
+          // let's just sort by the groupBy-column
+          this.grid.store.sort(store.baseParams['groupBy'], 'ASC');
+      }
 
-    // if we have a tabbedview, we need to tell it that we
-    // are not grouping anymore
-    if(typeof(tabbedview) != "undefined") {
-      tabbedview.param('groupBy', store.baseParams['groupBy']);
-    }
-
-    if(store.baseParams['groupBy'] && this.grid.store.sortInfo.field == 'draggable') {
-      // we are grouping and sorting by draggable - do not allow this.
-      // let's just sort by the groupBy-column
-      this.grid.store.sort(store.baseParams['groupBy'], 'ASC');
-    }
-
-    this.beforeMenuShow(); // Make sure the checkboxes get properly set when changing groups
-    this.refresh();
-    this.grid.store.reload();
-    if(typeof(tabbedview) != "undefined") {
-      tabbedview.show_spinner();
-    }
+      if(typeof(tabbedview) != "undefined") {
+          tabbedview.param('groupBy', this.cm.getDataIndex(this.hdCtxIndex));
+          tabbedview.reload_view();
+      } else {
+          Ext.grid.GroupingView.superclass.onGroupByClick.call(this);
+      }
   },
+
+  // private
+  onShowGroupsClick : function(mi, checked){
+      if (typeof(tabbedview) != "undefined") {
+          this.enableGrouping = checked;
+          if (checked) {
+              this.onGroupByClick();
+          } else {
+              Ext.state.Manager.getProvider().state = {};
+              store.destroy();
+              tabbedview.flush_params('groupBy');
+              tabbedview.reload_view();
+          }
+      } else {
+          Ext.grid.GroupingView.superclass.onShowGroupsClick.call(this, mi, checked);
+      }
+  },
+
   // private
   onColumnWidthUpdated : function(col, w, tw){
     Ext.grid.GroupingView.superclass.onColumnWidthUpdated.call(this, col, w, tw);
@@ -97,6 +105,11 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   // private
   set : function(name, value){
     Ext.state.FTWPersistentProvider.superclass.set.call(this, name, value);
+
+    if (grid.store.getGroupState() !== false) {
+        // store nothing on the server while grouping.
+        return;
+    }
 
     //set width of the header div to the same value as the table
     //we need a few extra pixel to make the resizable handle draggable
@@ -151,7 +164,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       remoteSort: true,
       autoLoad: false,
       groupField: '', // kinda ugly way to trick the table into disable grouping by default
-      remoteGroup: false,
+      remoteGroup: true,
       autoDestroy:false,
 
       //params that will be sent with every request
@@ -323,32 +336,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             sm: sm,
 
             listeners: {
-              groupchange: function(grid, state) {
-                if(!state) {
-                  // hide the groupBy column - which was just enabled
-                  // because grouping was disabled
-                  var groupByCol = grid.grid.colModel.getIndexById('groupBy');
-                  if(groupByCol !== -1) {
-                    grid.grid.colModel.setHidden(groupByCol, true);
-                  }
-
-                  // reload the store - this removes grouping and
-                  // reenables batching etc.
-                  store.baseParams['groupBy'] = '';
-                  store.baseParams['omit_metadata'] = '0';
-                  store.reload();
-                  if(typeof(tabbedview) != "undefined") {
-                    tabbedview.show_spinner();
-                  }
-                }
-
-                // if we have a tabbedview, we need to tell it that we
-                // are not grouping anymore
-                if(typeof(tabbedview) != "undefined") {
-                  tabbedview.param('groupBy', store.baseParams['groupBy']);
-                }
-              },
-
               beforerender: function(grid) {
                 // When the state is loaded, somehow the columns
                 // marked as hidden are not set to hidden
