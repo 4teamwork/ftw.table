@@ -282,7 +282,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               }
             }));
 
-          if (typeof(Ext.ux.grid.GridFilters) != 'undefined') {
+          if (Ext.ux.grid && typeof(Ext.ux.grid.GridFilters) != 'undefined') {
               var filtered_columns = function() {
                   var cols = new Array();
                   for(var i=0; i<columns.length; i++) {
