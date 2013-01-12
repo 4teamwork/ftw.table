@@ -24,7 +24,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
           if (checked) {
               this.onGroupByClick();
           } else {
-              location.reload();
+              tabbedview.reload_page_keeping_profile();
           }
       } else {
           Ext.grid.GroupingView.superclass.onShowGroupsClick.call(this, mi, checked);
@@ -55,7 +55,7 @@ function reset_grid_state() {
        "grid-state-profile": tabbedview.param('grid-state-profile')
     },
     success: function() {
-      location.reload();
+      tabbedview.reload_page_keeping_profile();
     }
   });
 }
