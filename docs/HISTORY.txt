@@ -5,6 +5,11 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- ExtJS: change grouping implementation, so that the complete tab is reloaded
+  when toggling grouping. Also prevent storing the state while grouping.
+  This fixes issues when using grouping and filtering in combination.
+  [jone]
+
 - ExtJS: when pressing enter, open ".default-link" links in new tabs.
   [jone]
 
