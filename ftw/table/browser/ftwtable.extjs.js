@@ -57,10 +57,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
           if (checked) {
               this.onGroupByClick();
           } else {
-              Ext.state.Manager.getProvider().state = {};
-              store.destroy();
-              tabbedview.flush_params('groupBy');
-              tabbedview.reload_view();
+              location.reload();
           }
       } else {
           Ext.grid.GroupingView.superclass.onShowGroupsClick.call(this, mi, checked);
@@ -106,7 +103,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   set : function(name, value){
     Ext.state.FTWPersistentProvider.superclass.set.call(this, name, value);
 
-    if (grid.store.getGroupState() !== false) {
+    if(store.reader.meta.config.group != undefined ||
+       grid.colModel.getColumnById('groupBy') != undefined){
         // store nothing on the server while grouping.
         return;
     }
@@ -164,7 +162,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       remoteSort: true,
       autoLoad: false,
       groupField: '', // kinda ugly way to trick the table into disable grouping by default
-      remoteGroup: true,
+      remoteGroup: false,
       autoDestroy:false,
 
       //params that will be sent with every request
@@ -209,7 +207,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
           }
 
           // On metadachange we have to create a new grid. Therefore destroy the old one
-          if (grid){
+          if (grid && store.reader.meta.config.group == undefined){
             // if the grid exists, let the state provider store
             // our config
             Ext.state.Manager.set(stateName(), grid.getState());
