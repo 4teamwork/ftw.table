@@ -371,53 +371,66 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               },
 
               afterrender: function(panel){
-                //drag 'n' drop reordering is only available if sort field is 'draggable'
-                if(store.sortInfo.field == 'draggable'){
-                  unlockDragDrop();
-                }else{
-                  lockDragDrop();
-                }
-
-                options.onLoad();
-
-                // We shouldn't be able to group and sort by "draggable" at the
-                // same time.
-                // So we need to disable sorting by "draggable" when
-                // grouping is enabled, and enable it when grouping is disabled.
-                var draggableCol = grid.colModel.getColumnById('draggable');
-                if(draggableCol) {
-                  if(store.baseParams['groupBy']) {
-                    // grouping is enabled
-                    draggableCol.sortable = false;
-                  } else {
-                    // grouping is disabled
-                    draggableCol.sortable = true;
-                  }
-                }
-                store.baseParams['omit_metadata'] = '1';
-                $this.trigger('gridRendered');
-
+                  this._update_dragndrop_state();
+                  options.onLoad();
+                  store.baseParams['omit_metadata'] = '1';
+                  $this.trigger('gridRendered');
               },
 
               sortchange: function(panel, sortInfo) {
-                // disable sorting on column "draggable" when sorting
-                // by this column. This disables reversing the sort
-                // order of "draggable", because it does not make
-                // sense (since it's objectPositionInParent)
-                var col = grid.colModel.getColumnById('draggable');
-                if(col) {
-                  if(sortInfo.field == 'draggable' && sortInfo.direction == 'ASC') {
-                    col.sortable = false;
-                  } else if(sortInfo.field == 'draggable' && sortInfo.direction == 'DESC') {
-                    // not very nice: force to sort ascending, when
-                    // sorting on "draggable". Descending does not
-                    // make any sense..
-                    store.sort(sortInfo.field, 'ASC');
-                  } else {
-                    col.sortable = true;
-                  }
-                }
+                  this._update_dragndrop_state();
               }
+            },
+
+            _update_dragndrop_state: function() {
+                if(!this.viewReady) {
+                    return;
+                }
+                // Dragndrop should only be available when sorting by 'draggable'.
+                var plugin = this._get_dragndrop_plugin();
+                if(!plugin) {
+                    return;
+                }
+
+                var col = grid.colModel.getColumnById('draggable');
+                if(!col) {
+                    return;
+                }
+
+                if(store.sortInfo.field == 'draggable'){
+                    // enable grouping
+                    plugin.target.unlock();
+                    grid.ddText = translate('selectedRowen', '{0} selected rowen{1}');
+                    $this.removeClass('draglocked');
+
+                    // do not allow to change the sort direction when sorting by 'draggable'
+                    if(store.sortInfo.direction == 'DESC') {
+                        store.sort(sortInfo.field, 'ASC');
+                    }
+                    col.sortable = false;
+                }
+
+                else {
+                    // desable grouping
+                    plugin.target.lock();
+                    grid.ddText = translate('dragDropLocked', "Drag 'n' Drop not possible");
+                    $this.addClass('draglocked');
+                    col.sortable = true;
+                }
+            },
+
+            _get_dragndrop_plugin: function() {
+                if (!Ext.ux || typeof(Ext.ux.dd.GridDragDropRowOrder) == 'undefined') {
+                    return null;
+                }
+
+                for(var i=0; i<this.plugins.length; i++) {
+                    if (this.plugins[i] instanceof Ext.ux.dd.GridDragDropRowOrder) {
+                        return this.plugins[i];
+                    }
+                }
+
+                return null;
             }
           });
           // end grid=
@@ -448,21 +461,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
     store.load();
 
   };
-
-  unlockDragDrop = function(){
-    //XXX: We assume that [0] is the GridDragDropRowOrder plugin
-    grid.plugins[0].target.unlock();
-    grid.ddText = translate('selectedRowen', '{0} selected rowen{1}');
-    $this.removeClass('draglocked');
-  };
-
-  lockDragDrop = function(){
-    //XXX: We assume that [0] is the GridDragDropRowOrder plugin
-    grid.plugins[0].target.lock();
-    grid.ddText = translate('dragDropLocked', "Drag 'n' Drop not possible");
-    $this.addClass('draglocked');
-  };
-
 
   translate = function(key, defaultValue){
     if(locales[key]){
