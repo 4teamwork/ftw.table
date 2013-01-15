@@ -5,6 +5,10 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Add cached_field_value helper for getting a field value of an object
+  with proper caching.
+  [jone]
+
 - ExtJS: change grouping implementation, so that the complete tab is reloaded
   when toggling grouping. Also prevent storing the state while grouping.
   This fixes issues when using grouping and filtering in combination.

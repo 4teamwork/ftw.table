@@ -1,6 +1,7 @@
+from Products.CMFCore.utils import getToolByName
 from datetime import datetime, timedelta
 from plone.memoize import ram
-from Products.CMFCore.utils import getToolByName
+from time import time
 from zope.app.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -251,3 +252,44 @@ def translated_string(domain='plone'):
         return translate(
             value, context=getRequest(), domain=domain)
     return _translate
+
+
+def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24)):
+    """A table helper for displaying a field value an object. It only works
+    when having a catalog source using brains and will get the object only
+    when necessary. The cache is based on the modified date of the object
+    and it's path.
+
+    Usage:
+    This function generates a regular helper on the fly, so it is called in
+    the table / tabbedview column definition.
+    The values are automatically converted to string (we should not cache
+    full-objects). Pass a `converter` function (will get `obj`, `fieldname`
+    and `value`) if you need to convert it first.
+    """
+
+    def _cache_key(method, item, _nothing):
+        return ('ftw.table.helper.cached_field_value',
+                fieldname,
+                item.getPath(),
+                item.modified,
+                time() // cache_time)
+
+    @ram.cache(_cache_key)
+    def _field_value_helper(item, _nothing):
+        obj = item.getObject()
+        field = obj.Schema().getField(fieldname)
+        value = field.get(obj)
+
+        if converter is not None:
+            value = converter(obj, fieldname, value)
+
+        if value is None:
+            value = ''
+
+        if not isinstance(value, (str, unicode)):
+            value = str(value)
+
+        return value
+
+    return _field_value_helper
