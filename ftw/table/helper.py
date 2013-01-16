@@ -324,7 +324,8 @@ def translated_string(domain='plone'):
     return _translate
 
 
-def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24)):
+def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24),
+                       raw=False):
     """A table helper for displaying a field value an object. It only works
     when having a catalog source using brains and will get the object only
     when necessary. The cache is based on the modified date of the object
@@ -336,14 +337,25 @@ def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24)):
     The values are automatically converted to string (we should not cache
     full-objects). Pass a `converter` function (will get `obj`, `fieldname`
     and `value`) if you need to convert it first.
+
+    Using the `raw` option causes the value to be not converted to string.
+    Be adviced that the value is cached. It is strongly discuraged to put
+    full objects into the cache - thus the `raw` option should only be used
+    when we have no full-objects (only string, int, list, dict, etc).
     """
 
     def _cache_key(method, item, _nothing):
-        return ('ftw.table.helper.cached_field_value',
-                fieldname,
-                item.getPath(),
-                item.modified,
-                time() // cache_time)
+        key = ['ftw.table.helper.cached_field_value',
+               fieldname,
+               item.getPath(),
+               item.modified,
+               time() // cache_time]
+        if converter is not None:
+            key.append(converter.__name__)
+            key.append(converter.__module__)
+        if raw:
+            key.append(raw)
+        return key
 
     @ram.cache(_cache_key)
     def _field_value_helper(item, _nothing):
@@ -354,10 +366,10 @@ def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24)):
         if converter is not None:
             value = converter(obj, fieldname, value)
 
-        if value is None:
+        if not raw and value is None:
             value = ''
 
-        if not isinstance(value, (str, unicode)):
+        if not raw and not isinstance(value, (str, unicode)):
             value = str(value)
 
         return value
