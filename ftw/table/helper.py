@@ -265,8 +265,9 @@ def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24),
     This function generates a regular helper on the fly, so it is called in
     the table / tabbedview column definition.
     The values are automatically converted to string (we should not cache
-    full-objects). Pass a `converter` function (will get `obj`, `fieldname`
-    and `value`) if you need to convert it first.
+    full-objects).
+    Pass a `converter` function (will get `obj` and `value`) if you need
+    to convert it first.
 
     Using the `raw` option causes the value to be not converted to string.
     Be adviced that the value is cached. It is strongly discuraged to put
@@ -294,7 +295,7 @@ def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24),
         value = field.get(obj)
 
         if converter is not None:
-            value = converter(obj, fieldname, value)
+            value = converter(obj, value)
 
         if not raw and value is None:
             value = ''
