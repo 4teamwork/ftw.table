@@ -1,6 +1,7 @@
+from Products.CMFCore.utils import getToolByName
 from datetime import datetime, timedelta
 from plone.memoize import ram
-from Products.CMFCore.utils import getToolByName
+from time import time
 from zope.app.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -251,3 +252,57 @@ def translated_string(domain='plone'):
         return translate(
             value, context=getRequest(), domain=domain)
     return _translate
+
+
+def cached_field_value(fieldname, converter=None, cache_time=(60 * 60 * 24),
+                       raw=False):
+    """A table helper for displaying a field value an object. It only works
+    when having a catalog source using brains and will get the object only
+    when necessary. The cache is based on the modified date of the object
+    and it's path.
+
+    Usage:
+    This function generates a regular helper on the fly, so it is called in
+    the table / tabbedview column definition.
+    The values are automatically converted to string (we should not cache
+    full-objects).
+    Pass a `converter` function (will get `obj` and `value`) if you need
+    to convert it first.
+
+    Using the `raw` option causes the value to be not converted to string.
+    Be adviced that the value is cached. It is strongly discuraged to put
+    full objects into the cache - thus the `raw` option should only be used
+    when we have no full-objects (only string, int, list, dict, etc).
+    """
+
+    def _cache_key(method, item, _nothing):
+        key = ['ftw.table.helper.cached_field_value',
+               fieldname,
+               item.getPath(),
+               item.modified,
+               time() // cache_time]
+        if converter is not None:
+            key.append(converter.__name__)
+            key.append(converter.__module__)
+        if raw:
+            key.append(raw)
+        return key
+
+    @ram.cache(_cache_key)
+    def _field_value_helper(item, _nothing):
+        obj = item.getObject()
+        field = obj.Schema().getField(fieldname)
+        value = field.get(obj)
+
+        if converter is not None:
+            value = converter(obj, value)
+
+        if not raw and value is None:
+            value = ''
+
+        if not raw and not isinstance(value, (str, unicode)):
+            value = str(value)
+
+        return value
+
+    return _field_value_helper

@@ -3,36 +3,44 @@ Ext.Ajax.timeout = 120000;  // 2 minutes
 Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   // private
   onGroupByClick : function(){
-    this.grid.store.baseParams['groupBy'] = this.cm.getDataIndex(this.hdCtxIndex);
-    this.enableGrouping = true;
+      if(store.baseParams['groupBy'] && this.grid.store.sortInfo.field == 'draggable') {
+          // we are grouping and sorting by draggable - do not allow this.
+          // let's just sort by the groupBy-column
+          this.grid.store.sort(store.baseParams['groupBy'], 'ASC');
+      }
 
-    // if we have a tabbedview, we need to tell it that we
-    // are not grouping anymore
-    if(typeof(tabbedview) != "undefined") {
-      tabbedview.param('groupBy', store.baseParams['groupBy']);
-    }
-
-    if(store.baseParams['groupBy'] && this.grid.store.sortInfo.field == 'draggable') {
-      // we are grouping and sorting by draggable - do not allow this.
-      // let's just sort by the groupBy-column
-      this.grid.store.sort(store.baseParams['groupBy'], 'ASC');
-    }
-
-    this.beforeMenuShow(); // Make sure the checkboxes get properly set when changing groups
-    this.refresh();
-    this.grid.store.reload();
-    if(typeof(tabbedview) != "undefined") {
-      tabbedview.show_spinner();
-    }
+      if(typeof(tabbedview) != "undefined") {
+          tabbedview.param('groupBy', this.cm.getDataIndex(this.hdCtxIndex));
+          tabbedview.reload_view();
+      } else {
+          Ext.grid.GroupingView.superclass.onGroupByClick.call(this);
+      }
   },
+
+  // private
+  onShowGroupsClick : function(mi, checked){
+      if (typeof(tabbedview) != "undefined") {
+          this.enableGrouping = checked;
+          if (checked) {
+              this.onGroupByClick();
+          } else {
+              tabbedview.reload_page_keeping_profile();
+          }
+      } else {
+          Ext.grid.GroupingView.superclass.onShowGroupsClick.call(this, mi, checked);
+      }
+  },
+
   // private
   onColumnWidthUpdated : function(col, w, tw){
     Ext.grid.GroupingView.superclass.onColumnWidthUpdated.call(this, col, w, tw);
     this.updateGroupWidths();
+
     //set width of the header div to the same value as the table
     //we need a few extra pixel to make the resizable handle draggable
     var inner_width = $('.x-grid3-header table').width() + 5;
     $('.x-grid3-header').width(inner_width);
+    $('.x-grid3-header-offset').width(inner_width);
   }
 });
 
@@ -43,10 +51,11 @@ function reset_grid_state() {
     type: "POST",
     data: {
        gridstate: "{}",
-       view_name: stateName()
+       view_name: stateName(),
+       "grid-state-profile": tabbedview.param('grid-state-profile')
     },
     success: function() {
-      location.reload();
+      tabbedview.reload_page_keeping_profile();
     }
   });
 }
@@ -60,6 +69,19 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   // private
   set : function(name, value){
     Ext.state.FTWPersistentProvider.superclass.set.call(this, name, value);
+
+    if(store.reader.meta.config.group != undefined ||
+       grid.colModel.getColumnById('groupBy') != undefined){
+        // store nothing on the server while grouping.
+        return;
+    }
+
+    //set width of the header div to the same value as the table
+    //we need a few extra pixel to make the resizable handle draggable
+    var inner_width = $('.x-grid3-header table').width() + 5;
+    $('.x-grid3-header').width(inner_width);
+    $('.x-grid3-header-offset').width(inner_width);
+
     $.ajax({
       url: '@@tabbed_view/setgridstate',
       cache: false,
@@ -67,7 +89,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       data: {
         // XXX does JSON.stringify work always?
         gridstate: JSON.stringify(this.state[name]),
-        view_name: stateName()
+        view_name: stateName(),
+        "grid-state-profile": tabbedview.param('grid-state-profile')
       }
     });
   },
@@ -113,7 +136,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       baseParams: {
         ext: 'json',
         tableType: 'extjs', // lets the server know that this is a request from EXTJS ...
-        mode: 'json' // ... and that we want JSON data to be returned
+        mode: 'json', // ... and that we want JSON data to be returned
+        omit_metadata: '0' // when 1, keep column defitions
       },
 
       proxy: new Ext.data.HttpProxy({
@@ -129,6 +153,20 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
 
       listeners: {
 
+        beforeload: function(store, options) {
+            Ext.state.Manager.getProvider().state = {};
+            jQuery.tabbedview.show_spinner();
+        },
+
+        datachanged: function(store) {
+            if (typeof(store.reader.jsonData.static_html) != 'undefined'){
+                $.each(store.reader.jsonData.static_html, function(key, value) {
+                    $('#'+key+'_container.ftwtable').html(value);
+                });
+            }
+            jQuery.tabbedview.hide_spinner();
+        },
+
         // will be called if we get new metadata from the server. E.g. diffrent columns.
         metachange : function(store, meta){
           if(store.reader.meta.config.group != undefined){
@@ -136,7 +174,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
           }
 
           // On metadachange we have to create a new grid. Therefore destroy the old one
-          if (grid){
+          if (grid && store.reader.meta.config.group == undefined){
             // if the grid exists, let the state provider store
             // our config
             Ext.state.Manager.set(stateName(), grid.getState());
@@ -188,19 +226,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             }
           });
 
-          grid = new Ext.grid.GridPanel({
-            //set up the GridPanel
-            columnLines: true,
-            store: store,
-            cm: cm,
-            stripeRows: true,
-            autoHeight:true,
-            stateful: true,
-            stateId: stateName(),
-            xtype: "grid",
-
-            //XXX: GridDragDropRowOrder has to be the first plugin!
-            plugins: [new Ext.ux.dd.GridDragDropRowOrder({
+          var grid_plugins = new Array(new Ext.ux.dd.GridDragDropRowOrder({
               copy: false, // false by default
               scrollable: true, // enable scrolling support (default is false)
               targetCfg: {}, // any properties to apply to the actual DropTarget
@@ -221,7 +247,41 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   });
                 }
               }
-            })],
+            }));
+
+          if (Ext.ux.grid && typeof(Ext.ux.grid.GridFilters) != 'undefined') {
+              var filtered_columns = function() {
+                  var cols = new Array();
+                  for(var i=0; i<columns.length; i++) {
+                      var col = columns[i];
+                      if (col.filter) {
+                          var filter = col.filter;
+                          filter['dataIndex'] = col.dataIndex;
+                          cols.push(filter);
+                      }
+                  }
+                  return cols;
+              }();
+
+              grid_plugins.push(new Ext.ux.grid.GridFilters({
+                  local: false,
+                  filters: filtered_columns
+              }));
+          }
+
+          grid = new Ext.grid.GridPanel({
+            //set up the GridPanel
+            columnLines: true,
+            store: store,
+            cm: cm,
+            stripeRows: true,
+            autoHeight:true,
+            stateful: true,
+            stateId: stateName(),
+            xtype: "grid",
+
+            //XXX: GridDragDropRowOrder has to be the first plugin!
+            plugins: grid_plugins,
 
             view: new Ext.grid.FTWTableGroupingView({
               groupMode:'value',
@@ -241,31 +301,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
             sm: sm,
 
             listeners: {
-              groupchange: function(grid, state) {
-                if(!state) {
-                  // hide the groupBy column - which was just enabled
-                  // because grouping was disabled
-                  var groupByCol = grid.grid.colModel.getIndexById('groupBy');
-                  if(groupByCol !== -1) {
-                    grid.grid.colModel.setHidden(groupByCol, true);
-                  }
-
-                  // reload the store - this removes grouping and
-                  // reenables batching etc.
-                  store.baseParams['groupBy'] = '';
-                  store.reload();
-                  if(typeof(tabbedview) != "undefined") {
-                    tabbedview.show_spinner();
-                  }
-                }
-
-                // if we have a tabbedview, we need to tell it that we
-                // are not grouping anymore
-                if(typeof(tabbedview) != "undefined") {
-                  tabbedview.param('groupBy', store.baseParams['groupBy']);
-                }
-              },
-
               beforerender: function(grid) {
                 // When the state is loaded, somehow the columns
                 // marked as hidden are not set to hidden
@@ -302,10 +337,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 //ugly hacks we need to use horizontal scrolling combined with autoHeight
                 //enable horizontal scrolling
                 $('.x-grid3-viewport').css('overflow', 'auto');
-                //set width of the header div to the same value as the table
-                //we need a few extra pixel to make the resizable handle draggable
-                var inner_width = $('.x-grid3-header table').width() + 5;
-                $('.x-grid3-header').width(inner_width);
 
                 // Checkboxes / radios are usually have the
                 // "selectable" css class. When using a extjs
@@ -340,64 +371,66 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
               },
 
               afterrender: function(panel){
-                //drag 'n' drop reordering is only available if sort field is 'draggable'
-                if(store.sortInfo.field == 'draggable'){
-                  unlockDragDrop();
-                }else{
-                  lockDragDrop();
-                }
-
-                /* meta.static contains plain html that we inject into the DOM using key+'_container' as selector.
-                   E.G.:
-                   "static":{
-                   "batching":"<!-- Navigation -->"
-                   [...]
-                   },
-                   $('#batching_container.ftwtable') will be replaced with "<!-- Navigation -->"
-                */
-                if(store.reader.meta['static'] != undefined){
-                  $.each(store.reader.meta['static'], function(key, value) {
-                    $('#'+key+'_container.ftwtable').html(value);
-                  });
-                }
-                options.onLoad();
-
-                // We shouldn't be able to group and sort by "draggable" at the
-                // same time.
-                // So we need to disable sorting by "draggable" when
-                // grouping is enabled, and enable it when grouping is disabled.
-                var draggableCol = grid.colModel.getColumnById('draggable');
-                if(draggableCol) {
-                  if(store.baseParams['groupBy']) {
-                    // grouping is enabled
-                    draggableCol.sortable = false;
-                  } else {
-                    // grouping is disabled
-                    draggableCol.sortable = true;
-                  }
-                }
-                $this.trigger('gridRendered');
+                  this._update_dragndrop_state();
+                  options.onLoad();
+                  store.baseParams['omit_metadata'] = '1';
+                  $this.trigger('gridRendered');
               },
 
               sortchange: function(panel, sortInfo) {
-                // disable sorting on column "draggable" when sorting
-                // by this column. This disables reversing the sort
-                // order of "draggable", because it does not make
-                // sense (since it's objectPositionInParent)
-                var col = grid.colModel.getColumnById('draggable');
-                if(col) {
-                  if(sortInfo.field == 'draggable' && sortInfo.direction == 'ASC') {
-                    col.sortable = false;
-                  } else if(sortInfo.field == 'draggable' && sortInfo.direction == 'DESC') {
-                    // not very nice: force to sort ascending, when
-                    // sorting on "draggable". Descending does not
-                    // make any sense..
-                    store.sort(sortInfo.field, 'ASC');
-                  } else {
-                    col.sortable = true;
-                  }
-                }
+                  this._update_dragndrop_state();
               }
+            },
+
+            _update_dragndrop_state: function() {
+                if(!this.viewReady) {
+                    return;
+                }
+                // Dragndrop should only be available when sorting by 'draggable'.
+                var plugin = this._get_dragndrop_plugin();
+                if(!plugin) {
+                    return;
+                }
+
+                var col = grid.colModel.getColumnById('draggable');
+                if(!col) {
+                    return;
+                }
+
+                if(store.sortInfo.field == 'draggable'){
+                    // enable grouping
+                    plugin.target.unlock();
+                    grid.ddText = translate('selectedRowen', '{0} selected rowen{1}');
+                    $this.removeClass('draglocked');
+
+                    // do not allow to change the sort direction when sorting by 'draggable'
+                    if(store.sortInfo.direction == 'DESC') {
+                        store.sort(sortInfo.field, 'ASC');
+                    }
+                    col.sortable = false;
+                }
+
+                else {
+                    // desable grouping
+                    plugin.target.lock();
+                    grid.ddText = translate('dragDropLocked', "Drag 'n' Drop not possible");
+                    $this.addClass('draglocked');
+                    col.sortable = true;
+                }
+            },
+
+            _get_dragndrop_plugin: function() {
+                if (!Ext.ux || typeof(Ext.ux.dd.GridDragDropRowOrder) == 'undefined') {
+                    return null;
+                }
+
+                for(var i=0; i<this.plugins.length; i++) {
+                    if (this.plugins[i] instanceof Ext.ux.dd.GridDragDropRowOrder) {
+                        return this.plugins[i];
+                    }
+                }
+
+                return null;
             }
           });
           // end grid=
@@ -429,21 +462,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
 
   };
 
-  unlockDragDrop = function(){
-    //XXX: We assume that [0] is the GridDragDropRowOrder plugin
-    grid.plugins[0].target.unlock();
-    grid.ddText = translate('selectedRowen', '{0} selected rowen{1}');
-    $this.removeClass('draglocked');
-  };
-
-  lockDragDrop = function(){
-    //XXX: We assume that [0] is the GridDragDropRowOrder plugin
-    grid.plugins[0].target.lock();
-    grid.ddText = translate('dragDropLocked', "Drag 'n' Drop not possible");
-    $this.addClass('draglocked');
-  };
-
-
   translate = function(key, defaultValue){
     if(locales[key]){
       return locales[key];
@@ -464,11 +482,6 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   };
 
   $.fn.ftwtable.reloadTable = function(table, query, options){
-    if(store.reader.meta['static'] != undefined){
-      $.each(store.reader.meta['static'], function(key, value) {
-        $('#'+key+'_container.ftwtable').html('');
-      });
-    }
     $.fn.ftwtable.destroy();
     $.fn.ftwtable.createTable(table, query, options);
   };
@@ -483,6 +496,12 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
     $this = null;
     store = null;
     grid = null;
+  };
+
+  $.fn.ftwtable.goto_page = function(pagenumber) {
+    store.baseParams['pagenumber:int'] = pagenumber;
+    jQuery.tabbedview.show_spinner();
+    store.reload();
   };
 
   $.fn.ftwtable.select = function(start, end){
@@ -506,6 +525,25 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
       sm.deselectRow(start);
     }
   };
+
+    $(document).keyup(function(event) {
+        /* on ENTER, open all selected issues in a new tab */
+        var src = $(event.srcElement);
+        if(event.keyCode == 13 && !src.is('input') && !src.is('textarea')) {
+            $('.x-grid3-row-selected .default-link').each(function() {
+                if($.browser.webkit === true) {
+                    /* open link in new tab by simulating a mouse event with pressed ctrl / cmd keys */
+                    var evt = document.createEvent("MouseEvents");
+                    evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0,
+                                       true, false, false, true, 0, null);
+                    this.dispatchEvent(evt);
+                } else {
+                    window.open($(this).attr('href'), '_blank');
+                }
+            });
+        }
+    });
+
   //
   // end of closure
   //

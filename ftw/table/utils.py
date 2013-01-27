@@ -105,7 +105,7 @@ class TableGenerator(object):
                         pass
                 table['rows'].append(row)
 
-            if meta_data is None:
+            if meta_data is None and not self.options.get('omit_metadata', False):
                 #create metadata for oldstyle column definition
                 meta_data = deepcopy(METADATA)
                 for column in self.columns:
@@ -129,6 +129,8 @@ class TableGenerator(object):
                     col['id'] = key
                     col['sortable'] = column.get('sortable', True)
                     col['hidden'] = column.get('hidden', False)
+                    col['filter'] = column.get('filter', False)
+                    col['groupable'] = column.get('groupable', True)
 
                     if not column['title']:
                         if key == 'draggable':
@@ -174,17 +176,19 @@ class TableGenerator(object):
                     aecolumn = self.options['auto_expand_column']
                     meta_data['config']['auto_expand_column'] = aecolumn
 
-            #add static html snippets. Eg batching, buttons, etc
-            if 'static' in self.options:
-                meta_data['static'] = deepcopy(self.options['static'])
-
             #add translations for the table
-            meta_data['translations'] = {}
-            for msgid in msgids:
-                meta_data['translations'][msgid] = translate(
-                    msgid, domain='ftw.table', context=self.request)
+            if meta_data is not None:
+                meta_data['translations'] = {}
+                for msgid in msgids:
+                    meta_data['translations'][msgid] = translate(
+                        msgid, domain='ftw.table', context=self.request)
+
             if meta_data:
                 table['metaData'] = meta_data
+
+            if 'static' in self.options:
+                table['static_html'] = deepcopy(self.options['static'])
+
             jsonstr = json.dumps(table)
             return jsonstr
         else:
@@ -258,6 +262,8 @@ class TableGenerator(object):
 
         sortable = True
         hidden = False
+        groupable = True
+        filter_ = None
 
         if isinstance(column, basestring):
             attr = sort_index = column
@@ -290,6 +296,8 @@ class TableGenerator(object):
             width = column.get('width', None)
             sortable = column.get('sortable', True)
             hidden = column.get('hidden', False)
+            groupable = column.get('groupable', True)
+            filter_ = column.get('filter', None)
 
         title = len(title) and title or attr
         sort_index = len(sort_index) and sort_index or attr
@@ -301,4 +309,6 @@ class TableGenerator(object):
                 'transform': transform,
                 'width': width,
                 'sortable': sortable,
-                'hidden': hidden}
+                'hidden': hidden,
+                'groupable': groupable,
+                'filter': filter_}

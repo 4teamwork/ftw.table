@@ -5,6 +5,34 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Add cached_field_value helper for getting a field value of an object
+  with proper caching.
+  [jone]
+
+- ExtJS: change grouping implementation, so that the complete tab is reloaded
+  when toggling grouping. Also prevent storing the state while grouping.
+  This fixes issues when using grouping and filtering in combination.
+  [jone]
+
+- ExtJS: when pressing enter, open ".default-link" links in new tabs.
+  [jone]
+
+- Support for "groupable" key in column definitions (dict).
+  [jone]
+
+- ExtJS: show spinner on every request.
+  [jone]
+
+- Add a seperate goto_page table function, so that we can
+  change the page in ExtJS withou recreating the table.
+  [jone]
+
+- Add support for filtering.
+  Install the ``grid-filter`` GS profile of ``collective.js.extjs`` and
+  define the filter configuration with the key ``filter`` in your
+  column definition.
+  [jone]
+
 - Fix "linked" helper, pass href as attribute.
   [mathias.leimgruber]
 

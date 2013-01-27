@@ -66,6 +66,10 @@
 
     destroy: function(start, end){
       $.fn.ftwtable.destroy(start, end);
+    },
+
+    goto_page: function(pagenumber) {
+      $.fn.ftwtable.goto_page(pagenumber);
     }
   };
 
@@ -162,12 +166,19 @@
     }
 
     $this.load(query, null, function() {
-      tabbedview.view_container.trigger('gridRendered');
       if(typeof(tabbedview) != "undefined") {
+        tabbedview.view_container.trigger('gridRendered');
         tabbedview.hide_spinner();
       }
       $o.onLoad();
     });
+  };
+
+  $.fn.ftwtable.goto_page = function(pagenumber) {
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.param('pagenumber:int', pagenumber);
+      tabbedview.reload_view();
+    }
   };
 
   $.fn.ftwtable.select = function(start, end){
