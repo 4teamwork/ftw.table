@@ -2,9 +2,14 @@ from Products.CMFPlone.utils import getToolByName
 from copy import deepcopy
 from ftw.table.basesource import BaseTableSourceConfig, BaseTableSource
 from ftw.table.interfaces import ITableSource, ICatalogTableSourceConfig
-from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implements, Interface
+
+try:
+    from zope.component.hooks import getSite
+except ImportError:
+    # plone 4.0 support
+    from zope.app.component.hooks import getSite
 
 
 def default_custom_sort(results, sort_on, reverse):

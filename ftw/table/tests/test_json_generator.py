@@ -2,10 +2,15 @@ from ftw.table.testing import FTWTABLE_ZCML_LAYER
 from zope import component
 from ftw.table.interfaces import ITableGenerator
 from ftw.table.helper import readable_date_time
-from zope.component.hooks import setSite
 from plone.mocktestcase import MockTestCase
 import json
 from datetime import datetime, timedelta
+
+try:
+    from zope.component.hooks import setSite
+except ImportError:
+    # plone 4.0 support
+    from zope.app.component.hooks import setSite
 
 
 COLUMNS_KEYS = ['dataIndex', 'header', 'id', 'sortable', ]

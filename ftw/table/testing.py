@@ -1,9 +1,14 @@
 from plone.mocktestcase.dummy import Dummy
 from plone.testing import Layer
 from plone.testing import zca
-from zope.component.hooks import setSite
 from zope.component import getGlobalSiteManager
 from zope.configuration import xmlconfig
+
+try:
+    from zope.component.hooks import setSite
+except ImportError:
+    # plone 4.0 support
+    from zope.app.component.hooks import setSite
 
 
 class FtwTableZCMLLayer(Layer):
