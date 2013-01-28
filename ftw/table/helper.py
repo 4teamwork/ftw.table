@@ -1,11 +1,16 @@
 from datetime import datetime, timedelta
 from plone.memoize import ram
 from Products.CMFCore.utils import getToolByName
-from zope.app.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 import cgi
 import os.path
+
+try:
+    from zope.component.hooks import getSite
+except ImportError:
+    # plone 4.0 support
+    from zope.app.component.hooks import getSite
 
 
 def link(icon=True, tooltip=False, classes=None, attrs=None, icon_only=False):

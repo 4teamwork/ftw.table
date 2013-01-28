@@ -5,6 +5,9 @@ Changelog
 1.8.3 (unreleased)
 ------------------
 
+- Plone 4.3 compatibility: fix imports.
+  [jone]
+
 - Fix "linked" helper, pass href as attribute.
   [mathias.leimgruber]
 
