@@ -2,7 +2,7 @@ from Products.CMFPlone.utils import getToolByName
 from copy import deepcopy
 from ftw.table.basesource import BaseTableSourceConfig, BaseTableSource
 from ftw.table.interfaces import ITableSource, ICatalogTableSourceConfig
-from zope.app.component.hooks import getSite
+from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implements, Interface
 

@@ -3,7 +3,7 @@ from zope import component
 from ftw.table.interfaces import ITableGenerator
 from ftw.table.utils import TableGenerator
 import re
-from zope.app.component.hooks import setSite
+from zope.component.hooks import setSite
 from xml.dom.minidom import parseString
 from plone.mocktestcase import MockTestCase
 

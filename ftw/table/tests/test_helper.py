@@ -1,6 +1,6 @@
 from plone.mocktestcase import MockTestCase
 from mocker import ANY
-from zope.app.component.hooks import setSite, getSite
+from zope.component.hooks import setSite, getSite
 from Products.CMFCore.utils import getToolByName
 
 

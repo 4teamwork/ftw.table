@@ -1,7 +1,7 @@
 from zope import interface
 from zope import schema
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.component import hooks
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import hooks
 from zope.i18nmessageid.message import Message
 from zope.i18n import translate
 from ftw.table.column import METADATA, FIELD, COLUMN

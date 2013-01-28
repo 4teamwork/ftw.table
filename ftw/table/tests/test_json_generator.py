@@ -2,7 +2,7 @@ from ftw.table.testing import FTWTABLE_ZCML_LAYER
 from zope import component
 from ftw.table.interfaces import ITableGenerator
 from ftw.table.helper import readable_date_time
-from zope.app.component.hooks import setSite
+from zope.component.hooks import setSite
 from plone.mocktestcase import MockTestCase
 import json
 from datetime import datetime, timedelta

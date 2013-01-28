@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from plone.memoize import ram
 from Products.CMFCore.utils import getToolByName
-from zope.app.component.hooks import getSite
+from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 import cgi
