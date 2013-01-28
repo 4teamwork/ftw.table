@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.8.3 (unreleased)
-------------------
+1.9 (2013-01-28)
+----------------
 
 - Plone 4.3 compatibility: fix imports.
   [jone]
