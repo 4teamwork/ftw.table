@@ -1,7 +1,13 @@
 from plone.mocktestcase import MockTestCase
 from mocker import ANY
-from zope.app.component.hooks import setSite, getSite
 from Products.CMFCore.utils import getToolByName
+
+
+try:
+    from zope.component.hooks import getSite, setSite
+except ImportError:
+    # plone 4.0 support
+    from zope.app.component.hooks import getSite, setSite
 
 
 class  TestHelperMethods(MockTestCase):

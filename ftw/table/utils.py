@@ -1,7 +1,6 @@
 from zope import interface
 from zope import schema
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from zope.app.component import hooks
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.i18nmessageid.message import Message
 from zope.i18n import translate
 from ftw.table.column import METADATA, FIELD, COLUMN
@@ -12,6 +11,12 @@ try:
     import json
 except ImportError:
     import simplejson as json
+
+try:
+    from zope.component import hooks
+except ImportError:
+    # plone 4.0 support
+    from zope.app.component import hooks
 
 
 class TableGenerator(object):
