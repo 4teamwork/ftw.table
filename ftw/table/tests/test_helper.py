@@ -90,8 +90,8 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             wrapped(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal">'
-            u'<img src="/path/to/portal/icon.gif"/>the &lt;&quot;escaped'
-            u'&quot;&gt; Title</a></span>')
+            u'<img src="/path/to/portal/icon.gif" alt="the <"escaped"> Title"/>'
+            u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
         self.assertEqual(wrapped(self.item, self.item.Title),
                          wrapped(self.obj, self.obj.Title()))
@@ -155,7 +155,7 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             wrapped(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal">'
-            u'<img src="/path/to/portal/icon.gif"/>'
+            u'<img src="/path/to/portal/icon.gif" alt="the <"escaped"> Title"/>'
             u'</a></span>')
 
         self.assertEqual(wrapped(self.item, self.item.Title),
@@ -341,7 +341,8 @@ class  TestHelperMethods(MockTestCase):
         self.assertEqual(
             linked(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal">'
-            '<img src="/path/to/portal/icon.gif"/>the &lt;&quot;escaped&quot;&gt; Title</a></span>')
+            u'<img src="/path/to/portal/icon.gif" alt="the <"escaped"> Title"/>'
+            u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
         # With a brain and without icon
         self.assertEqual(
