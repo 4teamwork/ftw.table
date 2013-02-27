@@ -202,6 +202,8 @@ class TableGenerator(object):
         value = u''
         if hasattr(content, attr):
             value = getattr(content, attr)
+        if callable(value):
+            value = value()
         elif hasattr(content, '__iter__') and attr in content:
             value = content[attr]
         return transform(content, value)
