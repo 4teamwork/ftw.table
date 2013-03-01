@@ -6,9 +6,14 @@
     <browser:resource
         name="jquery.ftwtable.js"
         file="jquery.ftwtable.js" />
-        
+
     <browser:resource
         name="ftwtable.extjs.js"
         file="ftwtable.extjs.js" />
-        
+
+	  <browser:resourceDirectory
+        name='ftwtable-extjs'
+        directory="extjs"
+        />
+
 </configure>
