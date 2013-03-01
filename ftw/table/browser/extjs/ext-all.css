@@ -1,6 +1,9 @@
 .x-grid3-scroller {
   overflow:auto;
 }
+#content .x-grid3 table {
+  margin-bottom: 0;
+}
 .x-grid3 table {
   table-layout: fixed;
   border-collapse: collapse;
