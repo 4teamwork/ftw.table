@@ -8,6 +8,7 @@
     i18n_domain="ftw.table">
 
     <include package=".browser" />
+    <include package=".upgrades" />
 
     <i18n:registerTranslations directory="locales" />
 
