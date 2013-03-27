@@ -2,8 +2,18 @@ Changelog
 =========
 
 
-1.8.3 (unreleased)
-------------------
+1.10 (unreleased)
+-----------------
+
+- Implement "callable" values - implemented in get_value method of TableGenerator.
+  [mathias.leimgruber]
+
+
+1.9 (2013-01-28)
+----------------
+
+- Plone 4.3 compatibility: fix imports.
+  [jone]
 
 - Add cached_field_value helper for getting a field value of an object
   with proper caching.

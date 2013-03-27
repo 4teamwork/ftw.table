@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="ftw.table">
+
+  <!-- 1.0 -> 1100 -->
+  <configure zcml:condition="installed collective.js.extjs">
+    <genericsetup:upgradeStep
+        title="Update extjs styling"
+        description="Overwrites the styles of extjs tables."
+        source="1.0"
+        destination="1100"
+        handler="ftw.table.upgrades.to1100.UpdateTableStyles"
+        profile="ftw.table:extjs"
+        />
+
+    <genericsetup:registerProfile
+        name="1100"
+        title="Upgrade profile for ftw.table"
+        description="This profile upgrades ftw.table to version 1100."
+        directory="profiles/1100"
+        for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+  </configure>
+
+</configure>

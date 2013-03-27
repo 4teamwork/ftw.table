@@ -8,6 +8,12 @@ from zope.i18n import translate
 import cgi
 import os.path
 
+try:
+    from zope.component.hooks import getSite
+except ImportError:
+    # plone 4.0 support
+    from zope.app.component.hooks import getSite
+
 
 def link(icon=True, tooltip=False, classes=None, attrs=None, icon_only=False):
     """Generates a helper.
@@ -181,7 +187,12 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
         if callable(icon):
             icon = icon()
 
-        img = u'<img src="%s/%s"/>' % (portal_url(), icon)
+        title = item.Title
+        if callable(title):
+            title = title()
+
+        img = u'<img src="%s/%s" alt="%s"/>' % (
+            portal_url(), icon, title.decode('utf8'))
         if not icon:
             attrs['class'].append(
                 'contenttype-%s' %

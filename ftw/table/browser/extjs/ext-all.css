@@ -1,0 +1,373 @@
+.x-grid3-scroller {
+  overflow:auto;
+}
+#content .x-grid3 table {
+  margin-bottom: 0;
+}
+.x-grid3 table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* @group header */
+
+.x-grid3-hd-row {
+  background-color: #eee;
+  background-image: -moz-linear-gradient(top, #f5f5f5, #e6e6e6);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #e6e6e6);
+  background-image: -o-linear-gradient(top, #f5f5f5, #e6e6e6);
+  background-image: linear-gradient(top, #f5f5f5, #e6e6e6);
+}
+.x-grid3-hd-row *{
+  font-weight: bold;
+}
+
+.x-grid3-cell-inner,
+.x-grid3-hd-inner {
+  overflow:hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* sortable */
+.sort-asc .x-grid3-sort-icon {
+  background: url(images/sort_asc.png) no-repeat center center;
+}
+.sort-desc .x-grid3-sort-icon {
+  background: url(images/sort_desc.png) no-repeat center center;
+}
+.sort-asc .x-grid3-sort-icon, .sort-desc .x-grid3-sort-icon {
+  display: inline;
+  height: 14px;
+}
+
+/* @end */
+
+/* @group td */
+
+.x-grid3 td {
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-width: 1px 1px 0 1px;
+}
+.x-grid3 td > * {
+  padding: 0.5em;
+}
+.x-grid3-row-alt table {
+  background-color: #f8f8f8;
+}
+.x-grid3 table:hover {
+  background-color: #FFFFEE;
+}
+.x-grid3-row-selected table,
+.x-grid3-row-selected table:hover {
+  background-color: #FFFFAA;
+}
+.x-grid3-row-last table td {
+  border-bottom-width: 1px;
+}
+
+
+/* @end */
+
+/* @group th menu */
+
+.x-menu-item-icon {
+  background: none no-repeat left center;
+  height: 16px;
+  width: 16px;
+  padding-right: 0.5em;
+}
+.x-grid3-hd-inner {
+  position: relative;
+}
+.x-grid3-hd-btn {
+  display: none;
+  position: absolute;
+  right: 0em;
+  top: 0;
+  background: url(images/td_menu_button.png) no-repeat center center #efefef;
+  padding: 2px 0.5em;
+  border-left: 1px solid #ddd;
+}
+.x-grid3-hd-menu-open .x-grid3-hd-btn,
+.x-grid3-hd-btn:hover {
+  background-image: url(images/td_menu_button_hover.png);
+  background-color: #eaeaea;
+}
+.x-grid3-hd-menu-open .x-grid3-hd-btn,
+.x-grid3-hd-over .x-grid3-hd-btn {
+  display: block;
+}
+.x-menu {
+  background-color: #FFF;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+.x-menu-list {
+  overflow: hidden;
+}
+.x-menu-list li {
+  display: block;
+  padding: 0.5em;
+  margin: 1px 0;
+}
+.x-menu-list li a {
+  color: #666;
+  display: block;
+}
+.x-menu-list li a:hover {
+  text-decoration: none;
+}
+.x-menu-check-item .x-menu-item-icon {
+  background-image: url(images/unchecked.gif);
+}
+.x-menu-item-checked .x-menu-item-icon {
+  background-image: url(images/checked.gif);
+}
+.x-menu-list li.x-menu-item-active,
+.x-menu-list li:hover {
+  background-color: #E6E6E6;
+}
+.x-menu li.x-menu-sep-li{
+  font-size: 1px;
+  line-height: 1px;
+  background-color: #aaa;
+  padding: 0;
+}
+.x-menu-item-arrow {
+  background: url(images/item_arrow.png) no-repeat right center;
+  padding-right: 3em;
+}
+/* menu scrollers*/
+.x-menu .x-menu-scroller {
+  width: 100%;
+  background-color: #FFFFFF;
+  background-repeat:no-repeat;
+  background-position:center;
+  height:8px;
+  line-height: 8px;
+  cursor:pointer;
+  margin: 0;
+  padding: 0;
+}
+.x-menu .x-menu-scroller-active{
+  background-color: #E6E6E6;
+}
+.x-menu-scroller-top {
+  background-image:url(images/mini-top.gif);
+}
+.x-menu-scroller-bottom {
+  background-image:url(images/mini-bottom.gif);
+}
+
+/* background images */
+.xg-hmenu-sort-asc .x-menu-item-icon {
+  background-image: url(images/hmenu-asc.gif);
+}
+.xg-hmenu-sort-desc .x-menu-item-icon {
+  background-image: url(images/hmenu-desc.gif);
+}
+.x-cols-icon {
+  background-image: url(images/columns.gif);
+}
+.x-group-by-icon {
+  background-image: url(images/group-by.gif);
+}
+/* disabled menu*/
+.x-menu-list li.x-menu-item-active .x-item-disabled,
+.x-menu-list li.x-item-disabled.x-menu-item-active,
+.x-menu-list li.x-item-disabled:hover,
+.x-item-disabled {
+  opacity: .6;
+  -moz-opacity: .6;
+  filter: alpha(opacity=60);
+  background: #FFF;
+}
+.x-item-disabled a {
+  cursor: default;
+}
+/* flag menu */
+#flag-selection-menu {
+  width: 7em;
+  z-index: 2;
+}
+.flag-selector {
+  width: 100%;
+}
+/* hidden menu */
+.x-menu-list .x-hide-display {
+  display: none;
+}
+
+/* @end */
+
+/* @group resize */
+
+.x-grid3-resize-proxy {
+  cursor: e-resize;
+  cursor: col-resize;
+}
+.x-grid3-resize-proxy,
+.x-grid3-resize-marker {
+  width: 1px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  height: 100px;
+  overflow: hidden;
+  visibility: hidden;
+  border: none;
+  z-index: 7;
+  background-color: #777;
+}
+
+/* @end */
+
+/* @group grouped table */
+
+.x-grid-group-body td {
+  border: 1px solid #eee;
+}
+.x-grid-group-title {
+  margin: 1em 0 0.5em 0;
+  cursor: pointer;
+  font-weight: bold;
+}
+.x-grid-group-title a {
+  color: #666;
+}
+.x-grid-group-collapsed .x-grid-group-title a,
+.x-grid-group-collapsed .x-grid-group-title {
+  color: #aaa;
+}
+.x-grid-group-collapsed .x-grid-group-body {
+  display: none;
+}
+
+/* @end */
+
+/* @group drag th */
+.x-dd-drag-proxy {
+  padding: 0.5em;
+  border: 1px dotted #000;
+  background: #eee;
+}
+
+.col-move-top, .col-move-bottom{
+  width:9px;
+  height:9px;
+  position:absolute;
+  top:0;
+  line-height:1px;
+  font-size:1px;
+  overflow:hidden;
+  visibility:hidden;
+  z-index: 2;
+}
+.col-move-top{
+  background-image:url(images/col-move-top.gif);
+}
+.col-move-bottom{
+  /* background-image:url(images/col-move-bottom.gif); */
+}
+/* @end */
+
+/* @group calendar */
+
+.x-menu-list li.x-menu-item-active .x-menu-date-item,
+.x-menu-list li.x-menu-date-item:hover {
+  background-color: #FFF;
+}
+.x-date-inner td {
+  height: 2em;
+  text-align: center;
+  width: 2em;
+  border: 1px solid #EEEEEE;
+}
+.x-date-inner td a {
+  color: #CCC;
+}
+.x-date-inner td.x-date-active a {
+  color: #666;
+}
+.x-date-inner td.x-date-selected {
+  background: none repeat scroll 0 0 #EEEEEE;
+  border: 1px solid #AAAAAA;
+}
+.x-date-inner td:hover {
+  background: none repeat scroll 0 0 #EEEEEE;
+  border: 1px solid #AAAAAA;
+}
+.x-date-left a:before {content:'< ';}
+.x-date-right a:before {content:'> ';}
+/* date overlay selector */
+.x-date-mp {
+  display: none;
+  position: absolute;
+  top: 0;
+  background: #FFF;
+}
+.x-date-mp .x-date-mp-sep {border-right: 1px solid #AAA;}
+.x-date-mp td {
+  height: 2em;
+  width: 4em;
+}
+.x-date-mp td a {
+  background: #eee;
+  margin: 0.5em;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  text-align: center;
+}
+.x-date-mp td a:hover,
+.x-date-mp td.x-date-mp-sel a {
+  background-color: #CCC;
+  border: 1px solid #AAA;
+}
+.x-date-mp-prev:after {
+  cursor: pointer;
+  content: '<';
+}
+.x-date-mp-next:after {
+  cursor: pointer;
+  content: '>';
+}
+
+/* @end */
+
+/* @group shadow */
+.x-ie-shadow {
+  display: none;
+  position: absolute;
+  overflow: hidden;
+  left:0;
+  top:0;
+  zoom:1;
+}
+.x-shadow {
+  display: none;
+  position: absolute;
+  overflow: hidden;
+  left:0;
+  top:0;
+}
+.x-shadow * {
+  overflow: hidden;
+}
+.x-shadow * {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  clear: none;
+  zoom: 1;
+}
+/* @end */
+
+/* @group ugly fixes */
+.x-grid3-td-dummy {
+  display: none !important;
+}
+/* @end */
