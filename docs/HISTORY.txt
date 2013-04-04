@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.10 (unreleased)
+1.10 (2013-04-04)
 -----------------
 
 - Implement "callable" values - implemented in get_value method of TableGenerator.
