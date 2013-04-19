@@ -162,3 +162,7 @@ This package is copyright by `4teamwork <http://www.4teamwork.ch/>`_.
 
 
 .. _ftw.tabbedview: https://github.com/4teamwork/ftw.tabbedview
+
+.. image:: https://cruel-carlota.pagodabox.com/dbd8dfc13e0ae9329fd03087f72937ef
+   :alt: githalytics.com
+   :target: http://githalytics.com/4teamwork/ftw.table
