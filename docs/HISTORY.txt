@@ -5,7 +5,8 @@ Changelog
 1.11 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Do not hide dummy column in extJs tables, its used for easy resize.
+  [Julian Infanger]
 
 
 1.10 (2013-04-04)
