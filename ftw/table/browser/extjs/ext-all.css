@@ -368,6 +368,6 @@
 
 /* @group ugly fixes */
 .x-grid3-td-dummy {
-  display: none !important;
+  background-color: #FFFFFF;
 }
 /* @end */
