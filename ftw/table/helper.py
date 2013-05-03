@@ -224,6 +224,9 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
         ['%s="%s"' % (attrkey, attrvalue) for attrkey, attrvalue in
          sorted(attrs.items())])
 
+    if not isinstance(attrs_str, unicode):
+        attrs_str = attrs_str.decode('utf8')
+
     if icon_only:
         value = ''
     link = u'<a %s>%s%s</a>' % (attrs_str, img, value)

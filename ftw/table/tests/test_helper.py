@@ -137,12 +137,12 @@ class  TestHelperMethods(MockTestCase):
 
     def test_link_attrs(self):
         from ftw.table.helper import link
-        wrapped = link(icon=False, attrs={'name': 'foo'})
+        wrapped = link(icon=False, attrs={'name': 'fo\xc3\xb6'})
 
         self.assertEqual(
             wrapped(self.item, self.item.Title),
             u'<span class="linkWrapper"><a href="http://path/to/portal"'
-            u' name="foo">'
+            u' name="fo\xf6">'
             u'the &lt;&quot;escaped&quot;&gt; Title</a></span>')
 
         self.assertEqual(wrapped(self.item, self.item.Title),
