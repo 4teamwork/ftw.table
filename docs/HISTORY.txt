@@ -8,6 +8,9 @@ Changelog
 - Do not hide dummy column in extJs tables, its used for easy resize.
   [Julian Infanger]
 
+- Fix unicode decode error in helper
+  [elio.schmutz]
+
 
 1.10 (2013-04-04)
 -----------------
