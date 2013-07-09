@@ -208,7 +208,11 @@ class TableGenerator(object):
             value = content[attr]
         return transform(content, value)
 
-    def sortable_class(self, attr):
+    def sortable_class(self, col):
+        attr = col.get('sort_index')
+        if col.get('sortable') is False:
+            return None
+
         class_ = []
         if isinstance(self.sortable, (bool, int)):
             #if sortable is set to True, everything is sortable
