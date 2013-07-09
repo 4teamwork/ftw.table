@@ -5,6 +5,9 @@ Changelog
 1.12 (unreleased)
 -----------------
 
+- HTML style: support "width" of column definition as <col> width.
+  [jone]
+
 - ExtJS style: fix improper layout.
   Also show dummy column in table body using the same width used in the header.
   [Julian Infanger]
