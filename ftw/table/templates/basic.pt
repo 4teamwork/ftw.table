@@ -1,7 +1,8 @@
 <table tal:attributes="class view/css_mapping/table">
     <colgroup>
         <col tal:repeat="th view/columns"
-             tal:attributes="class python:len(th['sort_index']) and 'col-'+th['sort_index'] or 'col'" />
+             tal:attributes="class python:len(th['sort_index']) and 'col-'+th['sort_index'] or 'col';
+                             width th/width|nothing" />
     </colgroup>
     <thead>
         <tr>
