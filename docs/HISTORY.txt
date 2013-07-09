@@ -5,6 +5,9 @@ Changelog
 1.12 (unreleased)
 -----------------
 
+- Support setting "sortable" to false for a column in non-ExtJS mode.
+  [jone]
+
 - HTML style: support "width" of column definition as <col> width.
   [jone]
 
