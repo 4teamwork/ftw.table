@@ -209,9 +209,16 @@ class TableGenerator(object):
         return transform(content, value)
 
     def sortable_class(self, col):
-        attr = col.get('sort_index')
-        if col.get('sortable') is False:
-            return None
+        if isinstance(col, dict):
+            # new style: it's a column
+            attr = col.get('sort_index')
+            if col.get('sortable') is False:
+                return None
+
+        else:
+            # old style: it's probably the sort_index
+            attr = col
+            col = None
 
         class_ = []
         if isinstance(self.sortable, (bool, int)):
