@@ -5,7 +5,14 @@ Changelog
 1.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix regression from better "sortable" support (1.12), which
+  resulted in AttributeErrors when having the table template
+  customized.
+
+  Use `view.sortable_class(th)` instead of `view.sortable_class(th['sort_index'])`
+  in custom table templates.
+
+  [jone]
 
 
 1.12 (2013-07-09)
