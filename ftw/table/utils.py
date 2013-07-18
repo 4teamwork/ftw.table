@@ -63,14 +63,17 @@ class TableGenerator(object):
             # XXX
             # NOT WORK, WHEN WE USED THE TRANSFERRED TEMPLATE
             if template is not None:
-                self.template = ViewPageTemplateFile(template.filename)
+                template = ViewPageTemplateFile(template.filename)
+            else:
+                template = self.template
+
             css = self._css_mapping.copy()
             css.update(css_mapping)
             self.css_mapping = css
             #if template is not None:
             #    #XXX dirty
             #    return template(**self.__dict__)
-            return self.template(self)
+            return template(self)
         elif output == 'json':
 
             msgids = set(self._translations + translations)
