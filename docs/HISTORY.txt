@@ -5,7 +5,8 @@ Changelog
 1.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix bug which caused custom templates to be stored permanently.
+  [jone]
 
 
 1.12.1 (2013-07-09)
