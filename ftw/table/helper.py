@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from plone.memoize import ram
+from Products.ATContentTypes.config import ICONMAP
 from Products.CMFCore.utils import getToolByName
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -246,6 +247,13 @@ def quick_preview(item, value):
         url_method = item.getURL
     elif hasattr(item, 'absolute_url'):
         url_method = item.absolute_url
+
+    # Bug in Products.ATContenttypes
+    # https://github.com/plone/Products.ATContentTypes/pull/4
+    icon = item.getIcon
+    if icon in ICONMAP.values():
+        icon = icon.replace('gif', 'png')
+
     img = u'<img src="%s/%s"/>' % (portal_url(), item.getIcon)
     if not isinstance(value, unicode):
         value = value.decode('utf8')
