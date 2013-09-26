@@ -19,7 +19,7 @@ msgid "dragDropLocked"
 msgstr "Drag 'n' Drop impossible"
 
 msgid "groupByText"
-msgstr "Trier selon ce critère"
+msgstr "Grouper après cette colonne"
 
 msgid "itemsPlural"
 msgstr "Objets"
