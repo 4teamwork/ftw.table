@@ -219,26 +219,6 @@ class  TestHelperMethods(MockTestCase):
         value = 1099511627776
         self.assertEqual(readable_size(self.item, value), '1.0TB')
 
-    def test_readable_author(self):
-        from ftw.table.helper import readable_author
-        self.assertEqual(
-            readable_author(self.item, 'demouserid'),
-            '<a href="/path/to/portal/author/demouserid">Demo User Name</a>')
-
-        self.assertEqual(
-            readable_author(self.item, u'umlautuserid'),
-            '<a href="/path/to/portal/author/umlautuserid">'
-            'Dem\xc3\xb6 User Name</a>')
-
-        self.assertEqual(
-            readable_author(self.item, None),
-            '-')
-
-        self.userid = ''
-        self.assertEqual(
-            readable_author(self.item, 'notexisting'),
-            '<a href="/path/to/portal/author/notexisting">notexisting</a>')
-
     def test_readable_date_time_text(self):
         from ftw.table.helper import readable_date_time_text
 

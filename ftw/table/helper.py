@@ -85,26 +85,56 @@ def readable_size(item, num):
         num /= 1024.0
 
 
-@ram.cache(lambda m, i, author: author)
+def encode_utf8(string):
+    if isinstance(string, unicode):
+        return string.encode('utf-8')
+    return string
+
+
 def readable_author(item, author):
-    #TODO: terribly inefficient. Make some HelperCommons or something
-    site = getSite()
-    portal_url = getToolByName(site, 'portal_url')
+
+    @ram.cache(lambda m, author: author)
+    def get_fullname(author):
+        site = getSite()
+        user = site.acl_users.getUserById(author)
+        if not user:
+            return None
+        fullname = user.getProperty('fullname')
+        return fullname and fullname or author
+
+    @ram.cache(lambda m, author, fullname: author)
+    def get_author_link(author, fullname):
+        site = getSite()
+        portal_url = getToolByName(site, 'portal_url')
+        return '<a href="%s/author/%s">%s</a>' % (
+            portal_url(), author, fullname)
+
+    def show_author_link():
+        """Checks if the user is anonymous and allowAnonymousViewAbout is true.
+        """
+        site = getSite()
+        site_props = getToolByName(site, 'portal_properties').site_properties
+        if site_props.getProperty('allowAnonymousViewAbout', False):
+            return True
+
+        mt = getToolByName(site, 'portal_membership')
+        if mt.isAnonymousUser():
+            return False
+        return True
+
     if not author:
         return '-'
-    name = author
-    user = site.acl_users.getUserById(author)
-    if user is not None:
-        name = user.getProperty('fullname', author) or author
-        if not len(name):
-            name = author
 
-    if isinstance(name, unicode):
-        name = name.encode('utf-8')
-    if isinstance(author, unicode):
-        author = author.encode('utf-8')
+    user_id = encode_utf8(author)
 
-    return '<a href="%s/author/%s">%s</a>' % (portal_url(), author, name)
+    fullname = get_fullname(user_id)
+
+    if not fullname:
+        return user_id
+    elif not show_author_link():
+        return fullname
+
+    return get_author_link(user_id, fullname)
 
 
 def readable_date_time_text(item, date):

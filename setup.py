@@ -7,6 +7,8 @@ maintainer = 'Jonas Baumann'
 tests_require = [
     'plone.app.testing',
     'plone.mocktestcase',
+    'ftw.builder',
+    'ftw.testing [splinter]',
     ]
 
 setup(name='ftw.table',
