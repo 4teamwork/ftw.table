@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.12.3 (unreleased)
+1.12.3 (2013-10-16)
 -------------------
 
 - Fix a Products.ATContentTypes bug in icon helper.
