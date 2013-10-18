@@ -34,10 +34,10 @@ class TestReadableAuthor(object):
         site_props.allowAnonymousViewAbout = enable
 
     def test_default_sign_if_no_author_is_set(self):
-        self.assertEquals('-', readable_author(None, ''))
+        self.assertEquals('-', readable_author(object, ''))
 
     def test_not_linked_id_if_no_user_exists(self):
-        self.assertEquals('james', readable_author(None, 'james'))
+        self.assertEquals('james', readable_author(object, 'james'))
 
 
 class TestReadableAuthorAnonymous(TestReadableAuthor, TestCase):
@@ -51,40 +51,40 @@ class TestReadableAuthorAnonymous(TestReadableAuthor, TestCase):
     def test_not_linked_id_if_user_exists_with_no_fullname(self):
         self.set_allow_anonymous_view_about(False)
         self.register_user('olga')
-        self.assertEquals('olga', readable_author(None, 'olga'))
+        self.assertEquals('olga', readable_author(object, 'olga'))
 
     def test_not_linked_fullname_if_user_exists(self):
         self.set_allow_anonymous_view_about(False)
         self.register_user('bond', 'James Bond')
-        self.assertEquals('James Bond', readable_author(None, 'bond'))
+        self.assertEquals('James Bond', readable_author(object, 'bond'))
 
     def test_linked_id_if_user_exists_with_no_fullname_anonymous_allowed(self):
         self.set_allow_anonymous_view_about(True)
         self.register_user('lara')
         self.assert_link_attributes(
-            readable_author(None, 'lara'), 'lara', 'lara')
+            readable_author(object, 'lara'), 'lara', 'lara')
 
     def test_linked_fullname_if_user_exists_and_anonymous_allowed(self):
         self.set_allow_anonymous_view_about(True)
         self.register_user('bud', 'Bud Spencer')
         self.assert_link_attributes(
-            readable_author(None, 'bud'), 'bud', 'Bud Spencer')
+            readable_author(object, 'bud'), 'bud', 'Bud Spencer')
 
     def test_umlauts_in_fullname(self):
         self.set_allow_anonymous_view_about(False)
         self.register_user('lara', 'Lara Cr\xc3\xb6ft')
-        self.assertEquals('Lara Cr\xc3\xb6ft', readable_author(None, 'lara'))
+        self.assertEquals('Lara Cr\xc3\xb6ft', readable_author(object, 'lara'))
 
     def test_caching(self):
         self.set_allow_anonymous_view_about(False)
         self.register_user('lara', 'Lara Croft')
-        self.assertEquals('Lara Croft', readable_author(None, 'lara'))
+        self.assertEquals('Lara Croft', readable_author(object, 'lara'))
 
         user = self.portal.portal_membership.getMemberById('lara')
         user.setMemberProperties(mapping={'fullname': 'James Bond'})
 
         # Caching blocks regetting the fullname and link
-        self.assertEquals('Lara Croft', readable_author(None, 'lara'))
+        self.assertEquals('Lara Croft', readable_author(object, 'lara'))
 
 
 class TestReadableAuthorLoggedIn(TestReadableAuthor, TestCase):
@@ -98,50 +98,50 @@ class TestReadableAuthorLoggedIn(TestReadableAuthor, TestCase):
     def test_linked_id_if_user_exists_with_no_fullname(self):
         self.register_user('olga')
         self.assert_link_attributes(
-            readable_author(None, 'olga'), 'olga', 'olga')
+            readable_author(object, 'olga'), 'olga', 'olga')
 
     def test_linked_fullname_if_user_exists(self):
         login(self.portal, TEST_USER_NAME)
         self.register_user('bond', 'James Bond')
         self.assert_link_attributes(
-            readable_author(None, 'bond'), 'bond', 'James Bond')
+            readable_author(object, 'bond'), 'bond', 'James Bond')
 
     def test_linked_if_anonymous_disallowed(self):
         self.register_user('lara')
         self.set_allow_anonymous_view_about(False)
         self.assert_link_attributes(
-            readable_author(None, 'lara'), 'lara', 'lara')
+            readable_author(object, 'lara'), 'lara', 'lara')
 
     def test_umlauts_in_fullname(self):
         self.register_user('lara', 'Lara Cr\xc3\xb6ft')
         self.assert_link_attributes(
-            readable_author(None, 'lara'), 'lara', 'Lara Cr\xc3\xb6ft')
+            readable_author(object, 'lara'), 'lara', 'Lara Cr\xc3\xb6ft')
 
     def test_caching(self):
         self.register_user('lara', 'Lara Croft')
         self.assert_link_attributes(
-            readable_author(None, 'lara'), 'lara', 'Lara Croft')
+            readable_author(object, 'lara'), 'lara', 'Lara Croft')
 
         user = self.portal.portal_membership.getMemberById('lara')
         user.setMemberProperties(mapping={'fullname': 'James Bond'})
 
         # Caching blocks regetting the fullname and link
         self.assert_link_attributes(
-            readable_author(None, 'lara'), 'lara', 'Lara Croft')
+            readable_author(object, 'lara'), 'lara', 'Lara Croft')
 
     def test_speed(self):
         self.register_user('speedy', 'Speedy Conzales')
         amount = 10000
 
         start = time()
-        readable_author(None, 'speedy')
+        readable_author(object, 'speedy')
         end = time()
         time_without_cache = end - start
 
         # Test amount elements. Each should be faster than the first one
         load_start = time()
         for i in range(0, amount):
-            readable_author(None, 'speedy')
+            readable_author(object, 'speedy')
 
         load_end = time()
         time_with_cache = load_end - load_start
