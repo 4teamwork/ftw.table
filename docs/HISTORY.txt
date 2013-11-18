@@ -5,7 +5,9 @@ Changelog
 1.12.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixes IE9 bug where content grows when hovering over dynamically generated content.
+  See http://blog.brianrichards.net/post/6721471926/ie9-hover-bug-workaround for details
+  [Julian Infanger]
 
 
 1.12.3 (2013-10-16)

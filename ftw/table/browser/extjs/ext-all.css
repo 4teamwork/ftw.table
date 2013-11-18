@@ -366,11 +366,21 @@
 }
 /* @end */
 
+/* @group growing content bug IE9 */
+
+div.x-grid3-viewport {
+  min-height: 0%;
+}
+
+/* @end */
+
 /* @group ugly fixes */
+
 .x-grid3-td-dummy {
   width: 5px !important;
   display: table-cell !important;
   border: none !important;
   background-color: #FFFFFF;
 }
+
 /* @end */
