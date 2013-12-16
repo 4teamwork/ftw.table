@@ -1,37 +1,22 @@
+from ftw.builder import Builder
+from ftw.builder import create
 from ftw.table.helper import readable_author
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
-from lxml import html as parser
 from plone.app.testing import TEST_USER_NAME, login, logout
 from Products.CMFCore.utils import getToolByName
 from time import time
 from unittest2 import TestCase
 
 
-class TestReadableAuthor(object):
+def set_allow_anonymous_view_about(context, enable):
+    site_props = getToolByName(
+        context, 'portal_properties').site_properties
+    site_props.allowAnonymousViewAbout = enable
 
-    def register_user(self, user_id, fullname=''):
-        regtool = getToolByName(self.portal, 'portal_registration')
-        regtool.addMember(
-            user_id,
-            'password',
-            properties=dict(
-                username=user_id,
-                fullname=fullname,
-                email="t@t.ch"))
 
-    def assert_link_attributes(self, html_link, url, text):
-        # parser needs unicode to work correctly with umlauts
-        html = parser.fromstring(html_link.decode('utf-8'))
+class TestReadableAuthor(TestCase):
 
-        self.assertEquals(
-            ['http://nohost/plone/author/%s' % url], html.values())
-
-        self.assertEquals(text, html.text.encode('utf-8'))
-
-    def set_allow_anonymous_view_about(self, enable):
-        site_props = getToolByName(
-            self.portal, 'portal_properties').site_properties
-        site_props.allowAnonymousViewAbout = enable
+    layer = FTWTABLE_INTEGRATION_TESTING
 
     def test_default_sign_if_no_author_is_set(self):
         self.assertEquals('-', readable_author(object, ''))
@@ -40,7 +25,7 @@ class TestReadableAuthor(object):
         self.assertEquals('james', readable_author(object, 'james'))
 
 
-class TestReadableAuthorAnonymous(TestReadableAuthor, TestCase):
+class TestReadableAuthorAnonymous(TestCase):
 
     layer = FTWTABLE_INTEGRATION_TESTING
 
@@ -49,45 +34,51 @@ class TestReadableAuthorAnonymous(TestReadableAuthor, TestCase):
         logout()
 
     def test_not_linked_id_if_user_exists_with_no_fullname(self):
-        self.set_allow_anonymous_view_about(False)
-        self.register_user('olga')
-        self.assertEquals('olga', readable_author(object, 'olga'))
+        set_allow_anonymous_view_about(self.portal, False)
+        create(Builder('user')).setMemberProperties(mapping={'fullname': ''})
+
+        self.assertEquals('john.doe', readable_author(object, 'john.doe'))
 
     def test_not_linked_fullname_if_user_exists(self):
-        self.set_allow_anonymous_view_about(False)
-        self.register_user('bond', 'James Bond')
-        self.assertEquals('James Bond', readable_author(object, 'bond'))
+        set_allow_anonymous_view_about(self.portal, False)
+        create(Builder('user'))
+        self.assertEquals('Doe John', readable_author(object, 'john.doe'))
 
     def test_linked_id_if_user_exists_with_no_fullname_anonymous_allowed(self):
-        self.set_allow_anonymous_view_about(True)
-        self.register_user('lara')
-        self.assert_link_attributes(
-            readable_author(object, 'lara'), 'lara', 'lara')
+        set_allow_anonymous_view_about(self.portal, True)
+        create(Builder('user')).setMemberProperties(mapping={'fullname': ''})
+
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.doe">john.doe</a>',
+            readable_author(object, 'john.doe'))
 
     def test_linked_fullname_if_user_exists_and_anonymous_allowed(self):
-        self.set_allow_anonymous_view_about(True)
-        self.register_user('bud', 'Bud Spencer')
-        self.assert_link_attributes(
-            readable_author(object, 'bud'), 'bud', 'Bud Spencer')
+        set_allow_anonymous_view_about(self.portal, True)
+        create(Builder('user'))
+
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.doe">Doe John</a>',
+            readable_author(object, 'john.doe'))
 
     def test_umlauts_in_fullname(self):
-        self.set_allow_anonymous_view_about(False)
-        self.register_user('lara', 'Lara Cr\xc3\xb6ft')
-        self.assertEquals('Lara Cr\xc3\xb6ft', readable_author(object, 'lara'))
+        set_allow_anonymous_view_about(self.portal, False)
+        create(Builder('user').named('John', 'Tr\xc3\xa4volta'))
+
+        self.assertEquals(
+            'Tr\xc3\xa4Volta John', readable_author(object, 'john.tra-volta'))
 
     def test_caching(self):
-        self.set_allow_anonymous_view_about(False)
-        self.register_user('lara', 'Lara Croft')
-        self.assertEquals('Lara Croft', readable_author(object, 'lara'))
+        set_allow_anonymous_view_about(self.portal, False)
+        user = create(Builder('user'))
+        self.assertEquals('Doe John', readable_author(object, 'john.doe'))
 
-        user = self.portal.portal_membership.getMemberById('lara')
         user.setMemberProperties(mapping={'fullname': 'James Bond'})
 
         # Caching blocks regetting the fullname and link
-        self.assertEquals('Lara Croft', readable_author(object, 'lara'))
+        self.assertEquals('Doe John', readable_author(object, 'john.doe'))
 
 
-class TestReadableAuthorLoggedIn(TestReadableAuthor, TestCase):
+class TestReadableAuthorLoggedIn(TestCase):
 
     layer = FTWTABLE_INTEGRATION_TESTING
 
@@ -96,52 +87,58 @@ class TestReadableAuthorLoggedIn(TestReadableAuthor, TestCase):
         login(self.portal, TEST_USER_NAME)
 
     def test_linked_id_if_user_exists_with_no_fullname(self):
-        self.register_user('olga')
-        self.assert_link_attributes(
-            readable_author(object, 'olga'), 'olga', 'olga')
+        create(Builder('user')).setMemberProperties(mapping={'fullname': ''})
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.doe">john.doe</a>',
+            readable_author(object, 'john.doe'))
 
     def test_linked_fullname_if_user_exists(self):
         login(self.portal, TEST_USER_NAME)
-        self.register_user('bond', 'James Bond')
-        self.assert_link_attributes(
-            readable_author(object, 'bond'), 'bond', 'James Bond')
+        create(Builder('user'))
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.doe">Doe John</a>',
+            readable_author(object, 'john.doe'))
 
     def test_linked_if_anonymous_disallowed(self):
-        self.register_user('lara')
-        self.set_allow_anonymous_view_about(False)
-        self.assert_link_attributes(
-            readable_author(object, 'lara'), 'lara', 'lara')
+        create(Builder('user'))
+        set_allow_anonymous_view_about(self.portal, False)
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.doe">Doe John</a>',
+            readable_author(object, 'john.doe'))
 
     def test_umlauts_in_fullname(self):
-        self.register_user('lara', 'Lara Cr\xc3\xb6ft')
-        self.assert_link_attributes(
-            readable_author(object, 'lara'), 'lara', 'Lara Cr\xc3\xb6ft')
+        create(Builder('user').named('John', 'Tr\xc3\xa4volta'))
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.tra-volta">'
+            'Tr\xc3\xa4Volta John</a>',
+            readable_author(object, 'john.tra-volta'))
 
     def test_caching(self):
-        self.register_user('lara', 'Lara Croft')
-        self.assert_link_attributes(
-            readable_author(object, 'lara'), 'lara', 'Lara Croft')
+        user = create(Builder('user'))
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.doe">Doe John</a>',
+            readable_author(object, 'john.doe'))
 
-        user = self.portal.portal_membership.getMemberById('lara')
         user.setMemberProperties(mapping={'fullname': 'James Bond'})
 
         # Caching blocks regetting the fullname and link
-        self.assert_link_attributes(
-            readable_author(object, 'lara'), 'lara', 'Lara Croft')
+        self.assertEquals(
+            '<a href="http://nohost/plone/author/john.doe">Doe John</a>',
+            readable_author(object, 'john.doe'))
 
     def test_speed(self):
-        self.register_user('speedy', 'Speedy Conzales')
+        create(Builder('user'))
         amount = 10000
 
         start = time()
-        readable_author(object, 'speedy')
+        readable_author(object, 'john.doe')
         end = time()
         time_without_cache = end - start
 
         # Test amount elements. Each should be faster than the first one
         load_start = time()
         for i in range(0, amount):
-            readable_author(object, 'speedy')
+            readable_author(object, 'john.doe')
 
         load_end = time()
         time_with_cache = load_end - load_start
@@ -149,7 +146,7 @@ class TestReadableAuthorLoggedIn(TestReadableAuthor, TestCase):
         # Getting all readable authors should be
         # calculated in a responsible time
         self.assertTrue(
-            time_without_cache*amount*0.2 > time_with_cache,
+            time_without_cache * amount * 0.2 > time_with_cache,
             "Caching should be 5 times faster than uncached values"
             " Time without: %s, time with: %s" % (
-                time_without_cache*amount, time_with_cache))
+                time_without_cache * amount, time_with_cache))

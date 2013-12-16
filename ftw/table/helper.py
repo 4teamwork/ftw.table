@@ -91,18 +91,30 @@ def encode_utf8(string):
     return string
 
 
+def readable_author_fullname_cachekey(method, author):
+    """A function specific chache_key, explicit for the
+    method, get_fullname and author."""
+    return 'ftw.table.helper.readable_author.get_fullname.{0}'.format(author)
+
+
+def readable_author_author_cachekey(method, author, fullname):
+    """A function specific chache_key, explicit for the
+    method, get_fullname and author."""
+    return 'ftw.table.helper.readable_author.get_fullname.{0}'.format(author)
+
+
 def readable_author(item, author):
 
-    @ram.cache(lambda m, author: author)
+    @ram.cache(readable_author_fullname_cachekey)
     def get_fullname(author):
         site = getSite()
-        user = site.acl_users.getUserById(author)
-        if not user:
+        member = getToolByName(site, 'portal_membership').getMemberById(author)
+        if not member:
             return None
-        fullname = user.getProperty('fullname')
-        return fullname and fullname or author
+        fullname = member.getProperty('fullname')
+        return fullname or author
 
-    @ram.cache(lambda m, author, fullname: author)
+    @ram.cache(readable_author_author_cachekey)
     def get_author_link(author, fullname):
         site = getSite()
         portal_url = getToolByName(site, 'portal_url')
