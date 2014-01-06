@@ -1,36 +1,21 @@
-from ftw.table.testing import FTWTABLE_ZCML_LAYER
-from zope import component
-from ftw.table.interfaces import ITableGenerator
+from datetime import datetime
+from datetime import timedelta
 from ftw.table.helper import readable_date_time
-from plone.mocktestcase import MockTestCase
+from ftw.table.interfaces import ITableGenerator
+from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
+from unittest2 import TestCase
+from zope import component
 import json
-from datetime import datetime, timedelta
-
-try:
-    from zope.component.hooks import setSite
-except ImportError:
-    # plone 4.0 support
-    from zope.app.component.hooks import setSite
 
 
 COLUMNS_KEYS = ['dataIndex', 'header', 'id', 'sortable', ]
 
-class TestHTMLTableGenerator(MockTestCase):
 
-    layer = FTWTABLE_ZCML_LAYER
+class TestJsonGenerator(TestCase):
+
+    layer = FTWTABLE_INTEGRATION_TESTING
 
     def setUp(self):
-        self.site = self.mocker.mock(count=False)
-        self.request = self.mocker.mock(count=False)
-        self.response = self.mocker.mock(count=False)
-
-        setSite(self.site)
-        self.expect(self.site.REQUEST).result(self.request)
-        self.expect(self.request.debug).result(False)
-        self.expect(self.request.response).result(self.response)
-        self.expect(self.response.getHeader('Content-Type')).result('text/html')
-
-        self.replay()
 
         # Some Test data
         today = datetime.today()
@@ -46,25 +31,19 @@ class TestHTMLTableGenerator(MockTestCase):
                 2009, 1, 05, 17, 0)}, ]
         # for JSON output datetime objects are no supportet, so transform it
         self.columns = [
-                  {'column': 'name',
-                   'column_title': 'NAME',
-                   'sort_index': 'sortable_name',
-                   },
-                  {'column': 'date',
-                   'column_title': 'DATE',
-                   'sort_index': 'sortable_date',
-                   'transform': readable_date_time
-                   }]
-
-
+            {'column': 'name',
+                'column_title': 'NAME',
+                'sort_index': 'sortable_name'},
+            {'column': 'date',
+                'column_title': 'DATE',
+                'sort_index': 'sortable_date',
+                'transform': readable_date_time}]
 
     def json_output(self):
         """generates a table from a list of dicts"""
         generator = component.getUtility(ITableGenerator, 'ftw.tablegenerator')
 
-
         return generator.generate(self.employees, self.columns, output='json')
-
 
     def test_json_string_output(self):
         self.assertTrue(isinstance(self.json_output(), str))
@@ -85,7 +64,8 @@ class TestHTMLTableGenerator(MockTestCase):
         # Porcess columns and tranformations are already tested
         data = json.loads(self.json_output())
         rows = data['rows']
-        self.assertEquals(len(rows), 3) # 3 employees
+        # 3 employees
+        self.assertEquals(len(rows), 3)
         # Test first entry - unicode and not empty
         self.assertTrue(isinstance(
             rows[0]['sortable_date'],

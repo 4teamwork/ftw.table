@@ -5,8 +5,17 @@ Changelog
 1.12.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Cleanup tests. Remove all mocktests and replace them with integration tests
+  [elioschmutz]
 
+- Update readable_author method. It now links
+  the readable author just:
+
+   1. if a the author really exists
+   2. if a user is logged in
+   3. as an anonymous users if the allowAnonymousViewAbout-property is true
+
+  [elioschmutz]
 
 1.12.4 (2013-11-28)
 -------------------

@@ -1,16 +1,11 @@
-from ftw.table.testing import FTWTABLE_ZCML_LAYER
-from zope import component
+from datetime import datetime, timedelta
 from ftw.table.interfaces import ITableGenerator
+from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
 from ftw.table.utils import TableGenerator
-import re
+from unittest2 import TestCase
 from xml.dom.minidom import parseString
-from plone.mocktestcase import MockTestCase
-
-try:
-    from zope.component.hooks import setSite
-except ImportError:
-    # plone 4.0 support
-    from zope.app.component.hooks import setSite
+from zope import component
+import re
 
 
 def cleanup_whitespace(html):
@@ -19,22 +14,9 @@ def cleanup_whitespace(html):
     return re.sub('\s{2,}', ' ', html)
 
 
-class TestHTMLTableGenerator(MockTestCase):
+class TestJsonGenerator(TestCase):
 
-    layer = FTWTABLE_ZCML_LAYER
-
-    def setUp(self):
-        self.site = self.mocker.mock(count=False)
-        self.request = self.mocker.mock(count=False)
-        self.response = self.mocker.mock(count=False)
-
-        setSite(self.site)
-        self.expect(self.site.REQUEST).result(self.request)
-        self.expect(self.request.debug).result(False)
-        self.expect(self.request.response).result(self.response)
-        self.expect(self.response.getHeader('Content-Type')).result('text/html')
-
-        self.replay()
+    layer = FTWTABLE_INTEGRATION_TESTING
 
     def test_generator_utility(self):
         """Get Utility"""
@@ -44,7 +26,7 @@ class TestHTMLTableGenerator(MockTestCase):
     def test_list_of_dicts(self):
         """generates a table from a list of dicts"""
         generator = component.getUtility(ITableGenerator, 'ftw.tablegenerator')
-        from datetime import datetime, timedelta
+
         today = datetime.today()
         employees = [
             {'name': 'Rincewind', 'date': datetime(
@@ -124,7 +106,8 @@ class TestHTMLTableGenerator(MockTestCase):
             parsed.getElementsByTagName('th')[1]._attrs['class'].nodeValue,
             'sortable')
 
-        # Add sortable class only on column 'name', all other has a nosort class
+        # Add sortable class only on column 'name',
+        # all other has a nosort class
         columns = ('name', 'date')
         sortable = ('name', )
         parsed = parseString(
@@ -165,12 +148,12 @@ class TestHTMLTableGenerator(MockTestCase):
 
         # use alternate css classes
         css_mapping = {
-                'table': 'CustomTableClass',
-                'sortable': 'CustomSortableClass',
-                'sort-selected': 'CustomSelectedClass',
-                'sort-asc': 'CustomUpClass',
-                'sort-desc': 'CustomDownClass',
-                'th_prefix': 'custom-header-prefix'}
+            'table': 'CustomTableClass',
+            'sortable': 'CustomSortableClass',
+            'sort-selected': 'CustomSelectedClass',
+            'sort-asc': 'CustomUpClass',
+            'sort-desc': 'CustomDownClass',
+            'th_prefix': 'custom-header-prefix'}
 
         # We do not use minidom to parse. Just check if the given html snippeds
         # are available
@@ -207,13 +190,14 @@ class TestHTMLTableGenerator(MockTestCase):
             {'name': 'some name', 'date': 'somedate', 'info': 'someinfo'},
         ]
 
-
         columns = [
-                  {'column': 'name',
-                   'column_title': 'NAME',
-                   'sort_index': 'sortable_name'},
-                   ('date', 'sortable_date'),  # not so readable
-                   ('info', )]
+            {
+                'column': 'name',
+                'column_title': 'NAME',
+                'sort_index': 'sortable_name'
+            },
+            ('date', 'sortable_date'),
+            ('info', )]
 
         html = generator.generate(employees, columns)
         # generates col tags
@@ -227,8 +211,8 @@ class TestHTMLTableGenerator(MockTestCase):
         # look for capitalized table column title
         parsed = parseString(html)
         self.assertEqual(
-            parsed.getElementsByTagName('th')[0].childNodes[1]\
-                .childNodes[0].data,
+            parsed.getElementsByTagName(
+                'th')[0].childNodes[1].childNodes[0].data,
             'NAME')
 
     def test_column_transform(self):
@@ -243,13 +227,14 @@ class TestHTMLTableGenerator(MockTestCase):
             """ A helper receives the current item and the value to modify"""
             return value[::-1]
 
-
         columns = [
-                  {'column': 'name',
-                   'column_title': 'NAME',
-                   'sort_index': 'sortable_name',
-                   'transform': string_reverser},
-                   ('date', 'sortable_date', string_reverser)]
+            {
+                'column': 'name',
+                'column_title': 'NAME',
+                'sort_index': 'sortable_name',
+                'transform': string_reverser
+            },
+            ('date', 'sortable_date', string_reverser)]
 
         html = generator.generate(employees, columns)
         self.assertTrue('eman emos' in html)
@@ -267,11 +252,13 @@ class TestHTMLTableGenerator(MockTestCase):
         def dummy_condition():
             return False
         columns = [
-                  {'column': 'name',
-                   'column_title': 'NAME',
-                   'sort_index': 'sortable_name',
-                   'condition': dummy_condition},
-                   ('date', 'sortable_date', )]
+            {
+                'column': 'name',
+                'column_title': 'NAME',
+                'sort_index': 'sortable_name',
+                'condition': dummy_condition
+            },
+            ('date', 'sortable_date', )]
 
         html = generator.generate(employees, columns)
         self.assertFalse('<th id="header-sortable_name">' in html)
