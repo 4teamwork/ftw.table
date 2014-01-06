@@ -10,9 +10,11 @@ Changelog
 
 - Update readable_author method. It now links
   the readable author just:
+
    1. if a the author really exists
    2. if a user is logged in
    3. as an anonymous users if the allowAnonymousViewAbout-property is true
+
   [elioschmutz]
 
 1.12.3 (2013-10-16)
