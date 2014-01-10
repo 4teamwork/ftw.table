@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.12.5 (unreleased)
--------------------
+1.13 (2014-01-10)
+-----------------
 
 - Cleanup tests. Remove all mocktests and replace them with integration tests
   [elioschmutz]
