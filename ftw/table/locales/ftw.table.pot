@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-10-29 14:33+0000\n"
+"POT-Creation-Date: 2014-01-27 14:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,10 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: ftw.table\n"
 
-msgid "sortDescText"
-msgstr ""
-
-msgid "sortAscText"
-msgstr ""
-
 msgid "columnsText"
 msgstr ""
 
-msgid "showGroupsText"
+msgid "dragDropLocked"
 msgstr ""
 
 msgid "groupByText"
@@ -41,5 +35,13 @@ msgstr ""
 msgid "selectedRowen"
 msgstr ""
 
-msgid "dragDropLocked"
+msgid "showGroupsText"
 msgstr ""
+
+msgid "sortAscText"
+msgstr ""
+
+#: ./ftw/table/__init__.py:8
+msgid "sortDescText"
+msgstr ""
+
