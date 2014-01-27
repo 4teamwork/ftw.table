@@ -1,7 +1,10 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-01-27 14:54+0000\n"
+"POT-Creation-Date: 2010-10-29 14:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9,35 +12,34 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: ftw.table\n"
 
-msgid "columnsText"
-msgstr "Spalten"
-
-msgid "dragDropLocked"
-msgstr "Drag 'n' Drop nicht möglich"
-
-msgid "groupByText"
-msgstr "Nach dieser Spalte gruppieren"
-
-msgid "itemsPlural"
-msgstr "Objekte"
-
-msgid "itemsSingular"
-msgstr "Objekt"
-
-msgid "selectedRowen"
-msgstr "{0} Zeile(n) selektiert"
-
-msgid "showGroupsText"
-msgstr "Gruppiert darstellen"
+msgid "sortDescText"
+msgstr ""
 
 msgid "sortAscText"
-msgstr "Aufsteigend"
+msgstr ""
 
-#: ./ftw/table/__init__.py:8
-msgid "sortDescText"
-msgstr "Absteigend"
+msgid "columnsText"
+msgstr ""
 
+msgid "showGroupsText"
+msgstr ""
 
+msgid "groupByText"
+msgstr ""
+
+msgid "itemsPlural"
+msgstr ""
+
+msgid "itemsSingular"
+msgstr ""
+
+msgid "selectedRowen"
+msgstr ""
+
+msgid "dragDropLocked"
+msgstr ""
