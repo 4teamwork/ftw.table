@@ -1,6 +1,3 @@
-# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
-# SOME DESCRIPTIVE TITLE.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -12,36 +9,33 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: en\n"
-"Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: ftw.table\n"
+"Domain: DOMAIN\n"
 
 msgid "columnsText"
-msgstr ""
+msgstr "Columns"
 
 msgid "dragDropLocked"
-msgstr ""
+msgstr "Drag'n'drop is not possible"
 
 msgid "groupByText"
-msgstr ""
+msgstr "Group by this column"
 
 msgid "itemsPlural"
-msgstr ""
+msgstr "Items"
 
 msgid "itemsSingular"
-msgstr ""
+msgstr "Item"
 
 msgid "selectedRowen"
-msgstr ""
+msgstr "{0} rows selected"
 
 msgid "showGroupsText"
-msgstr ""
+msgstr "Group"
 
 msgid "sortAscText"
-msgstr ""
+msgstr "Ascending"
 
 #: ./ftw/table/__init__.py:8
 msgid "sortDescText"
-msgstr ""
-
+msgstr "Descending"
