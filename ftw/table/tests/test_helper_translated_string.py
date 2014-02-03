@@ -8,16 +8,16 @@ class TestTranslatedString(TestCase):
     layer = FTWTABLE_INTEGRATION_TESTING
 
     def test_translate_unicode_string_returns_unicode(self):
-        self.assertEqual(
-            translated_string('ftw.table')(object, u'sortAscText'),
-            u'sortAscText')
+        result = translated_string('ftw.table')(object, u'sortAscText')
+        self.assertEquals(u'Ascending', result)
+        self.assertEquals(unicode, type(result))
 
     def test_translate_none_returns_none_string(self):
-        self.assertEqual(
-            translated_string('ftw.table')(object, None),
-            'None')
+        result = translated_string('ftw.table')(object, None)
+        self.assertEquals(u'None', result)
+        self.assertEquals(unicode, type(result))
 
     def test_translate_utf8_string_returns_unicode(self):
-        self.assertEqual(
-            translated_string('ftw.table')(object, 'sortAscText'),
-            u'sortAscText')
+        result = translated_string('ftw.table')(object, 'sortAscText')
+        self.assertEquals(u'Ascending', result)
+        self.assertEquals(unicode, type(result))
