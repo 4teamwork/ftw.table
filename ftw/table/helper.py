@@ -182,10 +182,14 @@ def readable_date_text(item, date):
         return None
     if not getattr(date, 'strftime', None):
         return None
-    if date.strftime('%Y%m%d') == today:
-        strftimestring = 'heute'  # XXX i18n not working atm
-    elif date.strftime('%Y%m%d') == yesterday:
-        strftimestring = 'gestern'  # XXX i18n not working atm
+    try:
+        if date.strftime('%Y%m%d') == today:
+            strftimestring = 'heute'  # XXX i18n not working atm
+        elif date.strftime('%Y%m%d') == yesterday:
+            strftimestring = 'gestern'  # XXX i18n not working atm
+    except ValueError:
+        return None
+
     return date.strftime(strftimestring)
 
 

@@ -46,6 +46,11 @@ class TestReadableDateTime(TestCase):
             '17.10.2012 20:08',
             readable_date_time(object, datetime(2012, 10, 17, 20, 8)))
 
+    def test_date_date_text_if_date_is_before_1900(self):
+        self.assertEqual(
+            None,
+            readable_date_time(object, datetime(1000, 1, 1, 0, 0)))
+
 
 class TestReadableDateTimeText(TestCase):
 
