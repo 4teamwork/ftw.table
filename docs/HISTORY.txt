@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.14 (unreleased)
+1.14 (2014-03-20)
 -----------------
 
 - Fix readable_date_text helper, if there is no valid date like the init value
