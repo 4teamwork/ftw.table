@@ -7,6 +7,7 @@ Changelog
 
 - Fix readable_date_text helper, if there is no valid date like the init value
   of a Archetype DateTimeField (EffectiveDate returns 1000/01/01).
+  [mathias.leimgruber]
 
 - Add English translations.
   [jone]
