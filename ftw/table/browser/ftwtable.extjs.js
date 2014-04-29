@@ -1,5 +1,38 @@
 Ext.Ajax.timeout = 120000;  // 2 minutes
 
+/* EXTJS overrides */
+
+/* These overrides are required to prevent the table from scrolling */
+/* on row selection due to focus change in the `mouseDown` event. */
+/* See https://github.com/4teamwork/ftw.table/issues/31 for details. */
+
+Ext.override(Ext.grid.RowSelectionModel, {
+    handleMouseDown : function(g, rowIndex, e){
+        if(e.button !== 0 || this.isLocked()){
+            return;
+        }
+        var view = this.grid.getView();
+        if(e.shiftKey && !this.singleSelect && this.last !== false){
+            var last = this.last;
+            this.selectRange(last, rowIndex, e.ctrlKey);
+            this.last = last;
+            /* PATCHED */
+            //view.focusRow(rowIndex);
+        }else{
+            var isSelected = this.isSelected(rowIndex);
+            if(e.ctrlKey && isSelected){
+                this.deselectRow(rowIndex);
+            }else if(!isSelected || this.getCount() > 1){
+                this.selectRow(rowIndex, e.ctrlKey || e.shiftKey);
+                /* PATCHED */
+                //view.focusRow(rowIndex);
+            }
+        }
+    },
+
+})
+
+
 Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
   // private
   onGroupByClick : function(){

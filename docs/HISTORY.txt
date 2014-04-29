@@ -5,7 +5,8 @@ Changelog
 1.15 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- BugFix: Prevent scroll on row selection.
+  [mathias.leimgruber]
 
 
 1.14 (2014-03-20)
