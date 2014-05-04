@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.14.2 (unreleased)
+1.14.2 (2014-05-04)
 -------------------
 
 - Replace multiline JS comments with single line ones to prevent minification
