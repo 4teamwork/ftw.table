@@ -5,7 +5,9 @@ Changelog
 1.14.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Replace multiline JS comments with single line ones to prevent minification
+  issues.
+  [lgraf]
 
 
 1.14.1 (2014-04-30)
