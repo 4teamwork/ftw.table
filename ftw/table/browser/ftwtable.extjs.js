@@ -1,10 +1,10 @@
 Ext.Ajax.timeout = 120000;  // 2 minutes
 
-/* EXTJS overrides */
+// EXTJS overrides */
 
-/* These overrides are required to prevent the table from scrolling */
-/* on row selection due to focus change in the `mouseDown` event. */
-/* See https://github.com/4teamwork/ftw.table/issues/31 for details. */
+// These overrides are required to prevent the table from scrolling
+// on row selection due to focus change in the `mouseDown` event.
+// See https://github.com/4teamwork/ftw.table/issues/31 for details.
 
 Ext.override(Ext.grid.RowSelectionModel, {
     handleMouseDown : function(g, rowIndex, e){
