@@ -7,6 +7,8 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="ftw.table">
 
+    <five:registerPackage package="." initialize=".initialize" />
+
     <include package=".browser" />
     <include package=".upgrades" />
 
@@ -36,6 +38,15 @@
           provides="Products.GenericSetup.interfaces.EXTENSION"
           />
     </configure>
+
+    <genericsetup:registerProfile
+        name="uninstall"
+        title="Uninstall ftw.table"
+        directory="profiles/uninstall"
+        description="Uninstalls the ftw.table package."
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+        />
 
     <!-- table source adapters -->
     <adapter factory=".catalog_source.CatalogTableSource" />

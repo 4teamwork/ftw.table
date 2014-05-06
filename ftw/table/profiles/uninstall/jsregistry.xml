@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts">
+    <javascript remove="True"
+        id="++resource++jquery.ftwtable.js" />
+    <javascript remove="True"
+        id="++resource++ftwtable.extjs.js" />
+</object>
