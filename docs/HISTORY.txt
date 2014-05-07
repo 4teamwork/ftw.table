@@ -8,6 +8,9 @@ Changelog
 - Removed left over closing multiline comment from #33 in ftwtable.extjs.js.
   [lgraf]
 
+- Implement uninstall profile.
+  [deif]
+
 
 1.14.2 (2014-05-04)
 -------------------
