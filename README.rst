@@ -144,6 +144,14 @@ See the interfaces definitions and the built in sources and configurations
 for further details.
 
 
+Uninstall
+=========
+
+This package provides an uninstall Generic Setup profile, however, it will
+not uninstall the package dependencies.
+Make sure to uninstall the dependencies if you no longer use them.
+
+
 Links
 =====
 

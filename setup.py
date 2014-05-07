@@ -5,10 +5,11 @@ version = '1.14.3.dev0'
 maintainer = 'Jonas Baumann'
 
 tests_require = [
-    'plone.app.testing',
-    'plone.mocktestcase',
+    'collective.js.extjs',
     'ftw.builder',
     'ftw.testing [splinter]',
+    'plone.app.testing',
+    'plone.mocktestcase',
     ]
 
 setup(name='ftw.table',
@@ -32,7 +33,7 @@ setup(name='ftw.table',
           ],
 
       keywords='ftw table generator',
-      author='4teamwork GmbH',
+      author='4teamwork AG',
       author_email='mailto:info@4teamwork.ch',
       maintainer=maintainer,
       url='https://github.com/4teamwork/ftw.table',
@@ -44,8 +45,9 @@ setup(name='ftw.table',
       zip_safe=False,
 
       install_requires=[
-          'setuptools',
           'five.globalrequest',
+          'ftw.upgrade',
+          'setuptools',
           # -*- Extra requirements: -*-
           ],
 
