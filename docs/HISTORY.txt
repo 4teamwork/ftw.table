@@ -5,6 +5,9 @@ Changelog
 1.14.3 (unreleased)
 -------------------
 
+- Add ftw.labels filtering support to catalog source.
+  [jone]
+
 - Removed left over closing multiline comment from #33 in ftwtable.extjs.js.
   [lgraf]
 

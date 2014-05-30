@@ -12,6 +12,13 @@ except ImportError:
     from zope.app.component.hooks import getSite
 
 
+# The here whitelisted catalog indexes are taken from the request
+# and merged into the catalog query.
+ALLOWED_CATALOG_QUERY_INDEXES = {
+    'labels': lambda value: map(str.strip, value.split(',')),
+    }
+
+
 def default_custom_sort(results, sort_on, reverse):
     """Default custom sort method wich gets value to sort for by getting
     the attribute `sort_on` from the record.
@@ -77,6 +84,21 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
         # filter object_provides
         if 'object_provides' not in query and self.object_provides:
             query['object_provides'] = self.object_provides
+
+        query = self.update_query_with_request_values(query)
+        return query
+
+    def update_query_with_request_values(self, query):
+        for index_name, normalizer in ALLOWED_CATALOG_QUERY_INDEXES.items():
+            value = self.request.form.get(index_name, None)
+            if not value:
+                continue
+
+            if callable(normalizer):
+                value = normalizer(value)
+
+            if value:
+                query[index_name] = value
 
         return query
 
