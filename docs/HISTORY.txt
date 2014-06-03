@@ -5,6 +5,9 @@ Changelog
 1.14.3 (unreleased)
 -------------------
 
+- Fix ftwtable.extjs.js (missing semicolon).
+  [mathias.leimgruber]
+
 - Add ftw.labels filtering support to catalog source.
   [jone]
 
