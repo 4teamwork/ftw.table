@@ -30,7 +30,7 @@ Ext.override(Ext.grid.RowSelectionModel, {
         }
     },
 
-})
+});
 
 
 Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
