@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.14.3 (unreleased)
+1.15.0 (2014-06-03)
 -------------------
 
 - Fix ftwtable.extjs.js (missing semicolon).
