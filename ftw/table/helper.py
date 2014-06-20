@@ -43,8 +43,10 @@ def link(icon=True, tooltip=False, classes=None, attrs=None, icon_only=False):
 
             if description:
                 if isinstance(description, str):
-                    description = description.decode('utf-8')
-
+                    try:
+                        description = description.decode('utf-8')
+                    except:
+                        pass
                 attributes['class'].append('rollover')
                 attributes['title'] = cgi.escape(description, quote=True)
 
