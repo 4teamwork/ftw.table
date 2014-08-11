@@ -5,7 +5,8 @@ Changelog
 1.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix encoding error in "linked" helper with solr flairs.
+  [jone]
 
 
 1.15.0 (2014-06-03)

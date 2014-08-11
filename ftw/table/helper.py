@@ -235,9 +235,11 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
         title = item.Title
         if callable(title):
             title = title()
+        if isinstance(title, str):
+            title = title.decode('utf-8')
 
         img = u'<img src="%s/%s" alt="%s"/>' % (
-            portal_url(), icon, title.decode('utf8'))
+            portal_url(), icon, title)
         if not icon:
             attrs['class'].append(
                 'contenttype-%s' %
