@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.15.1 (unreleased)
+1.15.1 (2014-08-20)
 -------------------
 
 - Fix encoding error in "linked" helper with solr flairs.
