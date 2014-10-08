@@ -1,8 +1,12 @@
 from ftw.builder.testing import BUILDER_LAYER
+from ftw.testing.quickinstaller import snapshots
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from zope.configuration import xmlconfig
+
+
+snapshots.disable()
 
 
 class FtwTableLayer(PloneSandboxLayer):
