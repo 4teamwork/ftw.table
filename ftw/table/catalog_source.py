@@ -196,7 +196,7 @@ class CatalogTableSource(BaseTableSource):
     def search_results(self, query):
         """Executes the query and returns a tuple of `results`.
         """
-
-        results = self.catalog(**query)
-
-        return results
+        try:
+            return self.catalog(**query)
+        except ParseError:
+            return tuple()
