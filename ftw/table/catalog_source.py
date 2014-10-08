@@ -1,9 +1,13 @@
-from Products.CMFPlone.utils import getToolByName
 from copy import deepcopy
-from ftw.table.basesource import BaseTableSourceConfig, BaseTableSource
-from ftw.table.interfaces import ITableSource, ICatalogTableSourceConfig
+from ftw.table.basesource import BaseTableSource
+from ftw.table.basesource import BaseTableSourceConfig
+from ftw.table.interfaces import ICatalogTableSourceConfig
+from ftw.table.interfaces import ITableSource
+from Products.CMFPlone.utils import getToolByName
+from Products.ZCTextIndex.ParseTree import ParseError
 from zope.component import adapts
-from zope.interface import implements, Interface
+from zope.interface import implements
+from zope.interface import Interface
 
 try:
     from zope.component.hooks import getSite
@@ -192,7 +196,7 @@ class CatalogTableSource(BaseTableSource):
     def search_results(self, query):
         """Executes the query and returns a tuple of `results`.
         """
-
-        results = self.catalog(**query)
-
-        return results
+        try:
+            return self.catalog(**query)
+        except ParseError:
+            return tuple()
