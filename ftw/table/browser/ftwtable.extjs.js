@@ -507,6 +507,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   };
 
   $.fn.ftwtable.destroy = function(){
+    if(typeof(tabbedview) != "undefined") {
+      tabbedview.flush_params('groupBy');
+    }
+    Ext.state.Manager.clear(stateName());
     if(grid && grid.boxReady){
       grid.destroy();
     }
