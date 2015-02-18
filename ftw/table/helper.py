@@ -273,8 +273,11 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
         attrs['class'] = ' '.join(sorted(set(attrs['class'])))
     else:
         del attrs['class']
-    attrs_str = ' '.join(
-        ['%s="%s"' % (attrkey, attrvalue) for attrkey, attrvalue in
+    for attrkey, attrvalue in attrs.items():
+        if isinstance(attrvalue, str):
+            attrs[attrkey] = attrvalue.decode('utf-8', 'replace')
+    attrs_str = u' '.join(
+        [u'%s="%s"' % (attrkey.decode('utf-8'), attrvalue) for attrkey, attrvalue in
          sorted(attrs.items())])
 
     if not isinstance(attrs_str, unicode):
