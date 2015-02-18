@@ -6,7 +6,6 @@ Ext.Ajax.timeout = 120000;  // 2 minutes
 // on row selection due to focus change in the `mouseDown` event.
 // See https://github.com/4teamwork/ftw.table/issues/31 for details.
 
-
 Ext.override(Ext.grid.RowSelectionModel, {
     handleMouseDown : function(g, rowIndex, e){
         if(e.button !== 0 || this.isLocked()){
