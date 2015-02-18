@@ -192,7 +192,7 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
         title = item.Title
         if callable(title):
             title = title()
-        if instance(title, str):
+        if isinstance(title, str):
             title = title.decode('utf-8')
         img = u'<img src="%s/%s" alt="%s"/>' % (
             portal_url(), icon, title)
