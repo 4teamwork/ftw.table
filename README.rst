@@ -155,9 +155,9 @@ Make sure to uninstall the dependencies if you no longer use them.
 Links
 =====
 
-- Main github project repository: https://github.com/4teamwork/ftw.table
-- Issue tracker: https://github.com/4teamwork/ftw.table/issues
-- Package on pypi: http://pypi.python.org/pypi/ftw.table
+- Github: https://github.com/4teamwork/ftw.table
+- Issues: https://github.com/4teamwork/ftw.table/issues
+- Pypi: http://pypi.python.org/pypi/ftw.table
 - Continuous integration: https://jenkins.4teamwork.ch/search?q=ftw.table
 
 
