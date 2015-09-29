@@ -5,6 +5,9 @@ Changelog
 1.15.3 (unreleased)
 -------------------
 
+- Use plones IContentIcon adapter when available.
+  [jone]
+
 - Flush `groupBy` params during the table destroy, to avoid invalid
   groupBy values.
   [phgross]
