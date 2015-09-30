@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
+from plone.app.layout.icons.interfaces import IContentIcon
 from plone.memoize import ram
 from Products.ATContentTypes.config import ICONMAP
 from Products.CMFCore.utils import getToolByName
+from zope.component import queryMultiAdapter
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 import cgi
@@ -12,6 +14,36 @@ try:
 except ImportError:
     # plone 4.0 support
     from zope.app.component.hooks import getSite
+
+
+def getIconOf(item):
+    site = getSite()
+    content_icon = queryMultiAdapter((site, site.REQUEST, item), IContentIcon)
+    if content_icon:
+        try:
+            return content_icon()
+        except TypeError:
+            # This is probably a solr flair, which does not have an IContentIcon
+            # adapter. We fallback to the default implementation.
+            pass
+
+    icon = getattr(item, 'getIcon', None)
+    if callable(icon):
+        icon = icon()
+
+    if not icon:
+        return None
+
+    title = item.Title
+    if callable(title):
+        title = title()
+
+    if isinstance(title, str):
+        title = title.decode('utf-8')
+
+    portal_url = getToolByName(site, 'portal_url')
+    img = u'<img src="%s/%s" alt="%s"/>' % (portal_url(), icon, title)
+    return img
 
 
 def link(icon=True, tooltip=False, classes=None, attrs=None, icon_only=False):
@@ -228,19 +260,8 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
         plone_utils = getToolByName(site, 'plone_utils')
         portal_url = getToolByName(site, 'portal_url')
 
-        icon = item.getIcon
-        if callable(icon):
-            icon = icon()
-
-        title = item.Title
-        if callable(title):
-            title = title()
-        if isinstance(title, str):
-            title = title.decode('utf-8')
-
-        img = u'<img src="%s/%s" alt="%s"/>' % (
-            portal_url(), icon, title)
-        if not icon:
+        img = getIconOf(item)
+        if not img:
             attrs['class'].append(
                 'contenttype-%s' %
                 plone_utils.normalizeString(item.portal_type))
