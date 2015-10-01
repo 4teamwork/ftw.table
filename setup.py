@@ -45,6 +45,7 @@ setup(name='ftw.table',
       zip_safe=False,
 
       install_requires=[
+          'Plone',
           'five.globalrequest',
           'ftw.upgrade',
           'setuptools',
