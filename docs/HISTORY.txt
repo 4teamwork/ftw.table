@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.15.3 (unreleased)
+1.16.0 (2015-10-19)
 -------------------
 
 - Use plones IContentIcon adapter when available.
