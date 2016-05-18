@@ -370,6 +370,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 if(typeof(tabbedview) != "undefined") {
                   tabbedview.hide_spinner();
                 }
+
+                $this.trigger('viewReady');
               },
 
               afterrender: function(panel){
