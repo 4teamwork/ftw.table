@@ -5,7 +5,8 @@ Changelog
 1.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Expose `viewReady` event to DOM.
+  [Kevin Bieri]
 
 
 1.16.0 (2015-10-19)
