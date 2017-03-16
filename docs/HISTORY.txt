@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.17.1 (unreleased)
+1.18.0 (2017-03-16)
 -------------------
 
 - Support for "groupable" key in column definitions (dict).
