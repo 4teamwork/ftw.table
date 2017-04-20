@@ -1,5 +1,15 @@
 Ext.Ajax.timeout = 120000;  // 2 minutes
 
+//Use absolute urls to set and reset the grid-state to fix an issue if
+//using the table on a non-folderish content in plone. Plone does not add a
+//trailing slash in the html base-tag for non-folderish content. This means,
+//relative urls will resolve to the parent object.
+Ext.state.gridStateEndPoint = function() {
+  var absoluteURL = location.href.split(/\?|#/)[0];  // get absolute url without params and hashes
+  absoluteURL = absoluteURL.replace(/\/$/, "");  // remove trailing slash
+  return absoluteURL + "/@@tabbed_view/setgridstate";
+}();
+
 // EXTJS overrides
 
 // These overrides are required to prevent the table from scrolling
@@ -71,7 +81,7 @@ Ext.grid.FTWTableGroupingView = Ext.extend(Ext.grid.GroupingView, {
 
 function reset_grid_state() {
   $.ajax({
-    url: '@@tabbed_view/setgridstate',
+    url: Ext.state.gridStateEndPoint,
     cache: false,
     type: "POST",
     data: {
@@ -94,7 +104,7 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
   set : function(name, value){
     Ext.state.FTWPersistentProvider.superclass.set.call(this, name, value);
     $.ajax({
-      url: '@@tabbed_view/setgridstate',
+      url: Ext.state.gridStateEndPoint,
       cache: false,
       type: "POST",
       data: {
