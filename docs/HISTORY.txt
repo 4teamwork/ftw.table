@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.18.1 (unreleased)
+1.18.1 (2017-04-24)
 -------------------
 
 - Use absolute urls to set and reset the grid-state to fix an issue if
