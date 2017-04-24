@@ -5,7 +5,12 @@ Changelog
 1.18.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use absolute urls to set and reset the grid-state to fix an issue if
+  using the table on a non-folderish content in plone. Plone does not add a
+  trailing slash in the html base-tag for non-folderish content. This means,
+  relative urls will resolve to the parent object.
+  [elioschmutz]
+
 
 
 1.18.0 (2017-03-16)
