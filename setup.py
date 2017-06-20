@@ -7,7 +7,7 @@ maintainer = 'Jonas Baumann'
 tests_require = [
     'collective.js.extjs',
     'ftw.builder',
-    'ftw.testing [splinter]',
+    'ftw.testing',
     'plone.app.testing',
     'plone.mocktestcase',
     ]
