@@ -165,6 +165,8 @@ class CatalogTableSource(BaseTableSource):
                         del query['sort_order']
                     self.config._custom_sort_method = \
                         self.config.custom_sort_indexes.get(index_type)
+            else:
+                del query['sort_on']
 
         # special handling for EXTJ grid reordering
         if query.get('sort_on') == 'draggable':
