@@ -8,6 +8,7 @@ tests_require = [
     'collective.js.extjs',
     'ftw.builder',
     'ftw.testing',
+    'plone.app.contenttypes',
     'plone.app.testing',
     'plone.mocktestcase',
     ]
