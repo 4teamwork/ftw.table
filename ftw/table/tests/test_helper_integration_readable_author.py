@@ -2,16 +2,23 @@ from ftw.builder import Builder
 from ftw.builder import create
 from ftw.table.helper import readable_author
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
+from ftw.testing import IS_PLONE_5
 from plone.app.testing import TEST_USER_NAME, login, logout
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from time import time
 from unittest2 import TestCase
+from zope.component import getUtility
 
 
 def set_allow_anonymous_view_about(context, enable):
-    site_props = getToolByName(
-        context, 'portal_properties').site_properties
-    site_props.allowAnonymousViewAbout = enable
+    if IS_PLONE_5:
+        registry = getUtility(IRegistry)
+        registry['plone.allow_anon_views_about'] = enable
+    else:
+        site_props = getToolByName(
+            context, 'portal_properties').site_properties
+        site_props.allowAnonymousViewAbout = enable
 
 
 class TestReadableAuthor(TestCase):

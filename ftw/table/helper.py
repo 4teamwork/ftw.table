@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta
+from ftw.table.utils import IS_PLONE_5
 from plone.app.layout.icons.interfaces import IContentIcon
 from plone.memoize import ram
+from plone.registry.interfaces import IRegistry
 from Products.ATContentTypes.config import ICONMAP
 from Products.CMFCore.utils import getToolByName
+from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -157,9 +160,14 @@ def readable_author(item, author):
         """Checks if the user is anonymous and allowAnonymousViewAbout is true.
         """
         site = getSite()
-        site_props = getToolByName(site, 'portal_properties').site_properties
-        if site_props.getProperty('allowAnonymousViewAbout', False):
-            return True
+        if IS_PLONE_5:
+            registry = getUtility(IRegistry)
+            if registry['plone.allow_anon_views_about']:
+                return True
+        else:
+            site_props = getToolByName(site, 'portal_properties').site_properties
+            if site_props.getProperty('allowAnonymousViewAbout', False):
+                return True
 
         mt = getToolByName(site, 'portal_membership')
         if mt.isAnonymousUser():
@@ -277,9 +285,13 @@ def linked(item, value, show_icon=True, attrs=None, icon_only=False):
 
     # do we need to add /view ?
     if hasattr(item, 'portal_type'):
-        props = getToolByName(getSite(), 'portal_properties')
-        types_using_view = props.get('site_properties').getProperty(
-            'typesUseViewActionInListings')
+        if IS_PLONE_5:
+            registry = getUtility(IRegistry)
+            types_using_view = registry['plone.types_use_view_action_in_listings']
+        else:
+            props = getToolByName(getSite(), 'portal_properties')
+            types_using_view = props.get('site_properties').getProperty(
+                'typesUseViewActionInListings')
         if item.portal_type in types_using_view:
             href = os.path.join(href, 'view')
 

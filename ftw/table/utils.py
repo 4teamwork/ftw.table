@@ -7,6 +7,7 @@ from ftw.table.column import METADATA, FIELD, COLUMN
 from copy import deepcopy
 import Missing
 from threading import local
+import pkg_resources
 
 try:
     import json
@@ -18,6 +19,9 @@ try:
 except ImportError:
     # plone 4.0 support
     from zope.app.component import hooks
+
+
+IS_PLONE_5 = pkg_resources.get_distribution('Products.CMFPlone').version >= '5'
 
 
 """When registering a utility as factory, the factory is called on ZCML parse time
