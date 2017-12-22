@@ -23,7 +23,7 @@ class TestRadioButton(TestCase):
 
         self.folder = create(Builder('folder').titled(
             u'the <"escaped"> Title').having(
-            description='a <"f\xc3\xa4ncy"> description',
+            description=u'a <"f\xc3\xa4ncy"> description',
             ))
 
         self.brain = getToolByName(self.portal, 'portal_catalog')(
