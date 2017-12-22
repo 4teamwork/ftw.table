@@ -4,6 +4,7 @@ from ftw.builder import create
 from ftw.table.helper import linked
 from ftw.table.helper import linked_without_icon
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
+from ftw.table.utils import IS_PLONE_5
 from lxml.html import fromstring
 from plone.app.testing import login
 from plone.app.testing import setRoles
@@ -11,6 +12,7 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
+from unittest2 import skipIf
 from unittest2 import TestCase
 
 
@@ -46,6 +48,7 @@ class TestLinkedWithIcon(TestCase):
 
         self.assertEqual('a', html.find('a').tag)
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_has_img_tag_in_link_tag(self):
         self.folder.getTypeInfo().icon_expr_object = Expression(
             'string:folder.jpg')
@@ -56,6 +59,7 @@ class TestLinkedWithIcon(TestCase):
 
         self.assertEqual(1, len(html.xpath('a/img')))
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_img_src_to_obj_icon(self):
         self.folder.getTypeInfo().icon_expr_object = Expression(
             'string:folder.jpg')
@@ -71,6 +75,7 @@ class TestLinkedWithIcon(TestCase):
             '%s/folder.jpg' % self.portal.absolute_url(),
             element.attrib.get('src'))
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_link_text_is_obj_title(self):
         html = fromstring(linked(self.folder, self.folder.Title()))
 

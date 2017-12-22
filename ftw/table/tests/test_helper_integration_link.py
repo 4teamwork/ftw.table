@@ -2,6 +2,7 @@ from ftw.builder import Builder
 from ftw.builder import create
 from ftw.table.helper import link
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
+from ftw.table.utils import IS_PLONE_5
 from lxml.html import fromstring
 from plone.app.testing import login
 from plone.app.testing import setRoles
@@ -9,6 +10,7 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
+from unittest2 import skipIf
 from unittest2 import TestCase
 
 
@@ -37,6 +39,7 @@ class TestLink(TestCase):
         self.brain = getToolByName(self.portal, 'portal_catalog')(
             portal_type="Folder")[0]
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_works_with_brain_and_object(self):
         self.assertEqual(
             link()(self.brain, self.brain.Title),
@@ -56,6 +59,7 @@ class TestLink(TestCase):
             self.folder.absolute_url(),
             element.attrib.get('href'))
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_link_with_icon_if_no_icon_exists_adds_css_class(self):
         html = fromstring(link(icon=True)(self.brain, self.brain.Title))
         element = html.find('a')
@@ -64,6 +68,7 @@ class TestLink(TestCase):
             'contenttype-%s' % self.folder.portal_type.lower(),
             element.attrib.get('class'))
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_link_with_icon_add_img_attribute(self):
         self.add_content_type_icon()
         html = fromstring(link(icon=True)(self.brain, self.brain.Title))
@@ -106,6 +111,7 @@ class TestLink(TestCase):
 
         self.assertEqual(u'fo\xf6', element.attrib.get('name'))
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_link_icon_only(self):
         self.add_content_type_icon()
         html = fromstring(

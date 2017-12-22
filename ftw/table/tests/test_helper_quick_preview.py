@@ -2,6 +2,7 @@ from ftw.builder import Builder
 from ftw.builder import create
 from ftw.table.helper import quick_preview
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
+from ftw.table.utils import IS_PLONE_5
 from lxml.html import fromstring
 from plone.app.testing import login
 from plone.app.testing import setRoles
@@ -9,6 +10,7 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
+from unittest2 import skipIf
 from unittest2 import TestCase
 
 
@@ -79,6 +81,7 @@ class TestQuickPreview(TestCase):
         self.assertTrue(1, len(element))
         self.assertEqual('img', element[0].tag)
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_img_scr_to_context_icon_if_icon_exists(self):
         self.folder.getTypeInfo().icon_expr_object = Expression(
             'string:folder.jpg')
