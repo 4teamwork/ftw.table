@@ -23,7 +23,7 @@ class TestLink(TestCase):
         login(self.portal, TEST_USER_NAME)
 
         self.folder = create(Builder('folder').titled(
-            'the <"escaped"> Title').having(
+            u'the <"escaped"> Title').having(
             description='a <"f\xc3\xa4ncy"> description',
             ))
 
