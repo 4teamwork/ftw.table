@@ -5,6 +5,8 @@ Changelog
 1.18.2 (unreleased)
 -------------------
 
+- Allow registering extjs static-containers based on classes instead only for ids to prevent duplicated ids in html [elioschmutz]
+
 - Remove dependency on ftw.testing[splinter] (has been dropped in ftw.testing). [lgraf]
 
 

@@ -402,7 +402,16 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                 */
                 if(store.reader.meta['static'] != undefined){
                   $.each(store.reader.meta['static'], function(key, value) {
-                    $('#'+key+'_container.ftwtable').html(value);
+
+                    // We check for a container based on IDs
+                    var static_container = $('#'+key+'_container.ftwtable');
+
+                    // If there is no container, we check for a container registered
+                    // based on a class.
+                    if (static_container.length <= 0) {
+                      static_container = $('.'+key+'Container.ftwtable');
+                    }
+                    static_container.html(value);
                   });
                 }
                 options.onLoad();
