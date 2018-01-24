@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.18.2 (unreleased)
+1.19.0 (2018-01-24)
 -------------------
 
 - Allow registering extjs static-containers based on classes instead only for ids to prevent duplicated ids in html [elioschmutz]
