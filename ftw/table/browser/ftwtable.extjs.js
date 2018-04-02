@@ -365,9 +365,10 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
                   sm.selectRow($(e).closest(".x-grid3-row").index(), 1);
                 });
 
-                /* Hide the "No contents" element if we have
-                   no contents */
+                /* Hide the "No contents" element and show batchingContainer
+                   if we have content. */
                 $('#message_no_contents').hide();
+                $('.batchingContainer').show();
 
                 /* Hide the dummy column which is used for giving the last column
                    a resize handle. */
@@ -469,6 +470,8 @@ Ext.state.FTWPersistentProvider = Ext.extend(Ext.state.Provider, {
           }else{
             //show message and abord
             $('#message_no_contents').show();
+            // hide batching container
+            $('.batchingContainer').hide();
             if(typeof(tabbedview) != "undefined") {
               tabbedview.hide_spinner();
             }
