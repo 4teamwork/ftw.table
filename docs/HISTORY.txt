@@ -5,8 +5,7 @@ Changelog
 1.19.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Hide batching navi when no content displayed. [phgross]
 
 1.19.0 (2018-01-24)
 -------------------
