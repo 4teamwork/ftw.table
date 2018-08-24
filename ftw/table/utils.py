@@ -19,6 +19,18 @@ except ImportError:
     from zope.app.component import hooks
 
 
+class TableGeneratorSingleton(object):
+    """When registering a utility as factory, the factory is called on ZCML parse time
+    and returns a singleton object which is kept.
+    Because our TableGenerator relies on state and is not thread safe, the table generator
+    singleton instantiates a new object for each generate method call, so that we can
+    fix this problem without reimplementing the generator completely.
+    """
+
+    def generate(self, *args, **kwargs):
+        return TableGenerator().generate(*args, **kwargs)
+
+
 class TableGenerator(object):
     """ generates a html table. See README.txt for usage"""
 
