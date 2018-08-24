@@ -15,7 +15,7 @@
     <i18n:registerTranslations directory="locales" />
 
     <utility name="ftw.tablegenerator"
-             factory=".utils.TableGenerator"
+             factory=".utils.TableGeneratorSingleton"
              provides=".interfaces.ITableGenerator"
              />
 
