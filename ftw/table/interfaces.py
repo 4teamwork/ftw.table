@@ -7,8 +7,24 @@ from zope import schema
 
 
 class ITableGenerator(Interface):
-    """generates html tables.
+    """generates tables.
+
+    Careful when handling the TableGenerator, as this is registered as
+    a utility factory, which is called on ZCML parse time. Hence there is
+    a single instance of this Object, which can be shared between threads.
+    The exposed methods are thread-safe, but others might not be.
     """
+
+    def generate(self, contents, columns, sortable=False,
+                 selected=(None, None), css_mapping={}, translations=[],
+                 template=None, options={}, output='html', meta_data=None):
+        """Generate the table either in html (default) or json format (output='json')
+        """
+
+    def process_columns(self, columns):
+        """Process the columns to standardise their format (dictionnaries)
+        and attributes.
+        """
 
 
 class ITableSource(Interface):

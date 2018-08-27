@@ -6,6 +6,7 @@ from zope.i18n import translate
 from ftw.table.column import METADATA, FIELD, COLUMN
 from copy import deepcopy
 import Missing
+from threading import local
 
 try:
     import json
@@ -19,16 +20,13 @@ except ImportError:
     from zope.app.component import hooks
 
 
-class TableGeneratorSingleton(object):
-    """When registering a utility as factory, the factory is called on ZCML parse time
-    and returns a singleton object which is kept.
-    Because our TableGenerator relies on state and is not thread safe, the table generator
-    singleton instantiates a new object for each generate method call, so that we can
-    fix this problem without reimplementing the generator completely.
-    """
+"""When registering a utility as factory, the factory is called on ZCML parse time
+and returns a singleton object which is kept. Because our TableGenerator is relies
+on state, we need to ensure that it is thread-safe. We therefore use a thread-local
+variable, "generator_data", to store all the necessary state data.
+"""
 
-    def generate(self, *args, **kwargs):
-        return TableGenerator().generate(*args, **kwargs)
+generator_data = local()
 
 
 class TableGenerator(object):
@@ -52,6 +50,32 @@ class TableGenerator(object):
 
     context = None
 
+    @staticmethod
+    def reset_data():
+        """reset the thread-local data container
+        """
+        generator_data.data = {}
+
+    @staticmethod
+    def set_data(key, value):
+        """set a value for a given key in the thread-local data container
+        """
+        generator_data.data[key] = value
+
+    @staticmethod
+    def get_data(key):
+        """get the value for a given key from the thread-local data container
+        """
+        return generator_data.data[key]
+
+    def __getattr__(self, name):
+        """we override __getattr__ so that the thread-local data can be easily
+        accessed by attribute name. This is necessary to maintain compatibility
+        with external packages defining their own templates and passing them
+        to the generate method.
+        """
+        return self.get_data(name)
+
     @property
     def request(self):
         site = hooks.getSite()
@@ -64,12 +88,17 @@ class TableGenerator(object):
     def generate(self, contents, columns, sortable=False,
                  selected=(None, None), css_mapping={}, translations=[],
                  template=None, options={}, output='html', meta_data=None):
-        self.sortable = sortable
-        self.selected = selected
-        self.columns = self.process_columns(columns)
-        self.contents = contents
-        self.options = options
-        self.grouping_enabled = False
+        """We make sure to use thread local data as a single instance of this
+        object is shared between threads (see comment on utilities at the
+        beginning of this file).
+        """
+        self.reset_data()
+        self.set_data("sortable", sortable)
+        self.set_data("selected", selected)
+        self.set_data("columns", self.process_columns(columns))
+        self.set_data("contents", contents)
+        self.set_data("options", options)
+        self.set_data("grouping_enabled", False)
 
         if output == 'html':
             # XXX
@@ -102,7 +131,7 @@ class TableGenerator(object):
                     if not isinstance(content, tuple):
                         raise ValueError('Expected row to be a tuple since '
                                          'grouping is activated.')
-                    self.grouping_enabled = True
+                    self.set_data("grouping_enabled", True)
                     content, row['groupBy'] = content
 
                 for column in self.columns:
@@ -225,6 +254,13 @@ class TableGenerator(object):
         return transform(content, value)
 
     def sortable_class(self, col):
+        """Careful, this method should only be called from within
+        the generate method, as it uses thread local data which are
+        defined by the generate method (self.sortable and self.selected).
+
+        In the default template this method is called, which is OK as
+        the template is rendered from within the generate method.
+        """
         if isinstance(col, dict):
             # new style: it's a column
             attr = col.get('sort_index')
