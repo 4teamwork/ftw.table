@@ -5,6 +5,7 @@ Changelog
 1.19.2 (unreleased)
 -------------------
 
+- Refactor TableGenerator to make it thread safe. [njohner]
 - Fix concurrency bug in generator: data was leaking between threads. [jone]
 
 1.19.1 (2018-04-04)
