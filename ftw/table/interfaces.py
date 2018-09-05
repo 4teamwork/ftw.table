@@ -153,6 +153,14 @@ class ICatalogTableSourceConfig(ITableSourceConfig):
         'the `depth` attribute.',
         default=None)
 
+    level = schema.Int(
+        title=u'Recursivity start level',
+        description=u'Defines the search start level. If it set to 0 '
+        u'(default) the current context is included. If set to 1, it will '
+        u'only find objects starting from the children of the current '
+        u'context.',
+        default=0)
+
     depth = schema.Int(
         title=u'Recursivity depth',
         description=u'Defines the recursivity depth, how depth the contents '

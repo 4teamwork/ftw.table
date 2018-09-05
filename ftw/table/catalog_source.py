@@ -52,6 +52,7 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
 
     implements(ICatalogTableSourceConfig)
 
+    level = 0
     depth = -1
     types = []
     object_provides = None
@@ -79,6 +80,7 @@ class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
         # extend with path filter, if configured
         if 'path' not in query and getattr(self, 'filter_path', None):
             query['path'] = {'query': self.filter_path,
+                             'level': self.level,
                              'depth': self.depth}
 
         # extend with types
