@@ -104,6 +104,11 @@ class ITableSourceConfig(Interface):
         description=u'Text which is used for filtering the elements. '
         'Dependening on the source there may also be a index defined.')
 
+    include_searchroot = schema.Bool(
+        title=u'Include the object at the exact search path from the results',
+        description=u'If `True` the object at the exact search path is '
+        u'included in the results.')
+
     batching_enabled = schema.Bool(
         title=u'Batching is enabled',
         description=u'`True` if batching is enabled. This is used for '

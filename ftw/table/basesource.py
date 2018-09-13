@@ -12,6 +12,7 @@ class BaseTableSourceConfig(object):
     sort_on = 'sortable_title'
     sort_reverse = False
     filter_text = ''
+    include_searchroot = False
     batching_enabled = False
     batching_pagesize = None
     batching_current_page = 1
