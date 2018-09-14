@@ -3,11 +3,14 @@ from ftw.table.basesource import BaseTableSource
 from ftw.table.basesource import BaseTableSourceConfig
 from ftw.table.interfaces import ICatalogTableSourceConfig
 from ftw.table.interfaces import ITableSource
+from itertools import takewhile
 from Products.CMFPlone.utils import getToolByName
+from Products.ZCatalog.Lazy import LazyValues  # This will move in ZCatalog 4!
 from Products.ZCTextIndex.ParseTree import ParseError
 from zope.component import adapts
 from zope.interface import implements
 from zope.interface import Interface
+
 
 try:
     from zope.component.hooks import getSite
@@ -44,6 +47,35 @@ def default_custom_sort(results, sort_on, reverse):
     return sorted(results,
                   cmp=datetime_compare,
                   reverse=reverse)
+
+
+def remove_rid_from_brains(rid, brains):
+    if rid not in brains._seq:
+        return
+
+    # Remove rid from sequence
+    if isinstance(brains._seq, LazyValues):
+        # ._seq is a LazyValues instance with a ._seq of 3-tuples, the middle
+        # one of which is the rid
+        #
+        # The `rid in brains._seq` early abort still works so we do not end up
+        # emulating [-1] on a miss
+        position = sum(1 for lazyvalue in takewhile(lambda lazyvalue: rid not in lazyvalue, brains._seq._seq))
+        brains._seq._seq.pop(position)
+    elif isinstance(brains._seq, list):
+        # ._seq is a list
+        position = brains._seq.index(rid)
+        brains._seq.pop(position)
+    else:
+        # We've encountered something we do not know of, abort
+        return
+
+    # Drop cache when it exists
+    brains._data.pop(position, None)
+
+    # Restore correct counts
+    brains._len -= 1
+    brains.actual_result_count -= 1
 
 
 class DefaultCatalogTableSourceConfig(BaseTableSourceConfig):
@@ -195,8 +227,22 @@ class CatalogTableSource(BaseTableSource):
 
     def search_results(self, query):
         """Executes the query and returns a tuple of `results`.
+
+        Optionally exclude the exact object match from path queries.
         """
         try:
-            return self.catalog(**query)
+            brains = self.catalog(**query)
+            if getattr(self.config, 'include_searchroot', False):
+                return brains
+            querypath = query.get('path')
+            searchroot = None
+            if isinstance(querypath, str):
+                searchroot = querypath
+            elif isinstance(querypath, dict):
+                searchroot = querypath.get('query')
+            if searchroot:
+                rid = self.catalog.getrid(searchroot)
+                remove_rid_from_brains(rid, brains)
+            return brains
         except ParseError:
             return tuple()

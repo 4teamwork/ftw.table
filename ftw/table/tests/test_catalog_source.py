@@ -22,6 +22,8 @@ class TestCatalogSource(TestCase):
         login(self.portal, TEST_USER_NAME)
 
         self.folder = create(Builder('folder').titled('Hanspeter'))
+        self.subfolder = create(Builder('folder').titled('Ida').within(self.folder))
+        self.subfolder_sibling = create(Builder('folder').titled('Serhiy').within(self.folder))
         self.config = DefaultCatalogTableSourceConfig()
         self.config.request = self.portal.REQUEST
         self.source = getMultiAdapter((self.config, self.portal.REQUEST),
@@ -43,3 +45,37 @@ class TestCatalogSource(TestCase):
         self.assertSequenceEqual(
             [self.folder],
             [each.getObject() for each in self._execute_query('Hanspeter')])
+
+    def test_searching_with_path_excludes_searchpath_per_default(self):
+        folder_path = '/'.join(self.folder.getPhysicalPath())
+        self.config.search_options = {'path': folder_path}
+        query = self.source.build_query()
+        expected_objects = [self.subfolder, self.subfolder_sibling]
+        found_objects = [brain.getObject() for brain in self.source.search_results(query)]
+        self.assertEqual(expected_objects, found_objects)
+
+    def test_searching_with_path_and_depth_excludes_searchpath_per_default(self):
+        folder_path = '/'.join(self.folder.getPhysicalPath())
+        self.config.search_options = {'path': {'query': folder_path, 'depth': -1}}
+        query = self.source.build_query()
+        expected_objects = [self.subfolder, self.subfolder_sibling]
+        found_objects = [brain.getObject() for brain in self.source.search_results(query)]
+        self.assertEqual(expected_objects, found_objects)
+
+    def test_can_include_exact_searchpath_match_into_results(self):
+        self.config.include_searchroot = True
+        folder_path = '/'.join(self.folder.getPhysicalPath())
+        self.config.search_options = {'path': folder_path}
+        query = self.source.build_query()
+        expected_objects = [self.folder, self.subfolder, self.subfolder_sibling]
+        found_objects = [brain.getObject() for brain in self.source.search_results(query)]
+        self.assertEqual(expected_objects, found_objects)
+
+    def test_can_include_exact_searchpath_match_into_results_with_path_and_depth(self):
+        self.config.include_searchroot = True
+        folder_path = '/'.join(self.folder.getPhysicalPath())
+        self.config.search_options = {'path': {'query': folder_path, 'depth': -1}}
+        query = self.source.build_query()
+        expected_objects = [self.folder, self.subfolder, self.subfolder_sibling]
+        found_objects = [brain.getObject() for brain in self.source.search_results(query)]
+        self.assertEqual(expected_objects, found_objects)
