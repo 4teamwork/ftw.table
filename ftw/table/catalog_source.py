@@ -193,10 +193,68 @@ class CatalogTableSource(BaseTableSource):
         # Catalog results are lazy - let the plone `Batch` handle this..
         return query
 
+    def exclude_searchroot_from_query(self, query):
+        """Modifies the query in place to exclude the searchroot.
+
+        This will transform a path query against a specific context into a
+        multi-path query against all that context's immediate children (and
+        adjust the depth if necessary).
+
+        This will cause the new query to return the exact same results, except
+        that the context queried against (the searchroot) now isn't included
+        in the results.
+        """
+        path_query = query.get('path')
+        if path_query is None:
+            return query
+
+        if isinstance(path_query, dict):
+            if path_query.get('depth') in (0, 1):
+                # If any of these depths are specified, do nothing:
+                # 0: single object - searchroot exclusion doesn't make sense
+                # 1: immediate children - already does what it's supposed to
+                #    do (excludes searchroot), nothing to do for us
+                return query
+
+            path_query = path_query['query']
+
+        if isinstance(path_query, basestring):
+            path_query = [path_query]
+
+        children = self._fetch_immediate_children(path_query)
+        child_paths = [b.getPath() for b in children]
+
+        # Transform query to a multi-path query against all immediate children
+        if isinstance(query['path'], dict):
+            query['path']['query'] = child_paths
+
+            # The new query's paths are now exactly one level deeper - we
+            # therefore need to adjust the depth option accordingly since
+            # it was relative to the original path.
+            #
+            # Don't attempt to adjust depths of -1 (all objects,
+            # recursively) and 0 (single-object) though.
+            depth = query['path'].get('depth', -1)
+            if depth > 0:
+                query['path']['depth'] -= 1
+        else:
+            query['path'] = child_paths
+        return query
+
+    def _fetch_immediate_children(self, paths):
+        # We're using unrestrictedSearchResults here because there could be
+        # intermediate containers that the user isn't allowed to see, but
+        # that contain objects further down where he *does* have the View
+        # permission.
+        return self.catalog.unrestrictedSearchResults(
+            path={'query': paths, 'depth': 1})
+
     def search_results(self, query):
         """Executes the query and returns a tuple of `results`.
         """
         try:
+            if getattr(self.config, 'exclude_searchroot', True):
+                self.exclude_searchroot_from_query(query)
             return self.catalog(**query)
         except ParseError:
             return tuple()

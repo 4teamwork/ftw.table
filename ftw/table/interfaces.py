@@ -104,6 +104,13 @@ class ITableSourceConfig(Interface):
         description=u'Text which is used for filtering the elements. '
         'Dependening on the source there may also be a index defined.')
 
+    exclude_searchroot = schema.Bool(
+        title=u'Exclude the object at the exact search path from the results',
+        description=u"If `True` the object at the exact search path is "
+        u"omitted from the results (doesn't apply to path queries with "
+        u"depth 0 or 1).",
+        default=True)
+
     batching_enabled = schema.Bool(
         title=u'Batching is enabled',
         description=u'`True` if batching is enabled. This is used for '
