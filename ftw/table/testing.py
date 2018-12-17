@@ -1,6 +1,6 @@
 from ftw.builder.content import register_dx_content_builders
 from ftw.builder.testing import BUILDER_LAYER
-from ftw.testing import IS_PLONE_5
+from ftw.table.utils import IS_PLONE_5
 from ftw.testing.quickinstaller import snapshots
 from plone.app.testing import applyProfile
 from plone.app.testing import IntegrationTesting

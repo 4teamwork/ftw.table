@@ -2,7 +2,7 @@ from ftw.builder import Builder
 from ftw.builder import create
 from ftw.table.helper import readable_author
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
-from ftw.testing import IS_PLONE_5
+from ftw.table.utils import IS_PLONE_5
 from plone.app.testing import TEST_USER_NAME, login, logout
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
