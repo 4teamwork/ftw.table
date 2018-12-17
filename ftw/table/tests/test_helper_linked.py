@@ -16,10 +16,6 @@ from unittest2 import skipIf
 from unittest2 import TestCase
 
 
-SolrFlairMock = namedtuple('Flair',
-                           ('Title', 'getIcon', 'portal_type'))
-
-
 class TestLinkedWithIcon(TestCase):
 
     layer = FTWTABLE_INTEGRATION_TESTING
@@ -84,14 +80,6 @@ class TestLinkedWithIcon(TestCase):
         self.assertEqual(
             self.folder.Title(),
             element.text_content())
-
-    def test_linked_with_unicode_title(self):
-        # Solr flairs sometimes have unicode metadata..
-        flair = SolrFlairMock(Title=u'\xf6rdnerli',
-                              getIcon=u'file.png',
-                              portal_type=u'File')
-        self.assertIn(u'alt="\xf6rdnerli"',
-                      linked(flair, flair.Title))
 
 
 class TestLinkedWithoutIcon(TestCase):
