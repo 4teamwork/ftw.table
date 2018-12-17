@@ -5,6 +5,8 @@ Changelog
 1.21.1 (unreleased)
 -------------------
 
+- Add Plone 5.1 support. [mbaechtold, jone]
+
 - Drop support for Plone 4.2.
   Only Plone 4.3 is supported now. [busykoala]
 
