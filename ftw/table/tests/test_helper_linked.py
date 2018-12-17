@@ -4,6 +4,7 @@ from ftw.builder import create
 from ftw.table.helper import linked
 from ftw.table.helper import linked_without_icon
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
+from ftw.table.utils import IS_PLONE_5
 from lxml.html import fromstring
 from plone.app.testing import login
 from plone.app.testing import setRoles
@@ -11,11 +12,8 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
+from unittest2 import skipIf
 from unittest2 import TestCase
-
-
-SolrFlairMock = namedtuple('Flair',
-                           ('Title', 'getIcon', 'portal_type'))
 
 
 class TestLinkedWithIcon(TestCase):
@@ -29,8 +27,8 @@ class TestLinkedWithIcon(TestCase):
         login(self.portal, TEST_USER_NAME)
 
         self.folder = create(Builder('folder').titled(
-            'the <"escaped"> Title').having(
-            description='a <"f\xc3\xa4ncy"> description',
+            u'the <"escaped"> Title').having(
+            description=u'a <"f\xc3\xa4ncy"> description',
             ))
 
         self.brain = getToolByName(self.portal, 'portal_catalog')(
@@ -46,6 +44,7 @@ class TestLinkedWithIcon(TestCase):
 
         self.assertEqual('a', html.find('a').tag)
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_has_img_tag_in_link_tag(self):
         self.folder.getTypeInfo().icon_expr_object = Expression(
             'string:folder.jpg')
@@ -56,6 +55,7 @@ class TestLinkedWithIcon(TestCase):
 
         self.assertEqual(1, len(html.xpath('a/img')))
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_img_src_to_obj_icon(self):
         self.folder.getTypeInfo().icon_expr_object = Expression(
             'string:folder.jpg')
@@ -71,6 +71,7 @@ class TestLinkedWithIcon(TestCase):
             '%s/folder.jpg' % self.portal.absolute_url(),
             element.attrib.get('src'))
 
+    @skipIf(IS_PLONE_5, 'Plone 5 no longer uses "icon_exp"')
     def test_link_text_is_obj_title(self):
         html = fromstring(linked(self.folder, self.folder.Title()))
 
@@ -79,14 +80,6 @@ class TestLinkedWithIcon(TestCase):
         self.assertEqual(
             self.folder.Title(),
             element.text_content())
-
-    def test_linked_with_unicode_title(self):
-        # Solr flairs sometimes have unicode metadata..
-        flair = SolrFlairMock(Title=u'\xf6rdnerli',
-                              getIcon=u'file.png',
-                              portal_type=u'File')
-        self.assertIn(u'alt="\xf6rdnerli"',
-                      linked(flair, flair.Title))
 
 
 class TestLinkedWithoutIcon(TestCase):
@@ -100,8 +93,8 @@ class TestLinkedWithoutIcon(TestCase):
         login(self.portal, TEST_USER_NAME)
 
         self.folder = create(Builder('folder').titled(
-            'the <"escaped"> Title').having(
-            description='a <"f\xc3\xa4ncy"> description',
+            u'the <"escaped"> Title').having(
+            description=u'a <"f\xc3\xa4ncy"> description',
             ))
 
         self.brain = getToolByName(self.portal, 'portal_catalog')(

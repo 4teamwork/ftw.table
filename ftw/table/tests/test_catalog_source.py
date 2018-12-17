@@ -21,12 +21,12 @@ class TestCatalogSource(TestCase):
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         login(self.portal, TEST_USER_NAME)
 
-        self.folder = create(Builder('folder').titled('Hanspeter'))
+        self.folder = create(Builder('folder').titled(u'Hanspeter'))
         self.subfolder = create(Builder('folder')
-                                .titled('subfolder')
+                                .titled(u'subfolder')
                                 .within(self.folder))
         self.subfolder_sibling = create(Builder('folder')
-                                        .titled('subsubfolder')
+                                        .titled(u'subsubfolder')
                                         .within(self.folder))
         self.config = DefaultCatalogTableSourceConfig()
         self.config.request = self.portal.REQUEST
@@ -108,7 +108,7 @@ class TestCatalogSource(TestCase):
 
         # ... but does on nested subsubfolder
         self.subsubfolder = create(Builder('folder')
-                                   .titled('Subsub')
+                                   .titled(u'Subsub')
                                    .within(self.subfolder))
         self.subsubfolder.manage_addLocalRoles(TEST_USER_ID, ('Reader',))
         self.subsubfolder.manage_permission(
