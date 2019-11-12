@@ -6,7 +6,7 @@ from ftw.table.helper import readable_date_text
 from ftw.table.helper import readable_date_time
 from ftw.table.helper import readable_date_time_text
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
-from unittest2 import TestCase
+from unittest import TestCase
 
 
 class TestReadableDate(TestCase):

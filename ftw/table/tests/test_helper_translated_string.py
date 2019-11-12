@@ -1,6 +1,6 @@
 from ftw.table.helper import translated_string
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
-from unittest2 import TestCase
+from unittest import TestCase
 
 
 class TestTranslatedString(TestCase):

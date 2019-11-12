@@ -10,8 +10,8 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
-from unittest2 import skipIf
-from unittest2 import TestCase
+from unittest import skipIf
+from unittest import TestCase
 
 
 class TestQuickPreview(TestCase):
