@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from ftw.table.interfaces import ITableGenerator
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
 from ftw.table.utils import TableGenerator
-from unittest2 import TestCase
+from unittest import TestCase
 from xml.dom.minidom import parseString
 from zope import component
 import re

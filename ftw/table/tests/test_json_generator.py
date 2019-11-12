@@ -3,7 +3,7 @@ from datetime import timedelta
 from ftw.table.helper import readable_date_time
 from ftw.table.interfaces import ITableGenerator
 from ftw.table.testing import FTWTABLE_INTEGRATION_TESTING
-from unittest2 import TestCase
+from unittest import TestCase
 from zope import component
 import json
 
