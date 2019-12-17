@@ -20,6 +20,7 @@
              />
 
     <genericsetup:registerProfile
+        zcml:condition="not-have plone-5"
         name="default"
         title="ftw.table"
         directory="profiles/default"
@@ -27,22 +28,44 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <genericsetup:registerProfile
+        zcml:condition="have plone-5"
+        name="default"
+        title="ftw.table"
+        directory="profiles/default_plone5"
+        description=""
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
     <!-- extjs is optional -->
-    <configure zcml:condition="installed collective.js.extjs">
-      <include package="collective.js.extjs" />
-      <genericsetup:registerProfile
-          name="extjs"
-          title="ftw.table:extjs"
-          directory="profiles/extjs"
-          description=""
-          provides="Products.GenericSetup.interfaces.EXTENSION"
-          />
+    <configure zcml:condition="not-have plone-5">
+      <configure zcml:condition="installed collective.js.extjs">
+        <include package="collective.js.extjs" />
+        <genericsetup:registerProfile
+            name="extjs"
+            title="ftw.table:extjs"
+            directory="profiles/extjs"
+            description=""
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+            />
+      </configure>
     </configure>
 
     <genericsetup:registerProfile
+        zcml:condition="not-have plone-5"
         name="uninstall"
         title="Uninstall ftw.table"
         directory="profiles/uninstall"
+        description="Uninstalls the ftw.table package."
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+        />
+
+    <genericsetup:registerProfile
+        zcml:condition="have plone-5"
+        name="uninstall"
+        title="Uninstall ftw.table"
+        directory="profiles/uninstall_plone5"
         description="Uninstalls the ftw.table package."
         provides="Products.GenericSetup.interfaces.EXTENSION"
         for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"

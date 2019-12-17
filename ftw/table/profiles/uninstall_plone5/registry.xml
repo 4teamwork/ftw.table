@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<registry>
+
+    <records prefix="plone.bundles/ftw-table-resources"
+        interface='Products.CMFPlone.interfaces.IBundleRegistry'
+        remove="true" />
+
+</registry>

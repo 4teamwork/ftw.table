@@ -5,7 +5,6 @@ version = '1.22.1.dev0'
 maintainer = 'Jonas Baumann'
 
 tests_require = [
-    'collective.js.extjs',
     'ftw.builder',
     'ftw.testing',
     'plone.app.contenttypes',

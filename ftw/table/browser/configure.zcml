@@ -16,4 +16,9 @@
         directory="extjs"
         />
 
+	  <browser:resourceDirectory
+        name='table-resources'
+        directory="."
+        />
+
 </configure>

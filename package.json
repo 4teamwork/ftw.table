@@ -1,0 +1,17 @@
+{
+  "name": "ftw.table",
+  "version": "1.0.0",
+  "repository": "git@github.com:4teamwork/ftw.table.git",
+  "author": "4teamwork AG <info@4teamwork.ch>",
+  "license": "GPL2",
+  "private": true,
+  "scripts": {
+    "build": "r.js -o build.js",
+    "build-js": "r.js -o build.js",
+    "watch": "chokidar \"./ftw/table/browser/(*.js|*.css)\" -i \"**/*-compiled.js\" -c \"/bin/sh -c \\\"r.js -o build.js\\\"\""
+  },
+  "devDependencies": {
+    "chokidar-cli": "^2.1.0",
+    "requirejs": "^2.3.6"
+  }
+}
